@@ -23,7 +23,7 @@
       <xsl:variable name="bookraw" select="tokenize($vptext2,'@@@ scr ')"/>
       <xsl:variable name="replacearray" select="f:file2lines($replacearrayfile)"/>
       <xsl:template match="/">
-<xsl:comment select="substring($vptext,0,100)"/>
+            <xsl:comment select="substring($vptext,0,100)"/>
             <!-- starting template -->
             <xsl:element name="data">
                   <xsl:for-each select="$bookraw">
@@ -32,7 +32,7 @@
                               <xsl:when test=". = ''"/>
                               <xsl:otherwise>
                                     <!-- for each book of the Bible -->
-                                    <xsl:variable name="bookdata" select="tokenize(.,'@@@ fn ')"/>
+                                    <xsl:variable name="bookdata" select="tokenize(.,'@@@ fn\s+')"/>
                                     <xsl:variable name="data" select="$bookdata[1]"/>
                                     <xsl:variable name="footnote" select="$bookdata[2]"/>
                                     <xsl:variable name="bookname" select="substring($data,1,4)"/>

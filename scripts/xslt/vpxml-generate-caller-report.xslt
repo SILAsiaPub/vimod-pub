@@ -18,10 +18,27 @@
       <xsl:template match="book">
             <xsl:value-of select="@book"/>
             <xsl:text> ==============&#13;&#10;</xsl:text>
-            <xsl:apply-templates select="scr//tag"/>
+            <xsl:apply-templates select="scr/para"/>
+      </xsl:template>
+      <xsl:template match="para">
+            <xsl:apply-templates select="tag">
+                  <xsl:with-param name="bk" select="@book"/>
+                  <xsl:with-param name="prechapt" select="preceding-sibling::*[@class = $c][1]/tag[1]"/>
+            </xsl:apply-templates>
       </xsl:template>
       <xsl:template match="tag[@value = $caller-feature][normalize-space(.) = $caller]">
-            <xsl:variable name="chap" select="preceding::para[@class = $c][1]/tag[1]"/>
+            <xsl:param name="bk"/>
+            <xsl:param name="prechapt"/>
+            <xsl:variable name="chap">
+                  <xsl:choose>
+                        <xsl:when test="string-length($prechapt) = 0">
+                              <xsl:text>1</xsl:text>
+                        </xsl:when>
+                        <xsl:otherwise>
+                              <xsl:value-of select="$prechapt"/>
+                        </xsl:otherwise>
+                  </xsl:choose>
+            </xsl:variable>
             <xsl:variable name="verse" select="preceding::tag[@value = $v][1]"/>
             <xsl:value-of select="."/>
             <xsl:text>&#9;</xsl:text>

@@ -340,7 +340,7 @@
       </xsl:template>
       <xsl:template match="fr" mode="fnote">
             <xsl:value-of select="'\fr '"/>
-            <xsl:value-of select="."/>
+            <xsl:value-of select="replace(.,'\s+',' ')"/>
             <xsl:value-of select="' \ft '"/>
       </xsl:template>
       <xsl:template match="fnote">
@@ -349,6 +349,7 @@
             <xsl:text>\f*</xsl:text>
       </xsl:template>
       <xsl:template match="text()">
-            <xsl:value-of select="replace(translate(.,'&#143;&#144;&#147;&#148;&#145;&#146;','  “”‘’'),'  ',' ')"/>
+            <xsl:value-of select="replace(.,'\s+',' ')"/>
       </xsl:template>
+      <!-- translate(.,'&#147;&#148;&#145;&#146;','“”‘’') -->
 </xsl:stylesheet>
