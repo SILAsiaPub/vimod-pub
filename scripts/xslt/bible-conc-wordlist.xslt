@@ -22,7 +22,7 @@
             <xsl:param name="bookno"/>
             <xsl:param name="chaptno"/>
             <xsl:variable name="verseno" select="@number"/>
-            <xsl:variable name="word" select="tokenize(normalize-space(translate(following::text()[1],'\.,?!;:“”‘’()[]—&lt;&gt;',' ')),' ')"/>
+            <xsl:variable name="word" select="tokenize(normalize-space(replace(following::text()[1],'[\.,\?!;:“”‘’\(\)\[\]—&lt;–&gt;',' ')),' ')"/>
             <xsl:for-each select="$word">
                   <xsl:element name="w">
                         <xsl:attribute name="word">
