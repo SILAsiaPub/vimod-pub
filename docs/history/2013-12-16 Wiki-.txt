@@ -1,0 +1,68 @@
+h1. Getting Started with VimodPub
+
+h2. What you need to make VimodPub work on your computer:
+
+# Download from this site via HG. Or download a Spin-off Sub-Project zip file from the files tab.
+# Have Java installed on your computer. From: http://java.com/en/download/index.jsp.
+# Ensure that Java is in your %path% variable. 
+# Have a copy of saxon9.jar or saxon9HE.jar on your computer. from: http://saxon.sourceforge.net/
+# Edit the setup-pub\essential_installed.tools file for at least the saxon9 variable.
+# For none XSLT transformations you will need to localize setup-pub\user_installed.tools.
+
+
+h2. When the setup is all done
+
+# Open a Command window at the same place where you find pub.cmd.
+# type 'pub' and press [enter].
+# Select the appropriate menu group item by typing the letter associated with it and pressing [enter].
+# Select the appropriate menu project item by typing the letter associated with it and pressing [enter].
+# The items in the third menu are the tasks to be completed to make the output.
+
+h2. File structure for projects
+
+All your files go in a 'project' folder inside a 'group' folder inside the 'data' sub-folder.
+
+@data\group\project@
+
+Where group may be a 'client' or 'iso' code or 'project group' or '2013-08' month or any arbitrary grouping depending on how you organize your work. Likewise  the 'project' folder can be named to suit the overall project. But avoid spaces in path and file names. Some things may not work. You are warned. I don't use spaces. So it is untested. Normally your source files go in the 'project' folder but this is not mandatory.
+
+h3. Your menu and tasks files must go in:
+
+@data\group\project\setup@
+
+h3. Creating a new Project:
+
+When you create a new folder at the 'group' or 'project' level a new menu item will appear 
+automatically based on the name of the folder.
+
+When you make a new Project folder you must make a sub folder called 'setup'. Within the setup folder you need at least a 'project.menu' file and usually a project.tasks file. You can have sub menus started from the 'project.menu'
+
+Menu files and task files have the same format. But some commands and variables do not work at the menu level. It is safer to put function commands in a tasks file.
+
+comment or documentation goes before the semicolon   ;command param1 param2
+# any line starting with a # is ignored. good for excluding lines temporarily or extra documentation
+
+Here is a simple two line project.menu file:
+<pre>
+# project.menu
+Transform xml to html              ;tasklist project.tasks
+</pre>
+
+Here is the project.tasks file:
+<pre>
+# project.tasks
+# lines starting with # are ignored
+#
+specify the starting file          ;inputfile %projectpath%\books.xml
+map xml elements to html           ;xslt generate-match-func2 "defaultelement=span fieldlist='namegroup:div family:div'"
+run the transformation             ;xslt generic-html
+copy last file to project path     ;outputfile "%projectpath%\familytree.html"
+</pre>
+
+h3. Folders created by VimodPub within a project folder:
+
+Within the 'project' folder, you created a 'setup' folder. VimodPub will create a 'logs'
+folder and an 'xml' folder.
+
+* 'logs' folder contains daily logs that may help you debug, if things are not working.
+* 'xml' folder contains the output of each task, named to match the xslt name. There is also a sequence number and optionally a project code. i.e. project_code-01-generic-html.xml

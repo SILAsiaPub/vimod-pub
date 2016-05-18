@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+2	
+<html>
+3	
+  <head>
+4	
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+5	
+    <title>XML2pdf</title>
+6	
+  </head>
+7	
+  <body>
+8	
+    <h1>Making Formatting Objects PDF from XML data.</h1>
+9	
+    <p>Steps to making a PDF from XML with FOP</p>
+10	
+    <ol>
+11	
+      <li>Determine the XML elements that will be block elements and which are
+12	
+        inline elements. For dictionaries only few elements will be block level
+13	
+        elements. i.e. lxGroup is the primary one and maybe seGroup.</li>
+14	
+      <li>Use <span style="font-weight: bold;">generate-fo-template.xslt</span>
+15	
+        with a <span style="font-weight: bold;">blank.xml</span> as input to
+16	
+        create <span style="font-weight: bold;">dict-xml2fo.xslt</span> or any
+17	
+        name you choose and include these parameters:</li>
+18	
+      <ul>
+19	
+        <li><span style="font-style: italic;">pagetemplate </span>default value
+20	
+          =fo-one page-layout.xslt</li>
+21	
+        <li><span style="font-style: italic;">attribtemplate </span>default
+22	
+          value =attrib-set-temp.xslt</li>
+23	
+        <li><span style="font-style: italic;">inlineelementlist </span>="lx ps
+24	
+          de pl hm deGroup"</li>
+25	
+        <li><span style="font-style: italic;">blockelementlist </span>="lxGroup
+26	
+          seGroup"</li>
+27	
+      </ul>
+28	
+      <li>If you have special markup for any field, you can manually add it to
+29	
+        this file. But do not regenerate it or you will loose your
+30	
+        modifications.</li>
+31	
+      <li>Create a CSS or use an existing CSS as text input for the next step.
+32	
+        This will be the styles applied to each element. A class style should be
+33	
+        created for each element in the printed output.</li>
+34	
+      <li>Use <span style="font-weight: bold;">css-to-attrib-set.xslt</span>
+35	
+        with <span style="font-weight: bold;">blank.xml</span> as input to
+36	
+        create <span style="font-weight: bold;">attrib-set-temp.xslt. </span>Every
+37	
+        element should have a corresponding attribute set. If not you will get
+38	
+        errors. </li>
+39	
+      <ul>
+40	
+        <li><span style="font-style: italic;">commonset </span>default
+41	
+          value=normal (could be 'common') It includes the common attributes</li>
+42	
+        <li><span style="font-style: italic;">sourcetexturi </span>=file:///c:/path/to/file/style.css</li>
+43	
+      </ul>
+44	
+      <li>Use the created <span style="font-weight: bold;">dict-xml2fo.xslt </span>with<span
+45	
+46	
+          style="font-weight: bold;"> dict-iso.xml </span>as input<span style="font-weight: bold;">
+47	
+        </span>to create <span style="font-weight: bold;">dict-iso.fo</span></li>
+48	
+      <li>Use FOP to create the pdf. FOP <span style="font-weight: bold;">dict-iso.fo
+49	
+          dict-iso.pdf</span></li>
+50	
+      <li>You may need a config file if the output can't find the font file. FOP
+51	
+        <span style="font-weight: bold;">-c fop.xconf dict-iso.fo dict-iso.pdf</span></li>
+52	
+      <li><br>
+53	
+      </li>
+54	
+    </ol>
+55	
+    <ul>
+56	
+    </ul>
+57	
+    <br>
+58	
+    <p><br>
+59	
+    </p>
+60	
+    <ol>
+61	
+    </ol>
+62	
+  </body>
+63	
+</html>

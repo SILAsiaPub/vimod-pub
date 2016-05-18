@@ -1,0 +1,120 @@
+ Getting Started with Vimod Pub
+2	
+3	
+What you need to make this process work:
+4	
+1. Have Java installed on your computer. From: http://java.com/en/download/index.jsp.
+5	
+2. Ensure that Java is in your %path% variable. 
+6	
+3. Have a copy of saxon9.jar or saxon9HE.jar on your computer. 
+7	
+   Contained in Kernow from: http://sourceforge.net/projects/kernowforsaxon
+8	
+   (Kernow is very useful when you are ready to experiment with xslt transformation.)
+9	
+   or from: http://saxon.sourceforge.net/
+10	
+4. Edit the setup-pub\essential_installed.tools file for at least saxon9 variable.
+11	
+5. For none XSLT transformations you will need to localize setup-pub\user_installed.tools.
+12	
+13	
+14	
+15	
+When the above is all done.
+16	
+Open a Command window at the same place as this GettingStarted.txt file.
+17	
+type 'pub' and press [enter].
+18	
+Select the appropriate menu item by typing the letter associated with it and pressing [enter].
+19	
+20	
+File structure for projects:
+21	
+All your files go in a 'project' folder inside a 'group' folder inside the 'data' subfolder .
+22	
+data\group\project
+23	
+24	
+Where group may be a 'client' or 'iso' code or '2013-08' month or any abitary grouping
+25	
+depending on how you organize your work. Likewise the 'project' folder can be named 
+26	
+to suit the overall project. But avoid spaces in path and file names. 
+27	
+Some things may not work. You are warned. I don't use spaces. So it is untested.
+28	
+Normally your source files go in the 'project' folder but this is not mandatory.
+29	
+30	
+Your menu and tasks files must go in:
+31	
+data\group\project\setup
+32	
+33	
+Creating a new Project:
+34	
+When you create a new folder at the 'group' or 'project' level a new menu item will appear 
+35	
+automatically based on the name of the folder.
+36	
+37	
+When you make a new Project folder you must make a sub folder called 'setup'.
+38	
+Within the setup folder you need at least a 'project.menu' file and maybe a yourproject.tasks file.
+39	
+You can have sub menus started from the 'project.menu'
+40	
+41	
+Menu files and task files have the same format. But some commands do not work at the menu level.
+42	
+43	
+comment or documentation goes before the semicolon   ;command param1 param2
+44	
+# any line starting with a # is ignored. good for excluding lines temporarily or extra documentation
+45	
+46	
+Here is a simple two line project.menu file:
+47	
+# project.menu
+48	
+Transform xml to html              ;tasklist project.tasks
+49	
+50	
+Here is the project.tasks file:
+51	
+# project.tasks
+52	
+# lines starting with # are ignored
+53	
+#
+54	
+specify the starting file          ;inputfile %projectpath%\books.xml
+55	
+map xml elements to html           ;xslt generate-match-func2 "defaultelement=span fieldlist='namegroup:div family:div'"
+56	
+run the transformation             ;xslt generic-html
+57	
+copy last file to project path     ;outputfile "%projectpath%\familytree.html"
+58	
+59	
+When you run a project:
+60	
+With in the 'project' folder you created a 'setup' folder. Vimod Pub will create a 'logs'
+61	
+folder and an 'xml' folder.
+62	
+'logs' folder contains daily logs that may help you debug if things are not working.
+63	
+'xml' folder contains the output of each task, named to match the xslt name. There is also
+64	
+a sequence number and optionally a project code.
+65	
+i.e. project_code-01-generic-html.xml
+66	
+67	
+ian_mcquay@sil.org 
+68	
+2013-03-05
