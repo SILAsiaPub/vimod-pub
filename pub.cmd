@@ -177,7 +177,7 @@ IF /I '%Choice%'=='%exitletter%' (
       set skipsettings=on
       pub
     ) else (
-        echo ...exit menu &exit /b
+        echo ...exit menu &goto :eof
     )
 )
 
@@ -198,18 +198,18 @@ goto :menu
 :: menuitem
 :: checkfunc
 :: submenu
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set menuitem=%~1
 set checkfunc=%~2
 set submenu=%~3
 rem check for common menu
 if /%checkfunc%/ == /commonmenu/ (
   call :%action%
-  exit /b
+  goto :eof
 ) else if /%checkfunc%/ == /menublank/ ( 
  rem check for menublank
   call :%action%
-  exit /b
+  goto :eof
 ) 
 rem write the menu item
 set let=%letters:~0,1%
@@ -220,7 +220,7 @@ rem set the option letter
 set option%let%=%action%
 rem make the letter list
 set menuoptions=%let% %menuoptions%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :commonmenu
@@ -229,10 +229,10 @@ goto :eof
 :: Used by: menu
 :: Required parameters:
 :: commonmenu
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set commonmenu=%~1
 FOR /F "eol=# tokens=1,2 delims=;" %%i in (%commonmenufolder%\%commonmenu%) do set action=%%j&call :menuwriteoption "%%i" %%j
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -243,7 +243,7 @@ goto :eof
 :: Required parameters:
 :: commonmenu
 rem echo on
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set list=%~1
 set menuoptions=
 set option=
@@ -269,14 +269,14 @@ echo outside loop
 rem call :menuevaluation %%c
 echo %valuechosen%
 pause
-if "%varvalue%" == "set" exit /b
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if "%varvalue%" == "set" goto :eof
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :menuvaluechooseroptions
 :: Description: Processes the choices
 :: Class: command - internal - menu
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set menuitem=%~1
 set let=%letters:~0,1%
 set value%let%=%~1
@@ -286,29 +286,29 @@ set letters=%letters:~1%
 rem set the option letter
 rem make the letter list
 set menuoptions=%menuoptions% %let%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :menuvaluechooserevaluation
 :: Class: command - internal - menu
 rem echo on
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 if defined varvalue goto :eof
 set let=%~1
-IF /I '%Choice%'=='a' set valuechosen=%valuea%& set varvalue=set& exit /b
-IF /I '%Choice%'=='b' set valuechosen=%valueb%& set varvalue=set& exit /b
-IF /I '%Choice%'=='c' set valuechosen=%valuec%& set varvalue=set& exit /b
-IF /I '%Choice%'=='d' set valuechosen=%valued%& set varvalue=set& exit /b
-IF /I '%Choice%'=='e' set valuechosen=%valuee%& set varvalue=set& exit /b
-IF /I '%Choice%'=='f' set valuechosen=%valuef%& set varvalue=set& exit /b
-IF /I '%Choice%'=='g' set valuechosen=%valueg%& set varvalue=set& exit /b
-IF /I '%Choice%'=='h' set valuechosen=%valueh%& set varvalue=set& exit /b
-IF /I '%Choice%'=='i' set valuechosen=%valuei%& set varvalue=set& exit /b
-IF /I '%Choice%'=='j' set valuechosen=%valuej%& set varvalue=set& exit /b
-IF /I '%Choice%'=='k' set valuechosen=%valuek%& set varvalue=set& exit /b
-IF /I '%Choice%'=='l' set valuechosen=%valuel%& set varvalue=set& exit /b
-IF /I '%Choice%'=='m' set valuechosen=%valuem%& set varvalue=set& exit /b
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+IF /I '%Choice%'=='a' set valuechosen=%valuea%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='b' set valuechosen=%valueb%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='c' set valuechosen=%valuec%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='d' set valuechosen=%valued%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='e' set valuechosen=%valuee%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='f' set valuechosen=%valuef%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='g' set valuechosen=%valueg%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='h' set valuechosen=%valueh%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='i' set valuechosen=%valuei%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='j' set valuechosen=%valuej%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='k' set valuechosen=%valuek%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='l' set valuechosen=%valuel%& set varvalue=set& goto :eof
+IF /I '%Choice%'=='m' set valuechosen=%valuem%& set varvalue=set& goto :eof
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -320,7 +320,7 @@ goto :eof
 :: Required parameters: 1
 :: let
 if defined masterdebug call :funcdebug %0
-if defined varvalue exit /b
+if defined varvalue goto :eof
 set let=%~1
 set option=option%let%
 :: /I makes the IF comparison case-insensitive
@@ -366,7 +366,7 @@ if exist "%setuppath%\%tasklistname%" (
     ) else (
         echo tasklist "%tasklistname%" not found
         pause
-        exit /b
+        goto :eof
     )
 )
 if exist "%setuppath%\project.variables" (
@@ -391,9 +391,10 @@ goto :eof
 :: localvar
 :: Func calls: 1
 :: checkdir
-set beginfuncstring=++ masterdebug is on ++++++++++++ starting func
+set beginfuncstring=++ debugging is on ++++++++++++ starting func
 set beginfuncstringtail=++++++++++++++
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if exist setup-pub\functiondebug.settings if not defined skipsettings call :variableslist setup-pub\functiondebug.settings
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set basepath=%cd%
 set endfuncstring=-------------------------------------- end func
 rem check if logs directory exist and create if not there  DO NOT change to checkdir
@@ -429,7 +430,7 @@ if exist setup-pub\functiondebug.settings if not defined skipsettings call :vari
 rem if not defined java call :testjava
 set classpath=%classpath%;%extendclasspath%
 call :checkdir %cd%\data\logs
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -452,7 +453,7 @@ set report=Checking dir %dir%
 if exist "%dir%" (
       echo . . . Found! %dir% >>%projectlog%
 ) else (
-    call :removecommonatstart dirout "%dir%"
+    rem call :removecommonatstart dirout "%dir%"
     if defined echodirnotfound echo Creating . . . %dirout%
     echo . . . not found. %dir% >>%projectlog%
     echo mkdir %dir% >>%projectlog%
@@ -463,16 +464,16 @@ goto :eof
 
 :validatevar
 :: validate variables passed in
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testvar=%~1
 if not defined %testvar:"=% (
             echo No %~1 var found defined
             echo Please add this to the setup-pub\user_installed.tools
             echo The program will exit after this pause.
             pause
-            exit /b
+            goto :eof
       )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 rem built in commandline functions =============================================
@@ -548,7 +549,7 @@ rem External tools functions ===================================================
 if defined errorsuspendprocessing goto :eof
 if defined masterdebug call :funcdebug %0
 set script=%~1
-if not defined script echo missing script & goto :eof
+if not defined script echo CCT missing! & goto :eof
 call :infile "%~2"
 if defined missinginput echo missing input file & goto :eof
 if not exist "%ccw32%" echo missing ccw32.exe file & goto :eof
@@ -613,10 +614,10 @@ goto :eof
 rem replaces getvar
 :projectvar
 :: Description: get the variables from project.tasks file
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :ifexist "%projectpath%\setup\project.tasks" utf-8
 call :tasklist project.tasks
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :projectxslt
@@ -626,7 +627,7 @@ goto :eof
 :: Required functions:
 :: getdatetime
 :: xslt
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :getfiledatetime tasksdate "%projectpath%\setup\project.tasks"
 call :getfiledatetime xsltdate "%cd%\scripts\xslt\project.xslt"
 call :getfiledatetime xsltscriptdate "%cd%\scripts\xslt\vimod-projecttasks2variable.xslt"
@@ -663,9 +664,10 @@ if "%lastprojectpath%" == "%projectpath%" (
   echo.
   set makenewprojectxslt=on
 )
+if defined makenewprojectxslt call :encoding "%projectpath%\setup\project.tasks" validate utf-8
 if defined makenewprojectxslt call :xslt vimod-projecttasks2variable "projectpath='%projectpath%'" blank.xml "%cd%\scripts\xslt\project.xslt"
 set lastprojectpath=%projectpath%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -679,6 +681,7 @@ goto :eof
 :: Optional parameters: 2
 :: infile
 :: outfile
+:: appendfile
 :: Required functions:
 :: infile
 :: outfile
@@ -687,14 +690,18 @@ goto :eof
 :: after
 if defined masterdebug call :funcdebug %0
 call :infile "%~1"
+set appendfile=%~3
 if defined missinginput echo missing input file & goto :eof
 call :inccount
 call :outfile "%~2"
-set curcommand=copy /y "%infile%" "%outfile%" 
+if defined appendfile (
+  set curcommand=copy /y "%outfile%"+"%infile%" "%outfile%" 
+) else (
+  set curcommand=copy /y "%infile%" "%outfile%" 
+)
 call :before
 %curcommand%
 call :after Copy Changes"
-::
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -709,7 +716,7 @@ goto :eof
 :: Required functions:
 :: md5create
 :: getline
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set md5check=diff
 if exist "%cd%\logs\project-tasks-cur-md5.txt" del "%cd%\logs\project-tasks-cur-md5.txt"
 call :md5create "%projectpath%\setup\project.tasks" "%cd%\logs\project-tasks-cur-md5.txt"
@@ -725,15 +732,15 @@ if exist  "%cd%\logs\project-tasks-last-md5.txt" (
 )
 del "%cd%\logs\project-tasks-last-md5.txt"
 ren "%cd%\logs\project-tasks-cur-md5.txt" "project-tasks-last-md5.txt"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :md5create
 :: no current use
 :: Description: Make a md5 check file
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call fciv "%~1" >"%~2"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :xquery
@@ -786,7 +793,7 @@ if not defined javainstalled (
             echo Get it here: http://www.java.com/en/download/
             echo The program will exit after this pause.
             pause
-            exit /b
+            goto :eof
       )
 ) else (
       set java=java
@@ -927,9 +934,9 @@ goto :eof
 :: drive:\path\name.ext or path\name.ext or name.ext
 :: created variable:
 :: nameext
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set nameext=%~nx1
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :ext
@@ -939,9 +946,9 @@ goto :eof
 :: drive:\path\name.ext or path\name.ext or name.ext
 :: created variable:
 :: nameext
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set ext=%~x1
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :name
@@ -951,9 +958,9 @@ goto :eof
 :: drive:\path\name.ext or path\name.ext or name.ext
 :: created variable:
 :: name
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set name=%~n1
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :drivepath
@@ -962,10 +969,10 @@ goto :eof
 :: Required parameters:
 :: Group type: parameter manipulation
 :: drive:\path\name.ext or path\name.ext
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set drivepath=%~dp1
 if defined echodrivepath echo %drivepath%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :file2uri
@@ -994,11 +1001,11 @@ goto :eof
 :: count - on second and subsequent use
 :: Optional preset variables: 1
 :: count - on first use
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set /A count=%count%+1
 set writecount=%count%
 if %count% lss 10 set writecount=%space%%count%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1031,9 +1038,9 @@ goto :eof
 :pause
 :: Description: Pauses work until user interaction
 :: Class: command - user interaction
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 pause
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :debugpause
@@ -1041,7 +1048,7 @@ goto :eof
 :: Class: command - debug
 :: Optional Parameters:
 :: changedebugpause
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 echo on
 set changedebugpause=%~1
 if defined debugpause (
@@ -1055,7 +1062,7 @@ if defined debugpause (
   )
 )
 echo off
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1074,7 +1081,7 @@ goto :eof
 :: Required functions:
 :: infile
 :: outfile
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :inccount
 set plugin=%~1
 set pluginsubtask=%~2
@@ -1087,7 +1094,7 @@ set curcommand=call plugins\%plugin%
 call :before
 %curcommand%
 call :after "%plugin% plugin complete"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :dirlist
@@ -1097,12 +1104,12 @@ goto :eof
 :: Required functions:
 :: dirpath
 :: dirlist - a file path and name
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set dirpath=%~1
 if not defined dirpath echo missing dirpath input & goto :eof
 set dirlist=%~2
 dir /b "%dirpath%" > "%dirlist%"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1111,7 +1118,7 @@ goto :eof
 :: Class: command - internal - pipeline - parameter
 :: Required parameters: 1
 :: testinfile
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testinfile=%~1
 if "%testinfile%" == "" (
 set infile=%outfile%
@@ -1120,7 +1127,7 @@ set infile=%testinfile%
 )
 if not exist "%infile%" set missinginput=on
 if exist "%infile%" set missinginput=
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :outfile
@@ -1129,7 +1136,7 @@ goto :eof
 :: Required parameters: 2
 :: testoutfile
 :: defaultoutfile
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testoutfile=%~1
 set defaultoutfile=%~2
 if "%testoutfile%" == "" (
@@ -1137,7 +1144,7 @@ set outfile=%defaultoutfile%
 ) else (
 set outfile=%testoutfile%
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :setdefaultoptions
@@ -1146,7 +1153,7 @@ goto :eof
 :: Required parameters:
 :: testoption
 :: defaultoption
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testoption=%~1
 set defaultoption=%~2
 if "%testoption%" == "" (
@@ -1154,7 +1161,7 @@ if "%testoption%" == "" (
 ) else (
 set options=%testoption%
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1170,7 +1177,7 @@ goto :eof
 :: varname
 :: value
 :: Added handling so that a third param called echo will echo the variable back.
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set varname=%~1
 set value=%~2
 set %varname%=%value%
@@ -1178,7 +1185,7 @@ if "%~3" == "echo" echo %varname%=%value%
 if "%~3" == "required" (
   if "%value%" == "" echo Missing %varname% parameter & set fatalerror=on
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :quoteinquote
@@ -1187,11 +1194,11 @@ goto :eof
 :: Required parameters:
 :: varname
 :: paramstring
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set varname=%~1
 set paramstring=%~2
 if defined paramstring set %varname%=%paramstring:'="%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :startfile
@@ -1205,11 +1212,11 @@ goto :eof
 :: Required parameters: 1
 :: outfile
 :: Added handling so that a preset var %writebat%, will cause the item to be written to a batch file
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set outfile=%~1
 if not defined outfile echo missing outfile parameter & goto :eof
 if "%writebat%" == "yes" echo set outfile=%~1 >>%projectbat%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1351,7 +1358,7 @@ goto:eof
 :runloop
 :: Description: run loop with parameters
 :: Class: command - loop - depreciated
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set looptype=%~1
 set action=%~2
 set string=%~3
@@ -1360,7 +1367,7 @@ set list=%~3
 set comment=%~4
 set string=%string:'="%
 call :%looptype%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1370,7 +1377,7 @@ goto :eof
 :: Required parameters: 0
 :: Created: 2013-08-10
 :: depreciated doing with tasks file
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set copytext=%projectpath%\logs\copyresources*.txt
 set copybat=%projectpath%\logs\copyresources.cmd
 if exist "%copytext%" del "%copytext%"
@@ -1388,7 +1395,7 @@ call :xslt vimod-spinoff-project "projectpath='%projectpath%' outpath='%outpath%
 FOR /L %%n IN (0,1,100) DO call :joinfile %%n
 if exist "%copybat%" call "%copybat%"
 ::call :command xcopy "'%projectpath%\*.*' '%outpath%"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1407,6 +1414,7 @@ set testfile=%~1
 set action=%~2
 set param3=%~3
 set param4=%~4
+set param5=%~5
 if not defined testfile echo missing testfile parameter & goto :eof
 if not defined action echo missing action parameter & goto :eof
 rem if defined param4 set param4=%param4:'="%
@@ -1421,40 +1429,30 @@ if exist "%testfile%" (
   if "%action%" == "func" echo call :%param3% "%param4%"
   if "%action%" == "command" echo call :command "%param3%" "%param4%"
   if "%action%" == "tasklist" echo call :tasklist "%param3%" "%param4%"
+  if "%action%" == "append" echo copy "%param3%"+"%testfile%" "%param3%"
+  if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
+  if "%action%" == "type" echo type "%testfile%" ^>^> "%param3%"
+  if "%action%" == "emptyfile" echo echo. ^> "%testfile%"
   rem now do what was said
   if "%action%" == "xcopy"  %action% %param4% "%testfile%" "%param3%"
-  if "%action%" == "copy" %action% %param4% "%testfile%" "%param3%"
+  if "%action%" == "copy" %action% %param4% "%testfile%" "%param3%" "%param5%"
   if "%action%" == "move" %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "rename" %action% "%testfile%" "%param3%"
   if "%action%" == "del" %action% /Q "%testfile%"
   if "%action%" == "func" call :%param3% "%param4%"
   if "%action%" == "command" call :command "%param3%" "%param4%"
   if "%action%" == "tasklist" call :tasklist "%param3%" "%param4%"
+  if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%" /a
+  if "%action%" == "addtext" echo %param3% >> "%param4%"
+  if "%action%" == "type" type "%testfile%" >> "%param3%"
+  if "%action%" == "emptyfile" echo. 2> "%testfile%"
   if "%action%" == "fatal" (
     call :echolog "File not found! %message%"
     echo %message%
     echo The script will end.
     echo.
     pause
-    exit /b
-  )
-  if "%action%" == "utf-8" (
-    if exist "%gnuwin32file%" (
-      FOR /F "tokens=2 delims=; " %%s IN ('"%gnuwin32file%" --mime-encoding "%projectpath%\setup\project.tasks"') DO (
-        if  "%%s" neq "utf-8" (
-          echo Encoding of %nameext% file is not utf-8 it is %tasksencoding%
-          echo Use text editor to change encoding to utf-8
-          echo The script will end.
-          echo.
-          pause
-          exit /b
-        )
-      ) 
-    ) else (
-      echo %nameext% not checked for UTF-8 encoding
-      echo if project.xslt does not contain variables from project.tasks, then the encoding on the file may not be utf-8
-      echo.
-    )
+    goto :eof
   )
 ) else (
   echo %testfile% was not found to %action%
@@ -1493,13 +1491,14 @@ if not exist  "%testfile%" (
   if "%action%" == "command" call :echolog "File not found! %testfile%"  & call :command "%param3%" "%param4%"
   if "%action%" == "tasklist" call :echolog "File not found! %testfile%" & call :tasklist "%tasklist%" "%param4%"
   if "%action%" == "func" call :echolog "File not found! %testfile%"     & call :%param3% "%param4%" "%param5%"
+  if "%action%" == "createfile" call :echolog "File not found! %testfile%" Create empty file.    & echo. > "%testfile%"
   if "%action%" == "fatal" (
   call :echolog "File not found! %message%"
   echo %message%
   echo The script will end.
   echo.
   pause
-  exit /b
+  goto :eof
   )
 
 )
@@ -1516,6 +1515,7 @@ goto :eof
 :: echotask or message
 :: Optional parameters:
 :: message
+:: add2file
 if defined masterdebug call :funcdebug %0
 set echotask=%~1
 if not defined echotask echo Missing echotask parameter & goto :eof
@@ -1524,6 +1524,8 @@ if '%echotask%' == 'on' (
   @echo on
 ) else if '%echotask%' == 'off' (
   @echo off
+) else if '%echotask%' == 'add2file' (
+  @echo %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9 >> "%add2file%"
 ) else if '%echotask%' == 'log' (
   if defined echoecholog echo %message%
   echo %curdate%T%time% >>%projectlog%
@@ -1597,7 +1599,7 @@ got :eof
 :: drivepath
 :: nameext
 :: ifnotexist
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 if defined echovariableslist echo ==== Processing variable list %~1 ====
 set list=%~1
 set checktype=%~2
@@ -1623,7 +1625,7 @@ FOR /F "eol=# delims== tokens=1,2" %%s IN (%list%) DO (
         )
     )
 if defined selfvalue set selfvalue=
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1637,7 +1639,7 @@ goto :eof
 :: text
 :: quotes
 :: filetotype
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set file=%~1
 if not defined file echo file parameter not supplied &goto :eof
 set text=%~2
@@ -1659,7 +1661,7 @@ if not defined filetotype (
   )
 )
 set newfile=
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 rem UI and Debugging functions ========================================================
@@ -1675,7 +1677,7 @@ rem UI and Debugging functions =================================================
 :: Required functions:
 :: menuwriteoption
 rem echo on
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set list=%~1
 set skiplines=%~2
 if not defined skiplines set skiplines=1
@@ -1689,7 +1691,7 @@ FOR /F "eol=# tokens=1 skip=%skiplines% delims==" %%i in (%list%) do (
     )
 )
 rem echo off
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :funcdebug
@@ -1728,7 +1730,7 @@ if "%debugend%" == "end" (
 :: remove - string if not defined then use %cd% as string.
 :: Required functions:
 :: removelet
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set name=%~1
 set test=%~2
 set remove=%~3
@@ -1737,9 +1739,9 @@ set endmatch=
 FOR /L %%l IN (0,1,100) DO if not defined notequal (
       call :removelet
       ) else (
-      exit /b
+      goto :eof
       )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :removelet
@@ -1750,12 +1752,12 @@ goto :eof
 :: test
 :: remove
 :: name
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%test:~1%
 set %name%=%test:~1%
 set remove=%remove:~1%
-if "%test:~0,1%" neq "%remove:~0,1%" set notequal=on&exit /b
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if "%test:~0,1%" neq "%remove:~0,1%" set notequal=on&goto :eof
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :getline
@@ -1764,7 +1766,7 @@ goto :eof
 :: Required parameters:
 :: linetoget
 :: file
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 if defined echogetline echo on
 set linetoget=%~1
 set file=%~2
@@ -1783,7 +1785,7 @@ if "%count%" == "0" (
     )
 )
 @echo off
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1796,7 +1798,7 @@ goto :eof
 :: funcparams - up to 7 aditional
 :: Required functions:
 :: tasklist
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%~1
 set func=%~2
 if not defined test echo missing test parameter & goto :eof
@@ -1804,8 +1806,8 @@ if not defined func echo missing func parameter & goto :eof
 set func=%func:'="%
 set funcparams=%~3
 if defined funcparams set funcparams=%funcparams:'="%
-call :%func% %funcparams%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined %test% call :%func% %funcparams%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :ifnotdefined
@@ -1816,7 +1818,7 @@ goto :eof
 :: func
 :: Optional parametes:
 :: funcparams
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%~1
 set func=%~2
 if not defined test echo missing test parameter & goto :eof
@@ -1824,7 +1826,7 @@ if not defined func echo missing func parameter & goto :eof
 set funcparams=%~3
 if defined funcparams set funcparams=%funcparams:'="%
 call :%func% %funcparams%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :ifequal
@@ -1834,7 +1836,7 @@ goto :eof
 :: equal2
 :: func
 :: params
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set equal1=%~1
 set equal2=%~2
 set func=%~3
@@ -1844,7 +1846,7 @@ if not defined equal2 echo missing equal2 parameter & goto :eof
 if not defined func echo missing func parameter & goto :eof
 if defined funcparams set funcparams=%funcparams:'="%
 if "%equal1%" == "%equal2%" call :%func% %funcparams%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :ifnotequal
@@ -1854,7 +1856,7 @@ goto :eof
 :: equal2
 :: func
 :: funcparams
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set equal1=%~1
 set equal2=%~2
 set func=%~3
@@ -1864,7 +1866,7 @@ if not defined equal2 echo missing equal2 parameter & goto :eof
 if not defined func echo missing func parameter & goto :eof
 if defined funcparams set funcparams=%funcparams:'="%
 if "%equal1%" neq "%equal2%" call :%func% %funcparams%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -1897,7 +1899,7 @@ rem set extraparam=%extraparam:'="%
 :: outfile
 :: before
 :: after
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :inccount
 set extcmd=%~1
 if not defined extcmd echo Missing extcmd parameter & goto :eof
@@ -1909,7 +1911,7 @@ set curcommand=call %extcmd% %function% "%params%" "%infile%" "%outfile%"
 call :before
 %curcommand%
 call :after "externalfunctions %function% complete"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :loopdir
@@ -1919,14 +1921,14 @@ goto :eof
 :: action - can be any Vimod-Pub command like i.e. tasklist dothis.tasks
 :: extension
 :: comment
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set basedir=%~2
 if not defined action echo Missing action parameter & goto :eof
 if not defined basedir echo Missing basedir parameter & goto :eof
 echo %~3
 FOR /F " delims=" %%s IN ('dir /b /a:-d %basedir%') DO call :%action% "%%s"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :loopfiles
@@ -1937,14 +1939,14 @@ goto :eof
 :: filespec
 :: Optional parameters:
 :: comment
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set filespec=%~2
 if not defined action echo Missing action parameter & goto :eof
 if not defined filespec echo Missing filespec parameter & goto :eof
 if "%~3" neq "" echo %~3
 FOR /F " delims=" %%s IN ('dir /b /a:-d /o:n %filespec%') DO call :%action% "%%s"
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :command2file
@@ -2000,11 +2002,11 @@ goto :eof
 :: Description: used to create a blank line in a menu and if supplied a sub menu title
 :: Optional parameters:
 :: blanktitle
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
   echo.
   if defined blanktitle echo           %blanktitle%
   if defined blanktitle echo.
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -2017,7 +2019,7 @@ goto :eof
 :: varname
 :: file
 rem echo on
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set varname=%~1
 if not defined varname echo missing varname parameter & goto :eof
 set file=%~2
@@ -2044,7 +2046,7 @@ FOR /F "tokens=1-6 delims=:%dateseparator% " %%A IN ("%~t2") DO (
   call :ampmhour %%F %%D
 )
 set %varname%=%fyyyy:~2%%fMM%%fdd%%fhh%%fnn%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :ampmhour
@@ -2054,12 +2056,12 @@ goto :eof
 :: Required parameters:
 :: ampm
 :: thh
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set ampm=%~1
 set thh=%~2
-if "%ampm%" == "AM"  (
+if "%ampm%" == "AM" (
   if "%thh%" == "12" (
-    set fhh=24
+    set fhh=00
   ) else (
     set fhh=%thh%
   )
@@ -2067,25 +2069,58 @@ if "%ampm%" == "AM"  (
   if "%thh%" == "12" (
     set fhh=12
   ) else (
-    set /A fhh=%thh%+12
+    rem added handling to prevent octal number error caused by leading zero
+    if "%thh:~0,1%" == "0" set /A fhh=%thh:~-1%+12
+    if "%thh:~0,1%" neq "0" set /A fhh=%thh%+12
   )
-) else (
+) else  (
   set fhh=%thh%
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
+goto :eof
+
+:encoding
+:: Description: to check the encoding of a file
+:: Created: 2016-05-17
+:: Required parameters:
+:: activity = validate or check
+:: file
+:: Optional parameters:
+:: validateagainst
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if not defined encodingchecker echo Encoding not checked. &goto :eof
+if not exist "%encodingchecker%" echo file.exe not found! %fileext% &echo Encoding not checked. & goto :eof
+set testfile=%~1
+set activity=%~2
+set validateagainst=%~3
+call :infile "%testfile%"
+call :nameext "%infile%"
+set command=%encodingchecker% -m %magic% --mime-encoding %infile%
+FOR /F "tokens=1-2" %%A IN ('%command%') DO set fencoding=%%B
+rem echo encoding check = %fencoding%
+if "%activity%" == "validate" (
+    if "%fencoding%" neq "%validateagainst%"  (
+      echo File %nameext% encoding is invalid! 
+      echo Encoding found to be %fencoding%! But it was expected to be %validateagainst%.
+      set errorsuspendprocessing=on
+      )
+) else  (
+    echo Encoding is: %fencoding% for file %nameext%.
+) 
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :time
 :: Description: Retrieve time in several shorter formats than %time% provides
 :: Created: 2016-05-05
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 FOR /F "tokens=1-4 delims=:%timeseparator%." %%A IN ("%time%") DO (
   set curhhmm=%%A%%B
   set curhhmmss=%%A%%B%%C
   set curhh_mm=%%A:%%B
   set curhh_mm_ss=%%A:%%B:%%C
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :date
@@ -2096,7 +2131,7 @@ goto :eof
 :: dateformat
 :: dateseparator
 rem got this from: http://www.robvanderwoude.com/datetiment.php#IDate
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 FOR /F "tokens=1-4 delims=%dateseparator% " %%A IN ("%date%") DO (
     IF "%dateformat%"=="0" (
         SET fdd=%%C
@@ -2124,7 +2159,7 @@ set curyyyy=%fyyyy%
 set curyy=%fyyyy:~2%
 set curmm=%fmm%
 set curdd=%fdd%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :html2xml
@@ -2134,7 +2169,7 @@ goto :eof
 :: infile
 :: Optional Parameters:
 :: outfile
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :infile "%~1"
 if defined missinginput echo missing input file & goto :eof
 call :outfile "%~2"
@@ -2143,7 +2178,7 @@ rem set curcommand=call "%tidy5%" -o "%outfile%" "%infile%"
 call :before
 %curcommand% > "%outfile%"
 call :after
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 
@@ -2152,13 +2187,13 @@ goto :eof
 :: Required parameters:
 :: findval
 :: datafile
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 SET findval=%~1
 set datafile=%~2
 set lookupreturn=
 FOR /F "tokens=1,2 delims==" %%i IN (%datafile%) DO @IF %%i EQU %findval% SET lookupreturn=%%j
 @echo lookup of %findval% returned: %lookupreturn%
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :start
@@ -2167,7 +2202,7 @@ goto :eof
 :: param1
 :: Optional parameters:
 :: param2
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set var1=%~1
 set var2=%~2
 set var3=%~3
@@ -2181,7 +2216,7 @@ if defined var1 (
 ) else (
   start "%var1%" "%var2%" "%var3%" "%var4%"
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :checkifvimodfolder
@@ -2191,7 +2226,7 @@ goto :eof
 :: echomenuskipping
 :: Required parameters:
 :: project
-if defined masterdebug echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set project=%~1
 set skipwriting=
 
@@ -2207,6 +2242,6 @@ if "%project%" == "logs" (
     if defined echomenuskipping echo skipping dir: %project%
     set skipwriting=on
 )
-if defined masterdebug echo %endfuncstring% %0 %debugstack%
+if defined debugmenufunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
