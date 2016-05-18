@@ -427,6 +427,7 @@ rem added to aid new users in setting up
 if exist setup-pub\user_installed.tools call :variableslist setup-pub\user_installed.tools
 if exist setup-pub\user_feedback.settings if not defined skipsettings call :variableslist setup-pub\user_feedback.settings
 if exist setup-pub\functiondebug.settings if not defined skipsettings call :variableslist setup-pub\functiondebug.settings
+if exist setup-pub\my.settings if not defined skipsettings call :variableslist setup-pub\my.settings
 rem if not defined java call :testjava
 set classpath=%classpath%;%extendclasspath%
 call :checkdir %cd%\data\logs
@@ -1825,7 +1826,7 @@ if not defined test echo missing test parameter & goto :eof
 if not defined func echo missing func parameter & goto :eof
 set funcparams=%~3
 if defined funcparams set funcparams=%funcparams:'="%
-call :%func% %funcparams%
+if not defined %test% call :%func% %funcparams%
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
