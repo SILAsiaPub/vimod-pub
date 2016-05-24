@@ -509,7 +509,7 @@ if defined testoutfile (
   if "%commandpath%" neq "" %drive%
   if defined commandpath cd "%commandpath%"
   call :before
-  call %curcommand%
+  %curcommand%
   call :after
   if defined commandpath cd "%basepath%"
 ) else (
@@ -629,6 +629,7 @@ goto :eof
 :: getdatetime
 :: xslt
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+set makenewprojectxslt=
 call :getfiledatetime tasksdate "%projectpath%\setup\project.tasks"
 call :getfiledatetime xsltdate "%cd%\scripts\xslt\project.xslt"
 call :getfiledatetime xsltscriptdate "%cd%\scripts\xslt\vimod-projecttasks2variable.xslt"
@@ -1031,7 +1032,7 @@ call :nameext "%filename%"
 set outfile=%drivepath%%nameext%
 set curcommand=copy /Y "%infile%" "%outfile%"
 call :before off
-%curcommand% >> %projectlog%
+%curcommand%
 call :after "Copied "%infile%" to "%outfile%"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -1446,7 +1447,7 @@ if exist "%testfile%" (
   if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%" /a
   if "%action%" == "addtext" echo %param3% >> "%param4%"
   if "%action%" == "type" type "%testfile%" >> "%param3%"
-  if "%action%" == "emptyfile" echo. 2> "%testfile%"
+  if "%action%" == "emptyfile" echo. 
   if "%action%" == "fatal" (
     call :echolog "File not found! %message%"
     echo %message%
@@ -1997,6 +1998,7 @@ goto :eof
 :xarray
 :: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
 :: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
+rem xarray param is a file
 goto :eof
 
 :menublank
