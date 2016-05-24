@@ -18,7 +18,7 @@
       <xsl:variable name="projecttask" select="f:file2lines(concat($projectpath,'/setup/project.tasks'))"/>
       <!-- <xsl:variable name="projecttask" select="tokenize(unparsed-text($projecttaskuri),'\r?\n')"/> -->
       <xsl:variable name="cd" select="substring-before($projectpath,'\data\')"/>
-      <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/>
+        <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/> 
       <xsl:variable name="sq">
             <xsl:text>'</xsl:text>
       </xsl:variable>
@@ -59,6 +59,13 @@
                               <xsl:text>sq</xsl:text>
                         </xsl:attribute>
                         <xsl:text>'</xsl:text>
+                  </xsl:element>
+                  <xsl:element name="xsl:variable">
+                        <!-- Declare projectpath -->
+                        <xsl:attribute name="name">
+                              <xsl:text>dq</xsl:text>
+                        </xsl:attribute>
+                        <xsl:text>"</xsl:text>
                   </xsl:element>
                   <xsl:element name="xsl:variable">
                         <!-- Declare pubpath -->
@@ -158,8 +165,8 @@
                               <xsl:when test="matches($command,'xvarset')">
                                     <!-- this is to add variables in an existing line separated, then = separated list like vimod.variable -->
                                     <xsl:variable name="xvarsetfile" select="concat('..\..\',replace($name,'&#34;',''))"/>
-                                    <xsl:variable name="xvarseturi" select="f:file2uri($xvarsetfile)"/>
-                                    <xsl:variable name="xvarset" select="tokenize(unparsed-text($xvarseturi),'\r?\n')"/>
+                                    <xsl:variable name="xvarset" select="f:file2lines($xvarsetfile)"/>
+                                    <!-- <xsl:variable name="xvarset" select="tokenize(unparsed-text($xvarseturi),'\r?\n')"/> -->
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
                                                 <xsl:value-of select="concat('comment',position())"/>
@@ -169,8 +176,8 @@
                                           </xsl:attribute>
                                     </xsl:element>
                                     <xsl:for-each select="$xvarset">
-                                          <xsl:variable name="item1" select="substring-before(.,'=')"/>
-                                          <xsl:variable name="item2" select="substring-after(.,'=')"/>
+                                          <xsl:variable name="item" select="tokenize(.,'=')"/>
+                                          <!-- <xsl:variable name="item2" select="substring-after(.,'=')"/> -->
                                           <xsl:choose>
                                                 <xsl:when test="matches(.,'^#')"/>
                                                 <!-- incase there is a comment line -->
@@ -178,8 +185,8 @@
                                                 <xsl:otherwise>
                                                       <!-- when there is a line to process -->
                                                       <xsl:call-template name="writeparam">
-                                                            <xsl:with-param name="name" select="$item1"/>
-                                                            <xsl:with-param name="value" select="$item2"/>
+                                                            <xsl:with-param name="name" select="$item[1]"/>
+                                                            <xsl:with-param name="value" select="$item[2]"/>
                                                       </xsl:call-template>
                                                 </xsl:otherwise>
                                           </xsl:choose>
