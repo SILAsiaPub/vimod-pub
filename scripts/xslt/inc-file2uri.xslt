@@ -45,7 +45,7 @@
                         <xsl:sequence select="$lines"/>
                   </xsl:when>
                   <xsl:otherwise>
-                        <xsl:text>'text not imported'</xsl:text>
+                        <xsl:text>'text not imported, file not available'</xsl:text>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
