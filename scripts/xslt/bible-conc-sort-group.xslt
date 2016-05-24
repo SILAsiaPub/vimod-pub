@@ -9,24 +9,23 @@
     # Copyright:    	(c) 2015 SIL International
     # Licence:      	<LGPL>
     ################################################################ -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f" xmlns:saxon="http://saxon.sf.net/">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="project.xslt"/>
       <xsl:include href="inc-file2uri.xslt"/>
+      <xsl:include href="inc-lookup.xslt"/>
+      <xsl:variable name="customcollation" select="f:keyvalue($xvarset,$collationname)"/>
+      <!-- <xsl:include href="dict-custom-collation.xslt"/> -->
       <!-- <xsl:param name="max-word-occurance-count" select="1600"/> -->
       <!-- <xsl:param name="min-word-length" select="3"/> -->
-      <xsl:variable name="ignore">
-            <xsl:text>[</xsl:text>
-            <xsl:value-of select="$ignorechar"/>
-            <xsl:text>]</xsl:text>
-      </xsl:variable>
+      <xsl:variable name="ignorecharregex" select="f:lookupdefault($xvarset,'ignorecharregex','=',1,2,'')"/>
       <!-- <xsl:variable name="ignore" select="concat('[',$ignorechar,']')"/> -->
       <xsl:template match="/*">
             <groupedWords>
                   <xsl:for-each-group select="w" group-by="lower-case(@word)">
                         <!-- group on lower case so capitalized words are in same group as nocap words -->
-                        <!-- <xsl:sort select="replace(lower-case(@word),$ignore,'')"/> -->
-                        <xsl:sort select="@word" case-order="upper-first"/>
+                        <xsl:sort select="lower-case(@word)" collation="http://saxon.sf.net/collation?rules={encode-for-uri($customcollation)}"/>
+                        <!-- <xsl:sort select="@word" case-order="upper-first"/> -->
                         <xsl:variable name="group-count" select="count(current-group())"/>
                         <xsl:if test="$group-count le number($max-word-occurance-count)">
                               <!-- <xsl:variable name="curwd" select="concat(' ',current-group()[1],' ')"/> -->
@@ -60,14 +59,19 @@
             <xsl:element name="w">
                   <xsl:attribute name="word">
                         <xsl:choose>
+                              <xsl:when test="current-group()/@case = 'L'">
+                                    <!-- output lower case word -->
+                                    <xsl:value-of select="lower-case(current-group()[1]/@word)"/>
+                              </xsl:when>
                               <xsl:when test="current-group()[1]/@word = lower-case(current-group()[1]/@word)">
                                     <!-- check if non capitalized word is present in current-group, if so output as lower case group -->
                                     <!--  relies on sort order doing upper case first -->
                                     <xsl:value-of select="lower-case(current-group()[last()]/@word)"/>
                               </xsl:when>
-                              <xsl:when test="current-group()[1]/@word = $lower-case-words">
-                                    <!-- output lower case word -->
-                                    <xsl:value-of select="lower-case(current-group()[1]/@word)"/>
+                              <xsl:when test="current-group()/@word = $lower-case-words">
+                                    <!-- check if non capitalized word is present in current-group, if so output as lower case group -->
+                                    <!--  relies on sort order doing upper case first -->
+                                    <xsl:value-of select="lower-case(current-group()[last()]/@word)"/>
                               </xsl:when>
                               <xsl:otherwise>
                                     <!-- output capitialised word -->
