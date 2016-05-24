@@ -12,7 +12,7 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="html" version="5.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="project.xslt"/>
-<xsl:include href="inc-file2uri.xslt"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:template match="/*">
             <html lang="en">
                   <head>
@@ -28,23 +28,34 @@
                         <div class="titlepage">
                               <div class="title">
                                     <h1>
-                                          <xsl:value-of select="$title"/>
+                                          <xsl:call-template name="lines">
+                                                <xsl:with-param name="string" select="$title"/>
+                                          </xsl:call-template>
                                     </h1>
                                     <h2>
-                                          <xsl:value-of select="$subtitle"/>
+                                          <xsl:call-template name="lines">
+                                                <xsl:with-param name="string" select="$subtitle"/>
+                                          </xsl:call-template>
                                     </h2>
                               </div>
                               <div class="titlemid">
                                     <h6>Compiled by</h6>
                                     <h4>
-                                          <xsl:value-of select="$compiler"/>
+                                          <xsl:call-template name="lines">
+                                                <xsl:with-param name="string" select="$compiler"/>
+                                          </xsl:call-template>
                                     </h4>
                               </div>
-                              <p class="titlepub">
-                                    <xsl:value-of select="$publisher"/>
-                                    <br/>
-                                    <xsl:value-of select="$publication-date"/>
-                              </p>
+                              <div class="titlepub">
+                                    <p>
+                                          <img src="{$titlepage-image}" alt="picture" width="{$titlepage-image-width}"/>
+                                    </p>
+                                    <p>
+                                          <xsl:value-of select="$publisher"/>
+                                          <br/>
+                                          <xsl:value-of select="$publication-date"/>
+                                    </p>
+                              </div>
                         </div>
                         <div class="verso">
                               <p class="verso-top">
