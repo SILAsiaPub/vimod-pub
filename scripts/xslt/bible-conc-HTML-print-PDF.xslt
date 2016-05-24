@@ -50,7 +50,8 @@
       <xsl:template match="w">
             <xsl:element name="p">
                   <span class="word">
-                        <xsl:value-of select="@word"/>
+<!-- the following was modified to return serial single quote representing two glottal back into straight double quote  -->
+                        <xsl:value-of select="replace(@word,concat($sq,$sq),$dq)"/>
                   </span>
                   <xsl:text>&#x2002;</xsl:text>
                   <xsl:apply-templates select="bk"/>
