@@ -83,15 +83,18 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
-      <xsl:function name="f:lookupnumber">
+      <xsl:function name="f:keyvalue">
             <!-- generic lookup function with 6 parameters
 				uses existing array as input not a string-->
             <xsl:param name="array"/>
             <xsl:param name="string"/>
-            <xsl:param name="field-separator"/>
-            <xsl:param name="find-column"/>
-            <xsl:param name="return-column"/>
-            <xsl:param name="default"/>
+            <!-- <xsl:param name="field-separator" /> -->
+            <xsl:variable name="field-separator" select="'='"/>
+            <!-- <xsl:param name="find-column"/> -->
+            <xsl:variable name="find-column" select="1"/>
+            <!-- <xsl:param name="return-column"/> -->
+            <xsl:variable name="return-column" select="2"/>
+            <!-- <xsl:param name="default"/> -->
             <xsl:variable name="searchvalues_list">
                   <xsl:for-each select="$array">
                         <xsl:variable name="subarray" select="tokenize(.,$field-separator)"/>
@@ -111,7 +114,7 @@
                         </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                        <xsl:value-of select="$default"/>
+                        <xsl:text></xsl:text>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
@@ -166,7 +169,7 @@
             </xsl:for-each>
       </xsl:function>
       <xsl:function name="f:subsetarray">
-      <!-- The following f:subsetarray subsets a two dimentional array, into a one dimentional array. 
+            <!-- The following f:subsetarray subsets a two dimentional array, into a one dimentional array. 
 		  Returning the field selected in a new array.
 		  This is important if the parent is large and used in a lookup. 
 		  i.e. a 2500 line by 3 field array, 
