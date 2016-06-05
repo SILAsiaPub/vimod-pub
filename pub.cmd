@@ -2102,12 +2102,16 @@ set command=%encodingchecker% -m %magic% --mime-encoding %infile%
 FOR /F "tokens=1-2" %%A IN ('%command%') DO set fencoding=%%B
 rem echo encoding check = %fencoding%
 if "%activity%" == "validate" (
-    if "%fencoding%" neq "%validateagainst%"  (
+    if "%fencoding%" == "%validateagainst%"  (
+        rem %validateagainst%
+      ) else "%fencoding%" == "us-ascii" (
+        rem us-ascii
+      ) else (
       echo File %nameext% encoding is invalid! 
       echo Encoding found to be %fencoding%! But it was expected to be %validateagainst%.
       set errorsuspendprocessing=on
-      )
-) else  (
+  )
+) else  (              
     echo Encoding is: %fencoding% for file %nameext%.
 ) 
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
