@@ -108,8 +108,8 @@
                         <xsl:for-each select="$array">
                               <!-- loop through the known data to find a match -->
                               <xsl:variable name="subarray" select="tokenize(.,$field-separator)"/>
-                              <xsl:if test="number($subarray[$find-column]) = $string">
-                                    <xsl:value-of select="$subarray[$return-column]"/>
+                              <xsl:if test="$subarray[number($find-column)] = $string">
+                                    <xsl:value-of select="$subarray[number($return-column)]"/>
                               </xsl:if>
                         </xsl:for-each>
                   </xsl:when>
