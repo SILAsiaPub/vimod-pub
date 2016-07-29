@@ -32,10 +32,12 @@ group(main)
 ' |i|b'                >                   ' <charbold><charitalic>' set(bold) set(italic)   use(phrase)
 '_' fol(alpha)                 >          '<charbold>' set(bold) use(phrase) 
 ' +' fol(alpha)      >                     ' <charbold>' set(bold) use(word)
+' *' fol(alpha)      >                     ' <charbold>' set(bold) use(word)
 prec(alpha) '+' fol(alpha)      >           '<charbold>' set(bold) use(word)
 prec(beginwordpunc) '+' fol(alpha)      >   '<charbold>' set(bold) use(word)
 ' +(' fol(alpha)      >                     ' (' 
 '>+' fol(alpha)      >                     '><charbold>' set(bold) use(word)
+'>*' fol(alpha)      >                     '><charbold>' set(bold) use(word)
 c '(+' fol(alpha)      >                     '(<charbold>' set(bold) use(word)
 ' + '                >                   dup
 prec(number) '^'       >                 back(3) use(caller)
