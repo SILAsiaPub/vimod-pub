@@ -1342,9 +1342,9 @@ goto:eof
 :: comment
 :: Parameter note: Either preset or command parameters can be used
 if defined masterdebug call :funcdebug %0
-if "%~1" neq "" set action=%~1
-if "%~2" neq "" set string=%~2
-if "%~3" neq "" set comment=%~3
+set action=%~1
+set string=%~2
+set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined string echo Missing string parameter & goto :eof
 echo %comment%
