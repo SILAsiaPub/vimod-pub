@@ -407,5 +407,16 @@
                         </xsl:attribute>
                   </xsl:element>
             </xsl:if>
+            <xsl:if test="matches($name,'_semicolon-list$')">
+                  <!-- semicolon delimited list -->
+                  <xsl:element name="xsl:variable">
+                        <xsl:attribute name="name">
+                              <xsl:value-of select="replace($name,'_semicolon-list','')"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="select">
+                              <xsl:value-of select="concat('tokenize($',$name,',',$apos,';',$apos,')')"/>
+                        </xsl:attribute>
+                  </xsl:element>
+            </xsl:if>
       </xsl:template>
 </xsl:stylesheet>

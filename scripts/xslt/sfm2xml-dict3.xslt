@@ -46,7 +46,7 @@
                             </xsl:element>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:element name="{tokenize(.,'\s')[1]}">
+                            <xsl:element name="{translate(tokenize(.,'\s')[1],'?+-','xxx')}">
                                 <!-- create element with sfm as element name -->
                                 <xsl:value-of select="normalize-space(substring-after(.,' '))"/>
                             </xsl:element>

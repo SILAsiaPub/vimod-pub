@@ -15,7 +15,7 @@
       <xsl:include href="project.xslt"/>
       <xsl:include href="app-framework-head.xslt"/>
       <xsl:template match="/*">
-            <xsl:call-template name="html5cordovaindex">
+            <xsl:call-template name="html5appindex">
                   <xsl:with-param name="outputfile" select="concat($projectpath,'\cordova\www\index\index.html')"/>
             </xsl:call-template>
             <xsl:call-template name="html5cordovalanding">
@@ -27,12 +27,13 @@
             <xsl:variable name="words-before" select="count(preceding::w)"/>
             <xsl:variable name="pre-alpha" select="preceding-sibling::*[1]/@alpha"/>
             <xsl:variable name="post-alpha" select="following-sibling::*[1]/@alpha"/>
-            <xsl:call-template name="html5index">
+            <xsl:call-template name="html5alphaindex">
                   <xsl:with-param name="outputfile" select="concat($projectpath,'\cordova\www\index\',@alpha,'-list.html')"/>
                   <xsl:with-param name="words-before" select="$words-before"/>
                   <xsl:with-param name="cur-alpha" select="@alpha"/>
                   <xsl:with-param name="pre-alpha" select="$pre-alpha"/>
                   <xsl:with-param name="post-alpha" select="$post-alpha"/>
+                  <xsl:with-param name="cur-pos" select="position()"/>
             </xsl:call-template>
             <xsl:apply-templates select="w">
                   <xsl:with-param name="words-before" select="$words-before"/>
@@ -51,8 +52,13 @@
       </xsl:template>
       <xsl:template match="alphaGroup" mode="alphalist">
             <xsl:param name="cur-alpha"/>
+            <xsl:param name="cur-pos"/>
+            <xsl:variable name="pos" select="position()"/>
             <xsl:if test="not(matches(@alpha,'^[2-9]'))">
-                  <xsl:element name="a">
+                  <a class="tab-item{if ($cur-alpha = @alpha) then ' active' else ''}" href="{if ($cur-alpha = @alpha) then '#' else concat('../index/',@alpha,'-list.html')}" data-transition="{if (number($cur-pos) lt number($pos)) then 'slide-in' else 'slide-out'}">
+                        <xsl:value-of select="@alpha"/>
+                  </a>
+                  <!-- <xsl:element name="a">
                         <xsl:attribute name="class">
                               <xsl:text>tab-item</xsl:text>
                               <xsl:if test="$cur-alpha = @alpha">
@@ -66,10 +72,10 @@
                               <xsl:text>slide-in</xsl:text>
                         </xsl:attribute>
                         <xsl:attribute name="style">
-                              <xsl:text>padding: 9pt 9pt 9pt 9pt; text-decoration:none;display: inline-block;</xsl:text>
+                              <xsl:text>padding: 7pt 9pt 7pt 9pt; text-decoration:none;display: inline-block;</xsl:text>
                         </xsl:attribute>
                         <xsl:value-of select="@alpha"/>
-                  </xsl:element>
+                  </xsl:element> -->
             </xsl:if>
       </xsl:template>
       <xsl:template match="alphaGroup" mode="alphalisthome">
@@ -146,21 +152,25 @@
       </xsl:template>
       <xsl:template name="footer">
             <xsl:param name="cur-alpha"/>
+            <xsl:param name="cur-pos"/>
             <footer class="bar bar-footer">
-                  <div class="bar-nav" style="white-space: nowrap;  overflow-x: auto;  -webkit-overflow-scrolling: touch;  -ms-overflow-style: -ms-autohiding-scrollbar;">
+                  <div class="bar-nav overflow">
+                        <a class="{if (number($cur-pos) = 0) then 'active ' else ''}icon icon-home" href="../index/index.html" data-transition="slide-out"></a>
                         <xsl:apply-templates select="/*/alphaGroup" mode="alphalist">
                               <xsl:with-param name="cur-alpha" select="$cur-alpha"/>
+                              <xsl:with-param name="cur-pos" select="$cur-pos"/>
                         </xsl:apply-templates>
                   </div>
             </footer>
       </xsl:template>
-      <xsl:template name="html5index">
+      <xsl:template name="html5alphaindex">
             <xsl:param name="outputfile"/>
             <xsl:param name="words-before"/>
             <xsl:param name="addcordovascripts"/>
             <xsl:param name="cur-alpha"/>
             <xsl:param name="pre-alpha"/>
             <xsl:param name="post-alpha"/>
+            <xsl:param name="cur-pos"/>
             <xsl:variable name="pre-alpha-fix">
                   <xsl:choose>
                         <xsl:when test="string-length($pre-alpha) = 0">
@@ -227,6 +237,7 @@
                               </div> -->
                               <xsl:call-template name="footer">
                                     <xsl:with-param name="cur-alpha" select="$cur-alpha"/>
+                                    <xsl:with-param name="cur-pos" select="$cur-pos"/>
                               </xsl:call-template>
                               <!-- <script src="../js/hammer.min.js"></script> -->
                               <!-- <script type="text/javascript" src="js/cordova.js"/> -->
@@ -239,6 +250,7 @@
             <xsl:param name="cur-alpha"/>
             <xsl:param name="words-before"/>
             <xsl:param name="addcordovascripts"/>
+            <xsl:param name="cur-pos"/>
             <!-- <xsl:variable name="presiblings" select="count(preceding-sibling::w)"/> -->
             <xsl:variable name="presiblings">
                   <!--  This is to prevent errors on first and last entry. It points to self not non existant next -->
@@ -296,15 +308,16 @@
                               </div>
                               <xsl:call-template name="footer">
                                     <xsl:with-param name="cur-alpha" select="$cur-alpha"/>
+                                    <xsl:with-param name="cur-pos" select="$cur-pos"/>
                               </xsl:call-template>
                               <!-- <script src="../js/hammer.min.js"></script> -->
                         </body>
                   </html>
             </xsl:result-document>
       </xsl:template>
-      <xsl:template name="html5cordovaindex">
+      <xsl:template name="html5appindex">
             <xsl:param name="outputfile"/>
-            <xsl:param name="cur-alpha"/>
+            <xsl:param name="cur-alpha"/><xsl:param name="cur-pos"/>
             <xsl:param name="pre-alpha"/>
             <xsl:param name="post-alpha"/>
             <xsl:variable name="file" select="f:file2uri($outputfile)"/>
@@ -341,10 +354,11 @@
                               </div>
                               <xsl:call-template name="footer">
                                     <xsl:with-param name="cur-alpha" select="$cur-alpha"/>
+                                    <xsl:with-param name="cur-pos" select="0"/>
                               </xsl:call-template>
-                              <script type="text/javascript" src="js/cordova.js"/>
-                              <script type="text/javascript" src="js/index.js"/>
-                              <script type="text/javascript">app.initialize();</script>
+                              <!--<script type="text/javascript" src="../js/cordova.js"/>
+                              <script type="text/javascript" src="../js/index.js"/>
+                              <script type="text/javascript">app.initialize();</script> --> 
                         </body>
                   </html>
             </xsl:result-document>

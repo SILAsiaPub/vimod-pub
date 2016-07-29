@@ -13,7 +13,7 @@ Modified: 21/08/2012
       <xsl:include href='dict-custom-collation.xslt'/>
       <xsl:include href="inc-lower-remove-accents.xslt"/>
       <!-- <xsl:param name="collationname"/> -->
-      <!-- <xsl:param name="groupingfield" select="'ie'"/> -->
+       <xsl:param name="groupingfield" select="'ie'"/> 
       <!-- <xsl:param name="secondarysort" select="'lx'"/> -->
       <xsl:variable name="default-collation" select="'http://saxon.sf.net/collation?lang=en-US;strength=primary'"/>
       <xsl:template match="/*">

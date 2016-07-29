@@ -61,6 +61,7 @@
                   </xsl:if>
                   <xsl:if test="$hammer = $true">
                         <script type="text/javascript" src="{$rootpath}js/hammer.min.js"></script>
+                         <!-- <script type="text/javascript" src="{$rootpath}js/hammer.min.map"></script> -->
                         <script type="text/javascript">
 var content = document.getElementById('content');
 
@@ -100,6 +101,7 @@ mc.on("swipeleft swiperight", function(ev) {
                   <xsl:if test="$appcss = $true">
                         <link href="{$rootpath}css/app.css" rel="stylesheet"/>
                   </xsl:if>
+                  <link href="{$rootpath}css/my-app.css" rel="stylesheet"/>
             </head>
       </xsl:template>
 </xsl:stylesheet>

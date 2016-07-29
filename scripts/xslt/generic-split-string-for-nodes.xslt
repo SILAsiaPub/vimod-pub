@@ -12,13 +12,14 @@
             </database>
       -->
       <xsl:output method="xml" indent="yes"/>
-      <xsl:param name="separatorstring" select="';'"/>
-      <xsl:param name="elementstosplit"/>
-      <xsl:variable name="split" select="tokenize($elementstosplit,' ')"/>
+<xsl:include href="project.xslt"/>
+       <!-- <xsl:param name="separatorstring" select="';'"/> -->
+       <!-- <xsl:param name="elementstosplit"/> -->
+       <!-- <xsl:variable name="split" select="tokenize($elementstosplit,' ')"/> -->
       <xsl:include href='inc-list2xml.xslt'/>
       <!-- Template used to copy a generic node -->
       <xsl:include href='inc-copy-anything.xslt'/>
-      <xsl:template match="*[local-name() = $split]">
+      <xsl:template match="*[local-name() = $elementstosplit]">
       <!-- Template used to select data to split-->
             <xsl:call-template name="subsplit">
                   <xsl:with-param name="name" select="name()"/>
