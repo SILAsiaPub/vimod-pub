@@ -1,3 +1,4 @@
+
 # essential_installed.tools
 # =============================================================================
 # The following set of tools are on the path
@@ -8,3 +9,5 @@
 # -----------------------------------------------------------------------------
 # Saxon9 http://saxon.sourceforge.net
 saxon9=tools\saxon\saxon9he.jar
+# Java
+java=C:\Program Files\Java\jdk1.8.0_101\bin\java.exe
