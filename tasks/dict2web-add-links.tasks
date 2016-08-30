@@ -1,7 +1,7 @@
 # make and add links
 get variables                 ;tasklist project.tasks
 input file                    ;inputfile "%projectpath%\xml\%iso%-sorted.xml"
-generate file for links       ;xslt generic-split-string-for-nodes "separatorstring=, elementstosplit='%link_source_fields%'"
+generate file for links       ;xslt generic-split-string-for-nodes
 make cct to add links         ;xslt link-gen-cct "sourcelist='%link_source_fields_list%' targetlist='%link_target_fields_list%' basepath='%cd%' namelink=on"
 output                        ;getline 1 "%outfile%"
 input file                    ;inputfile "%projectpath%\xml\%iso%-a.xml"

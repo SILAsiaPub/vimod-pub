@@ -2,7 +2,7 @@
 # debug                        ;command "echo on"
 get project var               ;projectvar
 get passwords                 ;tasklist passwords.tasks
-jar signer file               ;var jarsigner "C:\Program Files\Java\jdk1.7.0_79\bin\jarsigner.exe"
+jar signer file               ;var jarsigner "%JAVA_HOME%\bin\jarsigner.exe"
 check dir                     ;checkdir "%projectpath%\apk"
 do fixes                      ;tasklist android-post-pg-fixes.tasks
 get type                      ;var platformtype %~2
