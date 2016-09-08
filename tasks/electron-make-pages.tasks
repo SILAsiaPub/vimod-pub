@@ -1,0 +1,2 @@
+# electron-make-pages.tasks
+generate file list in XML               ;command "tools\xml-dir-listing.0.2.1\bin\xml-dir-listing -i setup\\ -o resources\xmldirlist.xml %basepath%\data"
