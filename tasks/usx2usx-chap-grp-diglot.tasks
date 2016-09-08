@@ -1,0 +1,5 @@
+# A tasks file for Vimod Pub http://projects.palaso.org/projects/vimod-pub
+# xml tasks
+get proj + common var         ;projectvar
+Combine xml files n group     ;xslt usx2usx-chap-grp-diglot "" "blank.xml" "%projectpath%\xml\usx-chap-grp.xml"
+group usx elements            ;xslt usx-diglot-group
