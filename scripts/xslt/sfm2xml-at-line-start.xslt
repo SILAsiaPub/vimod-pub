@@ -33,7 +33,7 @@ and to include the first line.
                         <xsl:matching-substring/>
                         <xsl:non-matching-substring>
                               <xsl:variable name="tag" select="translate(substring-before(concat(.,' '),' '),'*_-\','')"/>
-                              <xsl:variable name="data" select="substring-after(.,' ')"/>
+                              <xsl:variable name="data" select="substring-after(concat(.,' '),' ')"/>
                               <xsl:if test="string-length($tag) gt 0">
                                     <xsl:element name="{$tag}">
                                           <!-- create element with sfm marker as element name -->

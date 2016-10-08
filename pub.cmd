@@ -48,6 +48,7 @@ if "%overridetype%" == "tasklist" (
   set setuppath=%projectpath%\setup
   call :tasklist %inputtasklist%
   echo Finished running %inputtasklist%
+  exit /b 0
 ) 
 call :setup
 

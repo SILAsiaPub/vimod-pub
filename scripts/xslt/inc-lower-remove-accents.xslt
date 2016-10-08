@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cite="http://fake.org.au/ns/">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:f="myfunctions" exclude-result-prefixes="f">
       <!-- <xsl:param name="translateaccents" select="'yes'"/> -->
       <!-- <xsl:param name="customfind"/> -->
       <!-- <xsl:param name="customreplace"/> -->
@@ -18,7 +18,7 @@
       <xsl:variable name="numbers" select="'0123456789'"/>
       <xsl:variable name="letters" select="'abcdefghijklmnopqrstuvwxyz'"/>
       <xsl:variable name="punct">&#34;<xsl:value-of select="$removechar" />-(“~[,‘;&#39;</xsl:variable>
-      <xsl:function name="cite:lower-remove-accents">
+      <xsl:function name="f:lower-remove-accents">
             <xsl:param name="input"/>
             <xsl:choose>
                   <xsl:when test="$translateaccents = 'no'">
@@ -43,7 +43,7 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
-      <xsl:function name="cite:lower-remove-accents-word">
+      <xsl:function name="f:lower-remove-accents-word">
             <xsl:param name="input"/>
             <xsl:choose>
                   <xsl:when test="$translateaccents = 'no'">
@@ -54,11 +54,11 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
-      <xsl:function name="cite:word-no-number">
+      <xsl:function name="f:word-no-number">
             <xsl:param name="input"/>
             <xsl:sequence select="translate($input,$numbers,'')"/>
       </xsl:function>
-      <xsl:function name="cite:hom-number">
+      <xsl:function name="f:hom-number">
             <xsl:param name="input"/>
             <xsl:sequence select="substring-after($input,translate($input,$numbers,''))"/>
       </xsl:function>

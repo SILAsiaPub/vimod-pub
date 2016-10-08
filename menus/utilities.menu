@@ -5,6 +5,7 @@ Create new Project            ;tasklist create-new-project.tasks
 Spin off preset projects      ;tasklist spinoff-preset-project.tasks
 Copy jre to spinoff           ;tasklist spinoff-copy-jre.tasks
 Spin off Any Project          ;tasklist spinoff-project.tasks
+Create Electron pages         ;tasklist electron-make-pages.tasks
 Update PSPad DEF file         ;tasklist updatePSPadDEF.tasks
 Set UI feed back variables    ;menu user_feedback.settings "User UI settings" "%projectpath%"
 Set debug variables 1         ;menu functiondebug.settings "User Debug 1 settings" "%projectpath%"
