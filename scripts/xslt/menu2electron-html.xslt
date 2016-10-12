@@ -18,6 +18,7 @@
       <xsl:param name="vimodpath" select="'D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk'"/>
       <xsl:variable name="vimodpathuri" select="f:file2uri($vimodpath)"/>
       <xsl:param name="vimodpathjs" select="'D:\\All-SIL-Publishing\\github-SILAsiaPub\\vimod-pub\\trunk'"/>
+      <xsl:variable name="unwanted-folder" select="tokenize('logs xml',' ')"/>
       <!-- <xsl:variable name="part" select="tokenize($menufile,'\\|/')"/> -->
       <!-- <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/> -->
       <xsl:template match="/">
@@ -204,20 +205,25 @@
             </xsl:choose>
       </xsl:template>
       <xsl:template match="directory" mode="button">
-            <xsl:element name="li">
-                  <xsl:attribute name="class">
-                        <xsl:text>table-view-cell</xsl:text>
-                  </xsl:attribute>
-                  <xsl:element name="a">
-                        <xsl:attribute name="href">
-                              <xsl:value-of select="concat(@name,'\index.html')"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="class">
-                              <xsl:text>table-view-cell</xsl:text>
-                        </xsl:attribute>
-                        <xsl:value-of select="@name"/>
-                  </xsl:element>
-            </xsl:element>
+            <xsl:choose>
+                  <xsl:when test="@name = $unwanted-folder"/>
+                  <xsl:otherwise>
+                        <xsl:element name="li">
+                              <xsl:attribute name="class">
+                                    <xsl:text>table-view-cell</xsl:text>
+                              </xsl:attribute>
+                              <xsl:element name="a">
+                                    <xsl:attribute name="href">
+                                          <xsl:value-of select="concat(@name,'\index.html')"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="class">
+                                          <xsl:text>table-view-cell</xsl:text>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="@name"/>
+                              </xsl:element>
+                        </xsl:element>
+                  </xsl:otherwise>
+            </xsl:choose>
       </xsl:template>
       <xsl:template name="head">
             <head>
