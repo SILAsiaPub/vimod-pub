@@ -1,24 +1,29 @@
 @echo off
+:aainfo
 :: Title: pub.cmd
-:: Title Description: VimodPub batch file with menus and tasklist processing
+:: Title Description: Vimod-Pub batch file with menus and tasklist processing
 :: Author: Ian McQuay
 :: Created: 2012-03
-:: Last Modified: 2016-06-10
-:: Source: projects.palaso.org
-:: Optional command line parameter:
-:: projectpath - absolute or relative path.
-
-:main
-:: Description: Starting point of pub.cmd
+:: Last Modified: 2016-010-12
+:: Source: https://github.com/silasiapub/vimod-pub
+:: Commandline startup options:
+:: pub  - normal usage for menu starting at the data root.
+:: pub tasklist tasklistname.tasks -  process a particular tasklist, no menus used. Used with Electron Vimod-Pub GUI
+:: pub menu menupath - Start projet.menu at a particular path
+:: pub debug function_name - Just run a particular function to debug
+                                       
+:main                              
+:: Description: Starting point of pub.cmd, test commandline options if present
 :: Class: command - internal - startup
 :: Optional parameters:
 :: projectpath or debugfunc - project path must contain a sub folder setup containing a project.menu or dubugfunc must be "debug"
 :: functiontodebug
 :: * - more debug parameters
-:: Required functions:
-:: funcdebugstart
-:: funcdebugend
-:: choosegroup
+:: Depends on:
+:: setup
+:: tasklist
+:: menu
+:: * - In debug mode can call any function
 rem set the codepage to unicode to handle special characters in parameters
 set debugstack=00
 if "%PUBLIC%" == "C:\Users\Public" (
@@ -28,18 +33,18 @@ if "%PUBLIC%" == "C:\Users\Public" (
 echo.
 if not defined skipsettings echo                        Vimod-Pub
 if not defined skipsettings echo     Various inputs multiple outputs digital publishing
-if not defined skipsettings echo       http://projects.palaso.org/projects/vimod-pub
+if not defined skipsettings echo       https://github.com/silasiapub/vimod-pub
 echo    ----------------------------------------------------
 if defined echofromstart echo on
 set overridetype=%1
 set projectpath=%2
-set debugfunc=%2
 set functiontodebug=%2
 set inputtasklist=%3
 set params=%3 %4 %5 %6 %7 %8 %9
 if defined projectpath set drive=%~d2
 if not defined projectpath set drive=c:
 if "%overridetype%" == "tasklist" (
+  rem when this is moved in with the other parameters, there are some errors.
   rem @echo on
   set count=0
   if defined projectpath %drive%
@@ -49,24 +54,28 @@ if "%overridetype%" == "tasklist" (
   call :tasklist %inputtasklist%
   echo Finished running %inputtasklist%
   exit /b 0
-) 
+)
 call :setup
-
 if not defined overridetype (
-    rem default option with base menu
-    rem call :choosegroup
-    call :menu data\%projectsetupfolder%\project.menu "Choose Group?"
-) else if "%overridetype%" == "menu" (
+  rem default option with base menu
+  call :menu data\%projectsetupfolder%\project.menu "Choose Group?"
+) else ( 
+if "%overridetype%" == "debug" (
+    @echo debugging %functiontodebug%
+    call :%functiontodebug% %params%
+  ) else if "%overridetype%" == "menu" (
     rem this option when a valid menu is chosen
     if exist "%projectpath%\%projectsetupfolder%\project.menu" (
       call :menu "%projectpath%\%projectsetupfolder%\project.menu" "Choose project action?"
-    ) else (
-        rem debugging option
-        echo on
-        @echo debugging %functiontodebug%
-        call :%functiontodebug% %params%
     )
-)  
+  ) else (
+    @echo Unknown parameter override word: %overridetype%
+    @echo Valid override words: tasklist, menu, debug
+    @echo Usage: pub tasklist pathtotasklist/tasklistname.tasks 
+    @echo Usage: pub menu pathtomenu/project.menu
+    @echo Usage: pub debug funcname [parameters]
+  )
+) 
 goto :eof
 
 rem Menuing and control functions ==============================================
@@ -79,11 +88,15 @@ rem Menuing and control functions ==============================================
 :: newmenulist
 :: title
 :: forceprojectpath
-:: Required functions:
-:: funcdebugstart
-:: variableslist
-:: checkifvimodfolder
+:: Depends on:
+:: funcdebug
+:: ext
+:: removeCommonAtStart
 :: menuwriteoption
+:: writeuifeedback
+:: checkifvimodfolder
+:: menu
+:: menueval
 set debugstack=0
 if defined masterdebug call :funcdebug %0
 set newmenulist=%~1
@@ -166,11 +179,11 @@ if "%newmenulist%" == "data\%projectsetupfolder%\project.menu" (
     )
 )
 echo.
-:: SET /P prompts for input and sets the variable to whatever the user types
+rem SET /P prompts for input and sets the variable to whatever the user types
 SET Choice=
 SET /P Choice=Type the letter and press Enter: 
-:: The syntax in the next line extracts the substring
-:: starting at 0 (the beginning) and 1 character long
+rem The syntax in the next line extracts the substring
+rem starting at 0 (the beginning) and 1 character long
 IF NOT '%Choice%'=='' SET Choice=%Choice:~0,1%
 IF /I '%Choice%' == '%utilityletter%' call :menu utilities.menu "Utilities Menu" "%projectpath%"
 IF /I '%Choice%'=='%exitletter%' (
@@ -192,13 +205,15 @@ goto :menu
 :menuwriteoption
 :: Description: writes menu option to screen
 :: Class: command - internal - menu
-:: Required preset variable: 1
+:: Required preset variable:
 :: letters
 :: action
-:: Required parameters: 1
+:: Required parameters:
 :: menuitem
 :: checkfunc
 :: submenu
+:: Depends on:
+:: * - Could call any function but most likely tasklist
 if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set menuitem=%~1
 set checkfunc=%~2
@@ -230,6 +245,8 @@ goto :eof
 :: Used by: menu
 :: Required parameters:
 :: commonmenu
+:: Depends on:
+:: menuwriteoption
 if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set commonmenu=%~1
 FOR /F "eol=# tokens=1,2 delims=;" %%i in (%commonmenufolder%\%commonmenu%) do set action=%%j&call :menuwriteoption "%%i" %%j
@@ -243,6 +260,10 @@ goto :eof
 :: Used by: menu
 :: Required parameters:
 :: commonmenu
+:: Depends on:
+:: menuvaluechooseroptions
+:: menuvaluechooserevaluation
+:: menuevaluation
 rem echo on
 if defined debugmenufunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set list=%~1
@@ -254,15 +275,15 @@ echo %title%
 echo.
 FOR /F %%i in (%commonmenupath%\%list%) do call :menuvaluechooseroptions %%i
 echo.
-:: SET /P prompts for input and sets the variable to whatever the user types
+rem SET /P prompts for input and sets the variable to whatever the user types
 SET Choice=
 SET /P Choice=Type the letter and press Enter: 
-:: The syntax in the next line extracts the substring
-:: starting at 0 (the beginning) and 1 character long
+rem The syntax in the next line extracts the substring
+rem starting at 0 (the beginning) and 1 character long
 IF NOT '%Choice%'=='' SET Choice=%Choice:~0,1%
 
-:: Loop to evaluate the input and start the correct process.
-:: the following line processes the choice
+rem Loop to evaluate the input and start the correct process.
+rem the following line processes the choice
 rem    echo on
 FOR /D %%c IN (%menuoptions%) DO call :menuvaluechooserevaluation %%c
 echo off
@@ -316,9 +337,9 @@ goto :eof
 :menueval
 :: Description: resolves the users entered letter and starts the appropriate function
 :: run through the choices to find a match then calls the selected option
-:: Required preset variable: 1
+:: Required preset variable:
 :: choice
-:: Required parameters: 1
+:: Required parameters:
 :: let
 if defined masterdebug call :funcdebug %0
 if defined varvalue goto :eof
@@ -333,11 +354,11 @@ rem inc is included so that an xslt transformation can also process this tasklis
 :inc
 :tasklist
 :: Discription: Processes a tasks file.
-:: Required preset variables: 3
+:: Required preset variables:
 :: projectlog
 :: setuppath
 :: commontaskspath
-:: Required parameters: 1
+:: Required parameters:
 :: tasklistname
 :: Func calls:
 :: funcdebugstart
@@ -353,7 +374,6 @@ if defined breaktasklist1 pause
 call :checkdir "%projectpath%\xml"
 call :checkdir "%projectpath%\logs"
 set projectlog="%projectpath%\logs\%curdate%-build.log"
-set projectbat="%projectpath%\logs\%curdate%-build.bat"
 :: checks if the list is in the commontaskspath, setuppath (default), if not then tries what is there.
 if exist "%setuppath%\%tasklistname%" (
     set tasklist=%setuppath%\%tasklistname%
@@ -390,13 +410,14 @@ goto :eof
 :: projectpath
 :: htmlpath
 :: localvar
-:: Func calls: 1
+:: Func calls:
 :: checkdir
 set beginfuncstring=++ debugging is on ++++++++++++ starting func
 set beginfuncstringtail=++++++++++++++
 if exist setup-pub\functiondebug.settings if not defined skipsettings call :variableslist setup-pub\functiondebug.settings
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set basepath=%cd%
+set projectbat="%projectpath%\logs\%curdate%-build.bat"
 set endfuncstring=-------------------------------------- end func
 rem check if logs directory exist and create if not there  DO NOT change to checkdir
 if not exist "%cd%\logs" md "%cd%\logs"
@@ -439,13 +460,13 @@ goto :eof
 :checkdir
 :: Description: checks if dir exists if not it is created
 :: See also: ifnotexist
-:: Required preset variabes: 1
+:: Required preset variabes:
 :: projectlog
 :: Optional preset variables:
 :: echodirnotfound
-:: Required parameters: 1
+:: Required parameters:
 :: dir
-:: Required functions:
+:: Depends on:
 :: funcdebugstart
 :: funcdebugend
 if defined masterdebug call :funcdebug %0
@@ -468,7 +489,7 @@ goto :eof
 :: validate variables passed in
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testvar=%~1
-if not defined %testvar:"=% (
+if not defined testvar (
             echo No %~1 var found defined
             echo Please add this to the setup-pub\user_installed.tools
             echo The program will exit after this pause.
@@ -488,7 +509,7 @@ rem built in commandline functions =============================================
 :: Optional parameters:
 :: commandpath
 :: testoutfile
-:: Required functions:
+:: Depends on:
 :: funcdebugstart
 :: funcdebugend
 :: inccount
@@ -539,10 +560,10 @@ rem External tools functions ===================================================
 :: Optional preset variables:
 :: Required parameters:
 :: script - can be one script.cct or serial comma separated "script1.cct,script2.cct,etc"
-:: Optional parameters: 2
+:: Optional parameters:
 :: infile
 :: outfile
-:: Required functions:
+:: Depends on:
 :: infile
 :: outfile
 :: inccount
@@ -573,12 +594,12 @@ goto :eof
 
 :xslt
 :: Description: Provides interface to xslt2 by saxon9.jar
-:: Required preset variables: 1
+:: Required preset variables:
 :: java
 :: saxon9
-:: Required parameters: 1
+:: Required parameters:
 :: scriptname
-:: Optional parameters: 3
+:: Optional parameters:
 :: allparam
 :: infile
 :: outfile
@@ -624,9 +645,9 @@ goto :eof
 
 :projectxslt
 :: Description: make project.xslt from project.tasks
-:: Required preset variables: 1
+:: Required preset variables:
 :: projectpath
-:: Required functions:
+:: Depends on:
 :: getdatetime
 :: xslt
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -638,7 +659,7 @@ rem firstly check if this is the last project run
 if "%lastprojectpath%" == "%projectpath%" (
   rem then check if the project.tasks is newer than the project.xslt
   set /A tasksdate-=%xsltdate%
-  if %tasksdate% GTR %xsltdate% (
+  if "%tasksdate%" GTR "%xsltdate%" (
     rem if the project.tasks is newer then remake the project.xslt
     echo  project.tasks newer: remaking project.xslt %tasksdate% ^> %xsltdate%
     echo.
@@ -681,11 +702,11 @@ goto :eof
 :: Optional preset variables:
 :: Required parameters:
 :: script - can be one script.cct or serial comma separated "script1.cct,script2.cct,etc"
-:: Optional parameters: 2
+:: Optional parameters:
 :: infile
 :: outfile
 :: appendfile
-:: Required functions:
+:: Depends on:
 :: infile
 :: outfile
 :: inccount
@@ -712,11 +733,10 @@ goto :eof
 :: no current use
 :: Description: Compares the MD5 of the current project.tasks with the previous one, if different then the project.xslt is remade
 :: Purpose: to see if the project.xslt needs remaking
-:: Required preset variables: 1
+:: Required preset variables:
 :: cd
 :: projectpath
-:: Required parameters: 0
-:: Required functions:
+:: Depends on:
 :: md5create
 :: getline
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -748,16 +768,16 @@ goto :eof
 
 :xquery
 :: Description: Provides interface to xquery by saxon9.jar
-:: Required preset variables: 1
+:: Required preset variables:
 :: java
 :: saxon9
-:: Required parameters: 1
+:: Required parameters:
 :: scriptname
-:: Optional parameters: 3
+:: Optional parameters:
 :: allparam
 :: infile
 :: outfile
-:: Func calls: 6
+:: Func calls:
 :: inccount
 :: infile
 :: outfile
@@ -810,11 +830,11 @@ goto :eof
 :manyparam
 :: Description: Allows spreading of long commands accross many line in a tasks file. Needed for wkhtmltopdf.
 :: Class: command - exend
-:: Required preset variables: 1
+:: Required preset variables:
 :: first - set for all after the first of manyparam
 :: Optional preset variables:
 :: first - Not required for first of a series
-:: Required parameters: 1
+:: Required parameters:
 :: newparam
 if defined masterdebug call :funcdebug %0
 set newparam=%~1
@@ -826,10 +846,10 @@ goto :eof
 :manyparamcmd
 :: Description: places the command before all the serial parameters Needed for wkhtmltopdf.
 :: Class: command - exend
-:: Required preset variables: 1
+:: Required preset variables:
 :: param
 :: Optional preset variables:
-:: Required parameters: 1
+:: Required parameters:
 :: command
 if defined masterdebug call :funcdebug %0
 set command=%~1
@@ -853,6 +873,7 @@ rem Tools sub functions ========================================================
 :: Required preset variables:
 :: projectlog
 :: projectbat
+:: curcommand
 :: Optional preset variables:
 :: outfile
 :: curcommand
@@ -883,7 +904,7 @@ goto :eof
 :after
 :: Description: Checks if outfile is created. Reports failures logs actions. Restors previous output file on failure.
 :: Class: command - internal
-:: Required preset variables: 3
+:: Required preset variables:
 :: outfile
 :: projectlog
 :: writecount
@@ -933,7 +954,7 @@ goto :eof
 :nameext
 :: Description: returns name and extension from a full drive:\path\filename
 :: Class: command - parameter manipulation
-:: Required parameters: 1
+:: Required parameters: 
 :: drive:\path\name.ext or path\name.ext or name.ext
 :: created variable:
 :: nameext
@@ -945,7 +966,7 @@ goto :eof
 :ext
 :: Description: returns file extension from a full drive:\path\filename
 :: Class: command - parameter manipulation
-:: Required parameters: 1
+:: Required parameters:
 :: drive:\path\name.ext or path\name.ext or name.ext
 :: created variable:
 :: nameext
@@ -957,9 +978,9 @@ goto :eof
 :name
 :: Description: Gets the name of a file (no extension) from a full drive:\path\filename
 :: Class: command - parameter manipulation
-:: Required parameters: 1
+:: Required parameters:
 :: drive:\path\name.ext or path\name.ext or name.ext
-:: created variable:
+:: Created variable:
 :: name
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set name=%~n1
@@ -985,7 +1006,7 @@ goto :eof
 :: pathfile
 :: Optional parameters:
 :: number
-:: created variables: 1
+:: created variables:
 :: uri%number%
 if defined masterdebug call :funcdebug %0
 call :setvar pathfile "%~1"
@@ -1002,7 +1023,7 @@ goto :eof
 :: Required preset variables:
 :: space
 :: count - on second and subsequent use
-:: Optional preset variables: 1
+:: Optional preset variables:
 :: count - on first use
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set /A count=%count%+1
@@ -1015,11 +1036,11 @@ goto :eof
 :outputfile
 :: Description: Copies last out file to new name. Used to make a static name other tasklists can use.
 :: Class: command
-:: Required preset variables: 1
+:: Required preset variables:
 :: outfile
-:: Required parameters: 1
+:: Required parameters:
 :: newfilename
-:: Func calls: 3
+:: Func calls:
 :: inccount
 :: drivepath
 :: nameext
@@ -1081,7 +1102,7 @@ goto :eof
 :: params
 :: infile
 :: outfile
-:: Required functions:
+:: Depends on:
 :: infile
 :: outfile
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1104,7 +1125,7 @@ goto :eof
 :: Description: Creates a directory list in a file
 :: Depreciated: not in surrent usage
 :: Class: Command - external
-:: Required functions:
+:: Depends on:
 :: dirpath
 :: dirlist - a file path and name
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1119,7 +1140,7 @@ goto :eof
 :infile
 :: Description: If infile is specifically set then uses that else uses previous outfile.
 :: Class: command - internal - pipeline - parameter
-:: Required parameters: 1
+:: Required parameters:
 :: testinfile
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set testinfile=%~1
@@ -1136,7 +1157,7 @@ goto :eof
 :outfile
 :: Description: If out file is specifically set then uses that else uses supplied name.
 :: Class: command - internal - pipeline- parameter
-:: Required parameters: 2
+:: Required parameters:
 :: testoutfile
 :: defaultoutfile
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1176,7 +1197,7 @@ goto :eof
 :var
 :: Description: sets the variable
 :: class: command - parameter
-:: Required parameters: 2
+:: Required parameters:
 :: varname
 :: value
 :: Added handling so that a third param called echo will echo the variable back.
@@ -1205,14 +1226,15 @@ if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
 :startfile
-:: depreciated use  inputfile
+:: Depreciated: use inputfile
+
 :inputfile
 :: Description: Sets the starting file of a serial tasklist, by assigning it to the var outfile
 :: Class: command - variable
-:: Optional preset variables: 2
+:: Optional preset variables:
 :: writebat
 :: projectbat
-:: Required parameters: 1
+:: Required parameters:
 :: outfile
 :: Added handling so that a preset var %writebat%, will cause the item to be written to a batch file
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1226,16 +1248,21 @@ goto :eof
 rem Loops ======================================================================
 
 :serialtasks
+:: Depeciated: use looptasks
+
 :looptasks
 :: Description: loop through tasks acording to %list%
 :: Class: command
-:: Optional preset variables: 3
+:: Optional preset variables:
 :: list
 :: comment
-:: Required parameters: 1
+:: Required parameters:
 :: tasklistfile
 :: list
 :: comment
+:: Depends on:
+:: funcdebug
+:: tasklist
 if defined masterdebug call :funcdebug %0
 set tasklistfile=%~1
 if not defined list set list=%~2
@@ -1260,8 +1287,9 @@ goto:eof
 :: function
 :: Optional preset variables:
 :: foroptions - eg "eol=; tokens=2,3* delims=, slip=10"
-:: Required functions:
+:: Depends on:
 :: tasklist
+:: * - Maybe any function but most likely a tasklist
 if defined masterdebug call :funcdebug %0
 if defined echoloopcomment echo "%comment%"
 if "%looptype%" == "" echo looptype not defined, skipping this task& goto :eof
@@ -1295,7 +1323,10 @@ goto:eof
 :: comment
 :: list
 :: action
-:: Parameter note: Either preset or command parameters can be used
+:: Depends on:
+:: funcdebug
+:: * - Maybe any function but most likely a tasklist
+:: Note: Either preset or command parameters can be used
 if defined masterdebug call :funcdebug %0
 if "%~1" neq "" set action=%~1
 if "%~2" neq "" set list=%~2
@@ -1318,7 +1349,11 @@ goto:eof
 :: action
 :: fileset
 :: comment
-:: Parameter note: Either preset or command parameters can be used
+:: Note: 
+:: Either preset or command parameters can be used
+:: Depends on:
+:: funcdebug
+:: * - Maybe any function but most likely a tasklist
 if defined masterdebug call :funcdebug %0
 if "%~1" neq "" set action=%~1
 if "%~2" neq "" set fileset=%~2
@@ -1341,7 +1376,11 @@ goto:eof
 :: action
 :: string
 :: comment
-:: Parameter note: Either preset or command parameters can be used
+:: Note: 
+:: Either preset or command parameters can be used
+:: Depends on:
+:: funcdebug
+:: * - May be any function but a tasklist most likely
 if defined masterdebug call :funcdebug %0
 set action=%~1
 set string=%~2
@@ -1361,6 +1400,8 @@ goto:eof
 :runloop
 :: Description: run loop with parameters
 :: Class: command - loop - depreciated
+:: Depends on:
+:: * - May be any loop type
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set looptype=%~1
 set action=%~2
@@ -1377,9 +1418,12 @@ goto :eof
 :spinoffproject
 :: Description: spinofff a project from whole build system
 :: Class: command - condition
-:: Required parameters: 0
+:: Required parameters:
 :: Created: 2013-08-10
 :: depreciated doing with tasks file
+:: Depends on:
+:: xslt
+:: joinfile
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set copytext=%projectpath%\logs\copyresources*.txt
 set copybat=%projectpath%\logs\copyresources.cmd
@@ -1412,6 +1456,12 @@ goto :eof
 :: Optional parameters:
 :: param3 - a multi use param
 :: param4 - a multi use param resolves internal single quotes to double quotes
+:: Depends on:
+:: funcdebug
+:: nameext
+:: command
+:: tasklist
+:: * - maybe any function
 if defined masterdebug call :funcdebug %0
 set testfile=%~1
 set action=%~2
@@ -1465,16 +1515,23 @@ goto :eof
 
 :ifnotexist
 :: Description: If a file or folder do not exist, then performs an action.
-:: Required parameters: 3
+:: Required parameters:
 :: testfile
 :: action - xcopy, copy, del, call, command, tasklist, func or fatal
 :: param3
 :: Optional parameters:
 :: param4
-:: Usage copy: ;ifnotexist testfile copy infileif [switches]
-:: Usage xcopy: ;ifnotexist testfile copy infileif [switches]
-:: Usage del: ;ifnotexist testfile del infileif [switches]
-:: Usage tasklist: ;ifnotexist testfile tasklist param3 param4
+:: Depends on:
+:: funcdebug
+:: echolog
+:: command
+:: tasklist
+:: * - Any function
+:: Usage 
+:: ;ifnotexist testfile copy infileif [switches]
+:: ;ifnotexist testfile xcopy infileif [switches]
+:: ;ifnotexist testfile del infileif [switches]
+:: ;ifnotexist testfile tasklist param3 param4
 if defined masterdebug call :funcdebug %0
 set testfile=%~1
 set action=%~2
@@ -1514,11 +1571,13 @@ goto :eof
 :: Class: command - internal
 :: Possible required preset parameters:
 :: projectlog
-:: Required parameters: 1
+:: Required parameters:
 :: echotask or message
 :: Optional parameters:
 :: message
 :: add2file
+:: Depends on:
+:: funcdebug
 if defined masterdebug call :funcdebug %0
 set echotask=%~1
 if not defined echotask echo Missing echotask parameter & goto :eof
@@ -1545,10 +1604,12 @@ goto :eof
 :echolog
 :: Description: echoes a message to log file and to screen
 :: Class: command - internal
-:: Required preset variables: 1
+:: Required preset variables:
 :: projectlog
-:: Required parameters: 1
+:: Required parameters:
 :: message
+:: Depends on:
+:: funcdebug
 if defined masterdebug call :funcdebug %0
 set message=%~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9
 if defined echoecholog echo %message%
@@ -1563,9 +1624,11 @@ goto :eof
 :userinputvar
 :: Description: provides method to interactively input a variable
 :: Class: command - interactive
-:: Required parameters: 2
+:: Required parameters:
 :: varname
 :: question
+:: Depends on:
+:: funcdebug
 if defined masterdebug call :funcdebug %0
 set varname=%~1
 set question=%~2
@@ -1598,7 +1661,7 @@ got :eof
 :: Required parameters:
 :: list - a filename with name=value on each line of the file
 :: checktype - for use with ifnotexist
-:: Required functions:
+:: Depends on:
 :: drivepath
 :: nameext
 :: ifnotexist
@@ -1677,7 +1740,7 @@ rem UI and Debugging functions =================================================
 :: list
 :: Optional parameters:
 :: skiplines
-:: Required functions:
+:: Depends on:
 :: menuwriteoption
 rem echo on
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1731,7 +1794,7 @@ if "%debugend%" == "end" (
 :: test - string to have common data removed from start
 :: Optional parameters:
 :: remove - string if not defined then use %cd% as string.
-:: Required functions:
+:: Depends on:
 :: removelet
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set name=%~1
@@ -1799,8 +1862,10 @@ goto :eof
 :: test
 :: func
 :: funcparams - up to 7 aditional
-:: Required functions:
+:: Depends on:
 :: tasklist
+:: Depends on:
+:: * - Maybe any function but likely tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%~1
 set func=%~2
@@ -1821,6 +1886,8 @@ goto :eof
 :: func
 :: Optional parametes:
 :: funcparams
+:: Depends on:
+:: * - Maybe any function but likely tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%~1
 set func=%~2
@@ -1839,6 +1906,8 @@ goto :eof
 :: equal2
 :: func
 :: params
+:: Depends on:
+:: * - Maybe any function but likely tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set equal1=%~1
 set equal2=%~2
@@ -1859,6 +1928,8 @@ goto :eof
 :: equal2
 :: func
 :: funcparams
+:: Depends on:
+:: * - Maybe any function but likely tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set equal1=%~1
 set equal2=%~2
@@ -1896,7 +1967,7 @@ rem set extraparam=%extraparam:'="%
 :: extcmd
 :: function
 :: params
-:: Required functions:
+:: Depends on:
 :: inccount
 :: infile
 :: outfile
@@ -1920,10 +1991,12 @@ goto :eof
 :loopdir
 :: Description: Loops through all files in a directory
 :: Class: command - loop
-:: Required functions:
+:: Required parameters:
 :: action - can be any Vimod-Pub command like i.e. tasklist dothis.tasks
 :: extension
 :: comment
+:: Depends on:
+:: * - May be any function but probably tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set basedir=%~2
@@ -1937,11 +2010,12 @@ goto :eof
 :loopfiles
 :: Description: Used to loop through a subset of files specified by the filespec from a single directory
 :: Class:  command - loop
-:: Required functions:
+:: Required parameters:
 :: action - can be any Vimod-Pub command like i.e. tasklist dothis.tasks
 :: filespec
 :: Optional parameters:
 :: comment
+:: Depends on:
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set filespec=%~2
@@ -1960,10 +2034,12 @@ goto :eof
 :: outfile
 :: Optional parameters:
 :: commandpath
-:: Required functions:
+:: Depends on:
 :: inccount
 :: before
 :: after
+:: outfile
+:: funcdebug
 :: Note: This command does its own expansion of single quotes to double quotes so cannont be fed directly from a ifdefined or ifnotdefined. Instead define a task that is fired by the ifdefined.
 if defined errorsuspendprocessing goto :eof
 if defined masterdebug call :funcdebug %0
@@ -1994,8 +2070,16 @@ if defined masterdebug call :funcdebug %0 end
 goto :eof
 
 :donothing
+:: Description: Do nothing
+
 :xvarset
+:: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
+:: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
+
 :xinclude
+:: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
+:: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
+
 :xarray
 :: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
 :: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
@@ -2022,6 +2106,8 @@ goto :eof
 :: Required parameters:
 :: varname
 :: file
+:: Depends on:
+:: ampmhour
 rem echo on
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set varname=%~1
@@ -2091,6 +2177,9 @@ goto :eof
 :: file
 :: Optional parameters:
 :: validateagainst
+:: Depends on:
+:: infile
+:: nameext
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 if not defined encodingchecker echo Encoding not checked. &goto :eof
 if not exist "%encodingchecker%" echo file.exe not found! %fileext% &echo Encoding not checked. & goto :eof
@@ -2177,6 +2266,11 @@ goto :eof
 :: infile
 :: Optional Parameters:
 :: outfile
+:: Depends on:
+:: infile
+:: outfile
+:: before
+:: after
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :infile "%~1"
 if defined missinginput echo missing input file & goto :eof
@@ -2207,9 +2301,11 @@ goto :eof
 :start
 :: Description: Start a file in the default program or supply the program and file
 :: Required parameters:
-:: param1
+:: var1
 :: Optional parameters:
-:: param2
+:: var2
+:: var3
+:: var4
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set var1=%~1
 set var2=%~2
