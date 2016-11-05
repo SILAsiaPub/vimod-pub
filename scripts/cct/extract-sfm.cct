@@ -1,0 +1,11 @@
+begin               >                   store(letnumb) 'abcdefghijklmnopqrstuvwxyz1234567890?%' endstore
+                                        use(main)
+
+Group(main)
+nl '\'                 >                   dup use(sfm)
+
+group(sfm)
+any(letnumb) ' '    >                   dup store(nul)
+any(letnumb) any(letnumb) ' '           >                   dup  store(nul)
+any(letnumb) any(letnumb) any(letnumb) ' '  >               dup  store(nul)
+nl                   >                   endstore dup back(1) use(main)

@@ -1,0 +1,19 @@
+begin               >                   '<data>' use(main)
+
+group(main)
+endfile             >                   "</data>" dup
+c nl '\b'             >                   nl '<b />'
+nl '\'              >                   nl store(sfm) use(sfm)
+'\id '              >                   store(null)
+'.pn 0'             >                   store(null)
+
+
+group(sfm)
+' '                 >                   endstore '<' out(sfm) '>' use(sfm2)
+nl                  >                   endstore '<' out(sfm) ' />' nl back(1) use(main)
+
+group(sfm2)
+nl                  >                   '</' out(sfm) '>' nl back(1) use(main)
+' ' nl              >                   '</' out(sfm) '>' nl back(1) use(main)
+endfile             >                   '</' out(sfm) '>' nl "</data>" dup
+'&'                 >                   '&amp;'

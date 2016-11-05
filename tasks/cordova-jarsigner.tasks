@@ -1,0 +1,7 @@
+# debug                        ;command "echo on"
+get project var               ;projectvar "%JAVA_HOME%\bin\jarsigner.exe"
+check dir                     ;checkdir "%projectpath%\apk"
+sign apk                      ;command "'%jarsigner%' -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore '%keystorefile%' '%outfile%' pd" "" "%projectpath%\%buildsystem%\platforms\%platformtype%\build\outputs\apk\android-release-signed.apk"
+"
+
+                              ;outputfile "%projectpath%\apk\%appname%.apk"

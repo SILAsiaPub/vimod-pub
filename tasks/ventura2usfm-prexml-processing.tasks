@@ -8,5 +8,6 @@ check dir                     ;checkdir %projectpath%\vp-u
 text                          ;var outtext %projectpath%\vp-u\allvp.vpt
 text                          ;var outtext2 %projectpath%\vp-u\allvp.txt
 set the input file            ;inputfile "%allvptextfile%"
+strip illegal XML char        ;command2file "sfk xed '%allvptextfile%' %sfkreomve%" "%allvptextfilecleaned%"
 convert                       ;ifequal "%prexmlprocess%" "iconv" tasklist ventura2usfm-iconv.tasks
 remove illegal char           ;ifequal "%prexmlprocess%" "none" copy "'%intext%' '%outtext2%'"

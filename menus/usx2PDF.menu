@@ -1,0 +1,5 @@
+move usx files from d:\usx to project             ;tasklist usx-exports-move-to-project.tasks
+combine usx and group                             ;tasklist simplehtmlscr-v2-xml.tasks
+convert to FO                                     ;tasklist usx2fo.tasks
+#Insert flow into pagemaster                       ;tasklist insertflowintopage.tasks
+convert FO to PDF                                 ;tasklist usxfo2PDF.tasks

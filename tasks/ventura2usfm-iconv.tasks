@@ -1,5 +1,6 @@
 # This is needed as ifdefined and ifnotdefined do not pass the parameters as needed by iconv
 test if preiconv cct defined            ;ifdefined cctpreiconv cct "%cctpreiconv%"
+#use sed to remove illegal for xml char  ;command2file "sed -e s/[\d8\d11\d26]//g '%outfile%'"
 convert                                 ;command2file "iconv -c -f LATIN1 -t UTF-8 '%outfile%'" "%outtext%"
 #echo                                   ;command "echo off"
 remove illegal char                     ;ifdefined cctprexmlpostutf8 cct "'%cctprexmlpostutf8%'"

@@ -1,0 +1,3 @@
+simplify xml file                                 ;tasklist bible-conc-simplify.tasks
+make HTML for PDF                                 ;tasklist bible-conc-html.tasks
+make pdf                                          ;tasklist bible-conc-pdf.tasks

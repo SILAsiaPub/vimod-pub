@@ -1,0 +1,5 @@
+# usx-join.menu
+# common menu
+move usx files from d:\usx to project             ;tasklist usx-exports-move-to-project.tasks
+combine usx and group                             ;tasklist usx-combine.tasks
+

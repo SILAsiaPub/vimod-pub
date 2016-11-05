@@ -1,0 +1,262 @@
+'<@128>'	>	'<@128>'
+'<@129>'	>	'<@129>'
+'<@130>'	>	u0261	c LATIN_SMALL_LETTER_SCRIPT_G 
+'<@131>'	>	u0251 c LATIN_SMALL_LETTER_ALPHA
+'<@132>'	>	u0251 u0301 c LATIN_SMALL_LETTER_ALPHA COMBINING_ACUTE_ACCENT
+'<@133>'	>	u0251 u0300 c LATIN_SMALL_LETTER_ALPHA COMBINING_GRAVE_ACCENT
+'<@134>'	>	u0251 u0302 c LATIN_SMALL_LETTER_ALPHA COMBINING_CIRCUMFLEX_ACCENT
+'<@135>'	>	u25CA c LOZENGE (Used for Phil Ansi white square not available in Doulos SIL)
+'<@136>'	>	uA78C c LATIN SMALL LETTER SALTILLO used as a Glottal
+'<@137>'	>	u2030 c PER_MILLE_SIGN
+'<@138>'	>	u0160 c LATIN_CAPITAL_LETTER_S_WITH_CARON
+'<@139>'	>	u2039 c SINGLE_LEFT-POINTING_ANGLE_QUOTATION_MARK
+'<@140>'	>	u0152 c LATIN_CAPITAL_LIGATURE_OE
+'<@141>'	>	'<@141>'
+'<@142>'	>	'<@142>'
+'<@143>'	>	u2190 c LEFTWARDS_ARROW (Used for Phil Ansi Leftwards Bold Arrow not available in Doulos SIL)
+'<@144>'	>	u0057 u0331 c LATIN_CAPITAL_LETTER_W COMBINING_MACRON_BELOW
+'<@145>'	>	u2018	c ' - ‘
+'<@146>'	>	u2019	c ' - ’
+'<@147>'	>	u201C	c " - “
+'<@148>'	>	u201D	c " - ”
+'<@149>'	>	u2022 c BULLET
+'<@150>'	>	u2013 c en dash
+'<@151>'	>	u2014 c em dash
+'<@152>'	>	u02DC c SMALL_TILDE
+'<@153>'	>	u2122 c TRADE_MARK_SIGN
+'<@154>'	>	u0161 c LATIN_SMALL_LETTER_S_WITH_CARON
+'<@155>'	>	u203A c SINGLE_RIGHT-POINTING_ANGLE_QUOTATION_MARK
+'<@156>'	>	u0153 c LATIN_SMALL_LIGATURE_OE
+'<@157>'	>	'<@157>'
+'<@158>'	>	'<@158>'
+'<@159>'	>	u0178 c LATIN_CAPITAL_LETTER_Y_WITH_DIAERESIS
+'<@160>'	>	d032
+'<@161>'	>	'<@161>'
+'<@162>'	>	'<@162>'
+'<@163>'	>	u20B1 c PESO_SIGN
+'<@164>'	>	'<@164>'
+'<@165>'	>	'<@165>'
+'<@166>'	>	'<@166>'
+'<@167>'	>	'<@167>'
+'<@168>'	>	'<@168>'
+'<@169>'	>	'<@169>'
+'<@170>'	>	'<@170>'
+'<@171>'	>	'<@171>'
+'<@172>'	>	'<@172>'
+'<@173>'	>	'<@173>'
+'<@174>'	>	'<@174>'
+'<@175>'	>	'<@175>'
+'<@176>'	>	'<@176>'
+'<@177>'	>	'<@177>'
+'<@178>'	>	'<@178>'
+'<@179>'	>	'<@179>'
+'<@180>'	>	'<@180>'
+'<@181>'	>	u0077 u0331 c LATIN_SMALL_LETTER_W COMBINING_MACRON_BELOW
+'<@182>'	>	u00B6 c PILCROW_SIGN
+'<@183>'	>	u00B7 c MIDDLE_DOT (Used for Phil Ansi Word Separation Symbol not available in Doulos SIL)
+'<@184>'	>	u1E3A c LATIN_CAPITAL_LETTER_L_WITH_ LINE_BELOW
+'<@185>'	>	u1E3B c LATIN_SMALL_LETTER_L_WITH_LINE_BELOW
+'<@186>'	>	uF244 c LATIN_CAPITAL_LETTER_Y_WITH_STROKE
+'<@187>'	>	'<@187>'
+'<@188>'	>	'<@188>'
+'<@189>'	>	'<@189>'
+'<@190>'	>	'<@190>'
+'<@191>'	>	uF243 c LATIN_SMALL_LETTER_Y_WITH_STROKE
+'<@192>'	>	u00C0	c  - À
+'<@193>'	>	u00C1	c  - Á
+'<@194>'	>	u00C2	c  - Â
+'<@195>'	>	u0100 c LATIN_CAPITAL_LETTER_A_WITH_MACRON
+'<@196>'	>	u00C4	c  - Ä
+'<@197>'	>	u00C5	c  - Å
+'<@198>'	>	u0112 c LATIN_CAPITAL_LETTER_E_WITH_MACRON
+'<@199>'	>	'<@199>'
+'<@200>'	>	u00C8	c  - È
+'<@201>'	>	u00C9	c  - É
+'<@202>'	>	u00CA	c  - Ê
+'<@203>'	>	u00CB	c  - Ë
+'<@204>'	>	u00CC	c  - Ì
+'<@205>'	>	u00CD	c  - Í
+'<@206>'	>	u00CE	c  - Î
+'<@207>'	>	u00CF	c  - Ï
+'<@208>'	>	u012A c LATIN_CAPITAL_LETTER_I_WITH_MACRON
+'<@209>'	>	u00D1 c LATIN_CAPITAL_LETTER_N_WITH_TILDE
+'<@210>'	>	u00D2 c LATIN_CAPITAL_LETTER_O_WITH_GRAVE
+'<@211>'	>	u00D3 c LATIN_CAPITAL_LETTER_O_WITH_ACUTE
+'<@212>'	>	u00D4 c LATIN_CAPITAL_LETTER_O_WITH_CIRCUMFLEX
+'<@213>'	>	u014C c LATIN_CAPITAL_LETTER_O_WITH_MACRON
+'<@214>'	>	u00D6 c LATIN_CAPITAL_LETTER_O_WITH_DIAERESIS
+'<@215>'	>	u0067 u0331 c LATIN_SMALL_LETTER_G COMBINING_MACRON_BELOW
+'<@216>'	>	u00D8	c  - Ø
+'<@217>'	>	u00D9	c  - Ù
+'<@218>'	>	u00DA	c  - Ú
+'<@219>'	>	u00DB	c  - Û
+'<@220>'	>	u00DC	c  - Ü
+'<@221>'	>	u016A c LATIN_CAPITAL_LETTER_U_WITH_MACRON
+'<@222>'	>	u1E5F c LATIN_SMALL_LETTER_R_WITH_LINE_BELOW
+'<@223>'	>	u00DF	c  - ß
+'<@224>'	>	u00E0	c  - à
+'<@225>'	>	u00E1	c  - á
+'<@226>'	>	u00E2	c  - â
+'<@227>'	>	u0101 c LATIN_SMALL_LETTER_A_WITH_MACRON
+'<@228>'	>	u00E4	c  - ä
+'<@229>'	>	u00E5	c  - å
+'<@230>'	>	u0113 c LATIN_SMALL_LETTER_E_WITH_MACRON
+'<@231>'	>	u00E7	c  - ç
+'<@232>'	>	u00E8	c  - è
+'<@233>'	>	u00E9	c é - e acute - é
+'<@234>'	>	u00EA	c ê - e circumflex - ê
+'<@235>'	>	u00EB	c  - ë
+'<@236>'	>	u00EC	c  - ì
+'<@237>'	>	u00ED	c  - í
+'<@238>'	>	u00EE	c  - î
+'<@239>'	>	u00EF	c  - ï
+c '<@240>'	>	u1E5E c LATIN_CAPITAL_LETTER_R_WITH_LINE_BELOW
+'<@240>'	>	u00F0	c  - ð
+'<@241>'	>	u00F1	c ñ - ñ
+'<@242>'	>	u00F2	c  - ò
+'<@243>'	>	u00F3	c  - ó
+'<@244>'	>	u00F4	c  - ô
+'<@245>'	>	u014D c LATIN_SMALL_LETTER_O_WITH_MACRON
+'<@246>'	>	u00F6	c  - ö
+'<@248>'	>	u0047 u0331 c LATIN_CAPITAL_LETTER_G COMBINING_MACRON_BELOW
+'<@249>'	>	'<@249>'
+'<@249>'	>	u00F9	c  - ù
+'<@250>'	>	u00FA	c  - ú
+'<@251>'	>	u00FB	c  - û
+'<@252>'	>	u00FC	c  - ü
+'<@253>'	>	u016B c LATIN_SMALL_LETTER_U_WITH_MACRON
+'<@254>'	>	u0268 c LATIN_SMALL_LETTER_I_WITH_STROKE
+'<@255>'	>	u012B c LATIN_SMALL_LETTER_I_WITH_MACRON
+'<128>'	>	'<128>'
+'<129>'	>	'<129>'
+'<130>'	>	u0261	c LATIN_SMALL_LETTER_SCRIPT_G 
+'<131>'	>	u0251 c LATIN_SMALL_LETTER_ALPHA
+'<132>'	>	u0251 u0301 c LATIN_SMALL_LETTER_ALPHA COMBINING_ACUTE_ACCENT
+'<133>'	>	u0251 u0300 c LATIN_SMALL_LETTER_ALPHA COMBINING_GRAVE_ACCENT
+'<134>'	>	u0251 u0302 c LATIN_SMALL_LETTER_ALPHA COMBINING_CIRCUMFLEX_ACCENT
+'<135>'	>	u25CA c LOZENGE (Used for Phil Ansi white square not available in Doulos SIL)
+'<136>'	>	uA78C c LATIN SMALL LETTER SALTILLO used as a Glottal
+'<137>'	>	u2030 c PER_MILLE_SIGN
+'<138>'	>	u0160 c LATIN_CAPITAL_LETTER_S_WITH_CARON
+'<139>'	>	u2039 c SINGLE_LEFT-POINTING_ANGLE_QUOTATION_MARK
+'<140>'	>	u0152 c LATIN_CAPITAL_LIGATURE_OE
+'<141>'	>	'<141>'
+'<142>'	>	'<142>'
+'<143>'	>	u2190 c LEFTWARDS_ARROW (Used for Phil Ansi Leftwards Bold Arrow not available in Doulos SIL)
+'<144>'	>	u0057 u0331 c LATIN_CAPITAL_LETTER_W COMBINING_MACRON_BELOW
+'<145>'	>	u2018	c ' - ‘
+'<146>'	>	u2019	c ' - ’
+'<147>'	>	u201C	c " - “
+'<148>'	>	u201D	c " - ”
+'<149>'	>	u2022 c BULLET
+'<150>'	>	u2013 c en dash
+'<151>'	>	u2014 c em dash
+'<152>'	>	u02DC c SMALL_TILDE
+'<153>'	>	u2122 c TRADE_MARK_SIGN
+'<154>'	>	u0161 c LATIN_SMALL_LETTER_S_WITH_CARON
+'<155>'	>	u203A c SINGLE_RIGHT-POINTING_ANGLE_QUOTATION_MARK
+'<156>'	>	u0153 c LATIN_SMALL_LIGATURE_OE
+'<157>'	>	'<157>'
+'<158>'	>	'<158>'
+'<159>'	>	u0178 c LATIN_CAPITAL_LETTER_Y_WITH_DIAERESIS
+'<160>'	>	d032
+'<161>'	>	'<161>'
+'<162>'	>	'<162>'
+'<163>'	>	u20B1 c PESO_SIGN
+'<164>'	>	'<164>'
+'<165>'	>	'<165>'
+'<166>'	>	'<166>'
+'<167>'	>	'<167>'
+'<168>'	>	'<168>'
+'<169>'	>	'<169>'
+'<170>'	>	'<170>'
+'<171>'	>	'<171>'
+'<172>'	>	'<172>'
+'<173>'	>	'<173>'
+'<174>'	>	'<174>'
+'<175>'	>	'<175>'
+'<176>'	>	'<176>'
+'<177>'	>	'<177>'
+'<178>'	>	'<178>'
+'<179>'	>	'<179>'
+'<180>'	>	'<180>'
+'<181>'	>	u0077 u0331 c LATIN_SMALL_LETTER_W COMBINING_MACRON_BELOW
+'<182>'	>	u00B6 c PILCROW_SIGN
+'<183>'	>	u00B7 c MIDDLE_DOT (Used for Phil Ansi Word Separation Symbol not available in Doulos SIL)
+'<184>'	>	u1E3A c LATIN_CAPITAL_LETTER_L_WITH_ LINE_BELOW
+'<185>'	>	u1E3B c LATIN_SMALL_LETTER_L_WITH_LINE_BELOW
+'<186>'	>	uF244 c LATIN_CAPITAL_LETTER_Y_WITH_STROKE
+'<187>'	>	'<187>'
+'<188>'	>	'<188>'
+'<189>'	>	'<189>'
+'<190>'	>	'<190>'
+'<191>'	>	uF243 c LATIN_SMALL_LETTER_Y_WITH_STROKE
+'<192>'	>	u00C0	c  - À
+'<193>'	>	u00C1	c  - Á
+'<194>'	>	u00C2	c  - Â
+'<195>'	>	u0100 c LATIN_CAPITAL_LETTER_A_WITH_MACRON
+'<196>'	>	u00C4	c  - Ä
+'<197>'	>	u00C5	c  - Å
+'<198>'	>	u0112 c LATIN_CAPITAL_LETTER_E_WITH_MACRON
+'<199>'	>	'<199>'
+'<200>'	>	u00C8	c  - È
+'<201>'	>	u00C9	c  - É
+'<202>'	>	u00CA	c  - Ê
+'<203>'	>	u00CB	c  - Ë
+'<204>'	>	u00CC	c  - Ì
+'<205>'	>	u00CD	c  - Í
+'<206>'	>	u00CE	c  - Î
+'<207>'	>	u00CF	c  - Ï
+'<208>'	>	u012A c LATIN_CAPITAL_LETTER_I_WITH_MACRON
+'<209>'	>	u00D1 c LATIN_CAPITAL_LETTER_N_WITH_TILDE
+'<210>'	>	u00D2 c LATIN_CAPITAL_LETTER_O_WITH_GRAVE
+'<211>'	>	u00D3 c LATIN_CAPITAL_LETTER_O_WITH_ACUTE
+'<212>'	>	u00D4 c LATIN_CAPITAL_LETTER_O_WITH_CIRCUMFLEX
+'<213>'	>	u014C c LATIN_CAPITAL_LETTER_O_WITH_MACRON
+'<214>'	>	u00D6 c LATIN_CAPITAL_LETTER_O_WITH_DIAERESIS
+'<215>'	>	u0067 u0331 c LATIN_SMALL_LETTER_G COMBINING_MACRON_BELOW
+'<216>'	>	u00D8	c  - Ø
+'<217>'	>	u00D9	c  - Ù
+'<218>'	>	u00DA	c  - Ú
+'<219>'	>	u00DB	c  - Û
+'<220>'	>	u00DC	c  - Ü
+'<221>'	>	u016A c LATIN_CAPITAL_LETTER_U_WITH_MACRON
+'<222>'	>	u1E5F c LATIN_SMALL_LETTER_R_WITH_LINE_BELOW
+'<223>'	>	u00DF	c  - ß
+'<224>'	>	u00E0	c  - à
+'<225>'	>	u00E1	c  - á
+'<226>'	>	u00E2	c  - â
+'<227>'	>	u0101 c LATIN_SMALL_LETTER_A_WITH_MACRON
+'<228>'	>	u00E4	c  - ä
+'<229>'	>	u00E5	c  - å
+'<230>'	>	u0113 c LATIN_SMALL_LETTER_E_WITH_MACRON
+'<231>'	>	u00E7	c  - ç
+'<232>'	>	u00E8	c  - è
+'<233>'	>	u00E9	c é - e acute - é
+'<234>'	>	u00EA	c ê - e circumflex - ê
+'<235>'	>	u00EB	c  - ë
+'<236>'	>	u00EC	c  - ì
+'<237>'	>	u00ED	c  - í
+'<238>'	>	u00EE	c  - î
+'<239>'	>	u00EF	c  - ï
+c '<240>'	>	u1E5E c LATIN_CAPITAL_LETTER_R_WITH_LINE_BELOW
+'<240>'	>	u00F0	c  - ð
+'<241>'	>	u00F1	c ñ - ñ
+'<242>'	>	u00F2	c  - ò
+'<243>'	>	u00F3	c  - ó
+'<244>'	>	u00F4	c  - ô
+'<245>'	>	u014D c LATIN_SMALL_LETTER_O_WITH_MACRON
+'<246>'	>	u00F6	c  - ö
+'<248>'	>	u0047 u0331 c LATIN_CAPITAL_LETTER_G COMBINING_MACRON_BELOW
+'<249>'	>	'<249>'
+'<249>'	>	u00F9	c  - ù
+'<250>'	>	u00FA	c  - ú
+'<251>'	>	u00FB	c  - û
+'<252>'	>	u00FC	c  - ü
+'<253>'	>	u016B c LATIN_SMALL_LETTER_U_WITH_MACRON
+'<254>'	>	u0268 c LATIN_SMALL_LETTER_I_WITH_STROKE
+'<255>'	>	u012B c LATIN_SMALL_LETTER_I_WITH_MACRON
+c'<u2014>'            >                   u2014
+c'<u2013>'            >                   u2013
+'<|>'               >                   ' '    c thin space
+'<+>'               >                   ' '    c ??

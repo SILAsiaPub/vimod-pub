@@ -1,0 +1,8 @@
+make html for checking                                      ;tasklist ab-build-xhtml.tasks
+make html with inline css and pictures for emailing         ;tasklist ab-make-email-html.tasks
+make html for PDF generation via Chrome and Firefox         ;tasklist ab-make-pdf-html.tasks 
+#create fo of HTML                                          ;tasklist ab-make-fo.tasks
+#create PDF of FO                                           ;tasklist ab-make-pdf.tasks 
+#make all steps                                             ;tasklist ab-make-all.tasks
+#make PDF via WKhtmltoPDF                                    ;tasklist wkhtml2pdf.tasks "html-final\DemoEmail-pdf-chrome.html" "pdf\DemoEmail-pdf-chrome.pdf"
+clone this project to a new sibling folder                  ;tasklist new-project-sibling.tasks

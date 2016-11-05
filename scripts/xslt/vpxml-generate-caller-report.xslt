@@ -23,7 +23,7 @@
       <xsl:template match="para">
             <xsl:apply-templates select="tag">
                   <xsl:with-param name="bk" select="@book"/>
-                  <xsl:with-param name="prechapt" select="preceding-sibling::*[@class = $c][1]/tag[1]"/>
+                  <xsl:with-param name="prechapt" select="normalize-space(preceding-sibling::*[@class = $c][1]/tag[1])"/>
             </xsl:apply-templates>
       </xsl:template>
       <xsl:template match="tag[@value = $caller-feature][normalize-space(.) = $caller]">
@@ -39,7 +39,7 @@
                         </xsl:otherwise>
                   </xsl:choose>
             </xsl:variable>
-            <xsl:variable name="verse" select="preceding::tag[@value = $v][1]"/>
+            <xsl:variable name="verse" select="normalize-space(preceding::tag[@value = $v][1])"/>
             <xsl:value-of select="."/>
             <xsl:text>&#9;</xsl:text>
             <xsl:value-of select="concat($chap,':',$verse)"/>

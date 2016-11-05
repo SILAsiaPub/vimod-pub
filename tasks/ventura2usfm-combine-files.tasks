@@ -4,11 +4,14 @@ get var                       ;projectvar
 #                              ;command "pause"
 # Part 1 combine files in order
 #run vpjoinfiles.cmd file      ;command "call resources\cmd\vpjoinfiles.cmd %filename%"
-book name codes               ;var books "GEN EXO LEV NUM DEU JOS JDG RUT 1SA 2SA 1KI 2KI 1CH 2CH EZR NEH EST JOB PSA PRO ECC SNG ISA JER LAM EZK DAN HOS JOL AMO OBA JON MIC NAM HAB ZEP HAG ZEC MAL MAT MRK LUK JHN ACT ROM 1CO 2CO GAL EPH PHP COL 1TH 2TH 1TI 2TI TIT PHM HEB JAS 1PE 2PE 1JN 2JN 3JN JUD REV"
 #for %%b in (%books%) do call :copy %%b
-delete file                   ;ifexist "%allvptextfile%" emptyfile 
+# The following sets the book names for 3 (default) or 2 leter codes
+get boo codes to use          ;tasklist books%if2let%.tasks
+#delete file                   ;ifexist "%allvptextfile%" emptyfile 
+mank new file                 ;command2file "echo @@@start = "  "%allvptextfile%"
 #create empty file             ;echo add2file "@dummy" "%allvptextfile%"
 run book loop                 ;loopstring "tasklist join-vp-files.tasks" "%books%"
+#remove unwanted char          ;command2file "sfk xed '%outfile%' /\x1a//" "%allvptextfileprecleaned%"
 # Part 2 runs some checks
 count characters              ;cct char-count.cct "%all%" "%projectpath%\proj-char-count.txt"
 count characters              ;cct vp-list-tags.cct "%all%" "%projectpath%\xml\tags.txt"

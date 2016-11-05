@@ -1,0 +1,14 @@
+get book code		;var bk %~2
+file			;var file "%projectpath%\%sourcefolder%\%langpre%%bk%%fileext%"
+intro file		;var introfile "%projectpath%\%sourcefolder%\%langpre%%bk%%intropart%%fileext%"
+foonote file		;var fnfile "%projectpath%\%sourcefolder%\%langpre%%bk%%fnpart%%fileext%"
+#allset all=%allvptextfile%
+put in header                 ;ifexist "%file%" addtext "@@@ scr %bk% = " "%allvptextfile%"
+get intro		          ;ifexist "%introfile%"  command "sfk xed '%introfile%' /\x1a//  >> '%allvptextfile%'"
+#get text		          ;ifexist "%file%"  type "%allvptextfile%"
+get text		          ;ifexist "%file%"  command "sfk xed '%file%' /\x1a//  >> '%allvptextfile%'"
+add footnote header           ;ifexist "%fnfile%" addtext "@@@ fn " "%allvptextfile%"
+#get footnote		;ifexist "%fnfile%"  type "%allvptextfile%"
+get footnote		;ifexist "%fnfile%" command "sfk xed '%fnfile%' /\x1a//  >> '%allvptextfile%'"
+
+

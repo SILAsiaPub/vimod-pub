@@ -1,0 +1,9 @@
+c dummy file
+'dummy'     >           'dummy'
+'<@143>'            >                   ' '  c remove  not sure its use
+'<@144>'            >                   ''  c remove causes added character around verses
+'<~>'               >                   u00A0 c No break space
+d9                  >                   ' '   c tab to space
+'ppppp<F255>-'      >                   '-'   c odd markup
+d27                 >                   uA78C c single straight quote to 
+'<@133>'            >                   '…'   c used for elipsis

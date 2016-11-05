@@ -1,0 +1,8 @@
+begin               >                   store(null) use(main)
+
+group(main)
+d25                 >                   ''
+'<<'                >                   dup
+'<'                 >                   endstore dup
+'>'                 >                   dup nl store(null)
+nl                  >                   store(null)

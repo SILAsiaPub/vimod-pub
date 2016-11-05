@@ -1,0 +1,9 @@
+                                        ;projectvar
+get short words                         ;xslt bible-conc-short-words "" "%projectpath%\xml\wordlist.xml"
+run html transform                      ;xslt bible-conc-HTML-print-PDF "outputcount=yes" "" "%projectpath%\html\short-words.html"
+make pdf                                ;tasklist prince.tasks "" "%projectpath%\pdf\short-words-%curdate%.pdf"
+start pdf                               ;start "" "%outfile%"
+get short words                         ;xslt bible-conc-sort-group-by-count "" "%projectpath%\xml\wordlist.xml"
+run html transform                      ;xslt bible-conc-HTML-print-PDF "outputcount=yes" "" "%projectpath%\html\count-words.html"
+make pdf                                ;tasklist prince.tasks "" "%projectpath%\pdf\count-words-%curdate%.pdf"
+start pdf                               ;start "" "%outfile%"

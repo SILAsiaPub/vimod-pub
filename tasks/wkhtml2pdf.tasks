@@ -1,0 +1,17 @@
+Set project code                        ;setvar pcode cookbook
+Start many parameter string             ;setvar firstmany first
+# write out parameters in readable form
+# Set default page settings
+# set page size, enable mack links and page offset
+Set page size                           ;manyparam "--page-height 279mm --page-width 216mm" 
+#Disable compression                    ;manyparam " --no-pdf-compression"
+Set margins                             ;manyparam "-B 18mm -L 15mm -R 15mm -T 15mm"
+Ignore load errors                      ;manyparam "--load-error-handling ignore"
+Set footer size                         ;manyparam "--footer-font-size 8" 
+Set page number to bottom center footer ;manyparam "--footer-center [page]" 
+##                                        ;echo on
+Input file                              ;manyparam "'%projectpath%\%~2'"
+Name output file                        ;manyparam "'%projectpath%\%~3'"
+#                                        ;echo off
+Start the process                       ;manyparamcmd "%wkhtmltopdf%"
+open pdf                                ;start "" "%projectpath%\%~3"

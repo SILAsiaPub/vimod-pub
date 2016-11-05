@@ -1,0 +1,14 @@
+# fop-fo2pdf.tasks
+# created by: Ian McQuay
+# created date: 2015-08-27
+# Required parameters: input 
+# input file is an absolute path, file name and extention.
+# Optional parameters: output
+# output needs to be an absolute path and file name and extention. The name is ignored output name will match the input name.
+# Warning do not edit this script, unless you know what you are doing.
+declare infile                          ;infile "%~2"
+get name                                ;var drivepathname "%~dpn2"
+outfile                                 ;outfile "%~3" "%drivepathname%.fo"
+run the command line with the params    ;command "'tools\fop2\fop.cmd' '%infile%' '%outfile%'" "" "%outfile%"
+
+

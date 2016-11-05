@@ -1,0 +1,10 @@
+# create Android project
+create cordova source project                               ;tasklist cordova-create.tasks
+copy resource files                                         ;tasklist copy-resources.tasks
+add android platform                                        ;tasklist cordova-platform.tasks add android
+Insert Grandroid                                            ;tasklist cordova-insert-grandroid.tasks
+Build cordova debug Android app                             ;tasklist cordova-build.tasks android
+Build cordova debug Android and Load in Virtual machine     ;tasklist cordova-emulate.tasks android
+Post debug build fixes                                      ;tasklist cordova-post-fixes.tasks
+Build cordova release Android app                           ;tasklist cordova-build.tasks android --release
+Sign release app                                            ;tasklist android-sign-release

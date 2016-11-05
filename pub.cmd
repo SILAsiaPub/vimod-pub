@@ -402,11 +402,19 @@ if defined echotasklistend call :echolog "  -------------------  tasklist%taskli
 set /A tasklistnumb=%tasklistnumb%-1
 goto :eof
 
+:tasklists
+:: Description: run serial tasklists
+:: Required parameters:
+:: list
+:: Note: The list must have extension
+set list=%~1
+call :loopstring tasklist "%list%"
+goto :eof
 
 :setup
 :: Description: sets variables for the batch file
 :: Revised: 2016-05-04
-:: Required rerequisite variables
+:: Required prerequisite variables
 :: projectpath
 :: htmlpath
 :: localvar
@@ -1468,6 +1476,7 @@ set action=%~2
 set param3=%~3
 set param4=%~4
 set param5=%~5
+set param6=%~6
 if not defined testfile echo missing testfile parameter & goto :eof
 if not defined action echo missing action parameter & goto :eof
 rem if defined param4 set param4=%param4:'="%
@@ -1480,9 +1489,12 @@ if exist "%testfile%" (
   if "%action%" == "rename" echo %action% "%testfile%" "%param3%"
   if "%action%" == "del" echo %action% %param4% "%testfile%"
   if "%action%" == "func" echo call :%param3% "%param4%"
-  if "%action%" == "command" echo call :command "%param3%" "%param4%"
+  if "%action%" == "command" echo call :command "%param3%" "%param4%"  "%param5%"
+  if "%action%" == "command2file" echo call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" echo call :tasklist "%param3%" "%param4%"
   if "%action%" == "append" echo copy "%param3%"+"%testfile%" "%param3%"
+  if "%action%" == "appendtext" echo copy /A "%param3%"+"%testfile%" "%param3%"
+  if "%action%" == "appendbin" echo copy /b "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
   if "%action%" == "type" echo type "%testfile%" ^>^> "%param3%"
   if "%action%" == "emptyfile" echo echo. ^> "%testfile%"
@@ -1493,12 +1505,15 @@ if exist "%testfile%" (
   if "%action%" == "rename" %action% "%testfile%" "%param3%"
   if "%action%" == "del" %action% /Q "%testfile%"
   if "%action%" == "func" call :%param3% "%param4%"
-  if "%action%" == "command" call :command "%param3%" "%param4%"
+  if "%action%" == "command" call :command "%param3%" "%param4%"  "%param5%"
+  if "%action%" == "command2file" call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" call :tasklist "%param3%" "%param4%"
-  if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%" /a
+  if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%"
+  if "%action%" == "appendtext" copy /A "%param3%"+"%testfile%" /A "%param3%" /A
+  if "%action%" == "append" copy /b "%param3%"+"%testfile%" /b "%param3%" /b
   if "%action%" == "addtext" echo %param3% >> "%param4%"
   if "%action%" == "type" type "%testfile%" >> "%param3%"
-  if "%action%" == "emptyfile" echo. 
+  if "%action%" == "emptyfile" echo.  > "%testfile%"
   if "%action%" == "fatal" (
     call :echolog "File not found! %message%"
     echo %message%
@@ -2048,8 +2063,14 @@ set command=%~1
 if not defined command echo missing command & goto :eof
 call :outfile "%~2" "%projectpath%\xml\%pcode%-%count%-command2file.xml"
 set commandpath=%~3
+set append=%~4
 rem the following is used for the feed back but not for the actual command
-set curcommand=%command:'="% ^^^> "%outfile%"
+if not defined append (
+  set curcommand=%command:'="% ^^^> "%outfile%"
+) else (
+  set curcommand=%command:'="% ^^^>^^^> "%outfile%"
+)
+
 call :before
 set curcommand=%command:'="%
 if "%commandpath%" neq "" (
@@ -2057,8 +2078,13 @@ if "%commandpath%" neq "" (
   set drive=%commandpath:~0,2%
   %drive%
   cd "%commandpath%"
-) 
-call %curcommand% > "%outfile%"
+)
+if not defined append (
+  call %curcommand% > "%outfile%"
+) else (
+  call %curcommand% >> "%outfile%"
+)
+
 if "%commandpath%" neq "" (
   set drive=%startdir:~0,2%
   %drive%
@@ -2068,6 +2094,7 @@ if "%commandpath%" neq "" (
 call :after "command with stdout %curcommand% complete"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
+
 
 :donothing
 :: Description: Do nothing
@@ -2293,7 +2320,7 @@ if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstri
 SET findval=%~1
 set datafile=%~2
 set lookupreturn=
-FOR /F "tokens=1,2 delims==" %%i IN (%datafile%) DO @IF %%i EQU %findval% SET lookupreturn=%%j
+FOR /F "tokens=1,2 delims==" %%i IN (%datafile%) DO IF %%i EQU %findval% SET lookupreturn=%%j
 @echo lookup of %findval% returned: %lookupreturn%
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof

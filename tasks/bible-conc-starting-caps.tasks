@@ -1,0 +1,5 @@
+                                        ;projectvar
+get short words                         ;xslt bible-conc-starting-caps "" "%projectpath%\xml\wordlist.xml"
+run html transform                      ;xslt bible-conc-HTML-print-PDF "outputcount=yes" "" "%projectpath%\html\caps.html"
+make pdf                                ;tasklist prince.tasks "" "%projectpath%\pdf\caps-%curdate%.pdf"
+start pdf                               ;start "" "%outfile%"
