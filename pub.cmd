@@ -1,5 +1,4 @@
 @echo off
-:aainfo
 :: Title: pub.cmd
 :: Title Description: Vimod-Pub batch file with menus and tasklist processing
 :: Author: Ian McQuay
@@ -11,8 +10,9 @@
 :: pub tasklist tasklistname.tasks -  process a particular tasklist, no menus used. Used with Electron Vimod-Pub GUI
 :: pub menu menupath - Start projet.menu at a particular path
 :: pub debug function_name - Just run a particular function to debug
-                                       
-:main                              
+
+
+:main
 :: Description: Starting point of pub.cmd, test commandline options if present
 :: Class: command - internal - startup
 :: Optional parameters:
@@ -352,6 +352,10 @@ goto :eof
 
 rem inc is included so that an xslt transformation can also process this tasklist. Not all tasklists may need processing into params.
 :inc
+:: Depreciated: use tasklist
+call :tasklist "%~1"
+goto :eof
+
 :tasklist
 :: Discription: Processes a tasks file.
 :: Required preset variables:
@@ -642,7 +646,7 @@ call :after "XSLT transformation"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
-rem replaces getvar
+
 :projectvar
 :: Description: get the variables from project.tasks file
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
@@ -1199,9 +1203,20 @@ goto :eof
 
 :setvarlist
 :: depreciated: use var
+call :var "%~1" "%~2"
+goto :eof
+
 :resolve
 :: depreciated: use var
+call :var "%~1" "%~2"
+goto :eof
+
 :setvar
+:: depreciated: use var
+call :var "%~1" "%~2"
+goto :eof
+
+
 :var
 :: Description: sets the variable
 :: class: command - parameter
@@ -1235,6 +1250,7 @@ goto :eof
 
 :startfile
 :: Depreciated: use inputfile
+goto :eof
 
 :inputfile
 :: Description: Sets the starting file of a serial tasklist, by assigning it to the var outfile
@@ -1257,6 +1273,8 @@ rem Loops ======================================================================
 
 :serialtasks
 :: Depeciated: use looptasks
+call :looptasks "%~1" "%~2" "%~3"
+goto :eof
 
 :looptasks
 :: Description: loop through tasks acording to %list%
@@ -1283,7 +1301,7 @@ set list=
 set comment=
 echo =====^> end looptasks
 if defined masterdebug call :funcdebug %0 end
-goto:eof
+goto :eof
 
 :loop
 :: Description: a general loop, review parametes before using, other dedcated loops may be easier to use.
@@ -1322,7 +1340,7 @@ rem clear function and tasklist variables in case of later use.
 set function=
 set tasks=
 if defined masterdebug call :funcdebug %0 end
-goto:eof
+goto :eof
 
 :loopcommand
 :: Description: loops through a list created from a command like dir and passes that as a param to a tasklist.
@@ -1348,7 +1366,7 @@ set action=
 set list=
 set comment=
 if defined masterdebug call :funcdebug %0 end
-goto:eof
+goto :eof
 
 :loopfileset
 :: Description: Loops through a list of files supplied by a file.
@@ -1375,7 +1393,7 @@ set action=
 set fileset=
 set comment=
 if defined masterdebug call :funcdebug %0 end
-goto:eof
+goto :eof
 
 :loopstring
 :: Description: Loops through a list supplied in a string.
@@ -1403,7 +1421,7 @@ set action=
 set string=
 set comment=
 if defined masterdebug call :funcdebug %0 end
-goto:eof
+goto :eof
 
 :runloop
 :: Description: run loop with parameters
@@ -1663,7 +1681,7 @@ goto :eof
 :: Description: Ensure parameter is present
 :: Required parameters:
 :: 
-got :eof
+goto :eof
 
 
 :variableslist
@@ -1797,7 +1815,7 @@ if "%debugend%" == "end" (
   if defined masterdebug @echo %beginfuncstring% %~1  %debugstack% %beginfuncstringtail%
   if "%debugstack:~0,1%" == "1" (@echo on) else (@echo off)
 )
-@goto :eof
+goto :eof
 
 
 :removeCommonAtStart
@@ -2098,14 +2116,17 @@ goto :eof
 
 :donothing
 :: Description: Do nothing
+goto :eof
 
 :xvarset
 :: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
 :: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
+goto :eof
 
 :xinclude
 :: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
 :: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
+goto :eof
 
 :xarray
 :: Description: This is an XSLT instruction to process a paired set as param, DOS variables not allowed in set.
