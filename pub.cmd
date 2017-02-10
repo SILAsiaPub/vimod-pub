@@ -1103,6 +1103,7 @@ goto :eof
 
 
 :plugin
+:: Depreciated: not used. Just create a tasklist to cusmoize a new file-operator
 :: Description: used to access external plugins
 :: Class: command - external - extend
 :: Optional preset variables:
@@ -1135,7 +1136,7 @@ goto :eof
 
 :dirlist
 :: Description: Creates a directory list in a file
-:: Depreciated: not in surrent usage
+:: Depreciated: not in current usage
 :: Class: Command - external
 :: Depends on:
 :: dirpath
@@ -1381,17 +1382,13 @@ goto :eof
 :: funcdebug
 :: * - Maybe any function but most likely a tasklist
 if defined masterdebug call :funcdebug %0
-if "%~1" neq "" set action=%~1
-if "%~2" neq "" set fileset=%~2
-if "%~3" neq "" set comment=%~3
+set action=%~1
+set fileset=%~2
+set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined fileset echo Missing fileset parameter & goto :eof
-echo %comment%
-::echo on
+if defined comment echo %comment%
 FOR /F %%s IN (%fileset%) DO call :%action% %%s
-set action=
-set fileset=
-set comment=
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -2033,9 +2030,10 @@ goto :eof
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set basedir=%~2
+set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined basedir echo Missing basedir parameter & goto :eof
-echo %~3
+if defined comment echo %comment%
 FOR /F " delims=" %%s IN ('dir /b /a:-d %basedir%') DO call :%action% "%%s"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
@@ -2052,9 +2050,10 @@ goto :eof
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set action=%~1
 set filespec=%~2
+set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined filespec echo Missing filespec parameter & goto :eof
-if "%~3" neq "" echo %~3
+if defined comment echo %comment%
 FOR /F " delims=" %%s IN ('dir /b /a:-d /o:n %filespec%') DO call :%action% "%%s"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
