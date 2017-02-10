@@ -28,18 +28,14 @@ if "%PUBLIC%" == "C:\Users\Public" (
 rem 
 call :pubtypetest
 echo.
+	if not defined skipsettings echo                       Vimod-Pub
+	if not defined skipsettings echo     Various inputs multiple outputs digital publishing
 if "%pubtype%" == "solo" (
-	if not defined skipsettings echo                       Vimod-Pub-Solo
-	if not defined skipsettings echo     Various inputs multiple outputs digital publishing
-	if not defined skipsettings echo         http://github.com/SILAsiaPub/vimod-pub-solo
+	if not defined skipsettings echo         https://github.com/SILAsiaPub/vimod-pub-solo
 ) else if "%pubtype%" == "global" (
-	if not defined skipsettings echo                       Vimod-Pub-Global
-	if not defined skipsettings echo     Various inputs multiple outputs digital publishing
-	if not defined skipsettings echo       http://github.com/silasiapub/vimod-pub-global
+	if not defined skipsettings echo       https://github.com/silasiapub/vimod-pub-global
 ) else	if "%pubtype%" == "classic" (
-	if not defined skipsettings echo                        Vimod-Pub
-	if not defined skipsettings echo     Various inputs multiple outputs digital publishing
-	if not defined skipsettings echo       http://projects.palaso.org/projects/vimod-pub
+	if not defined skipsettings echo       https://github.com/silasiapub//vimod-pub
 )
 echo    ----------------------------------------------------
 if defined masterdebug call :funcdebugstart main
@@ -52,15 +48,18 @@ if defined masterdebug call :funcdebugend
 goto :eof
 
 :pubtypetest
-:: Description: Tests if project menu exists in current folder
+:: Description: Tests if it should operate in Classic, Global or Solo mode
 set classicsetupfolder=setup-pub
 if exist project.menu (
-    if exist "%cd%\pub\setup\vimod.var" (
+    if exist "%cd%\pub\" (
         set pubtype=solo
-    ) else if exist "%cd%\setup\vimod.var" (
-	    set pubtype=solo-dev 
+rem    ) else if exist "%cd%\setup\vimod.var" (
+rem	    set pubtype=solo-dev 
     ) else if exist "project.process" (
         set pubtype=global
+    ) else (
+    echo Unknown pub type. Pub will exit
+    exit /b
     )
 ) else if exist "%cd%\%classicsetupfolder%" (
 	set pubtype=classic
