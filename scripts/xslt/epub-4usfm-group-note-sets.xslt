@@ -25,7 +25,8 @@
     <xsl:template match="*[name() = $parentnode][@class = $parentclasses]">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <xsl:for-each-group select="*" group-starting-with="*[@class = $groupclasses]">
+             <!-- <xsl:for-each-group select="*" group-starting-with="*[@class = $groupclasses]"> -->
+            <xsl:for-each-group select="node()" group-starting-with="*[@class = $groupclasses]">
                 <xsl:element name="{local-name()}Group">
                     <xsl:apply-templates select="current-group()"/>
                 </xsl:element>
