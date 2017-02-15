@@ -14,6 +14,7 @@
     <xsl:output method="text"/>
     <xsl:strip-space elements="*"/>
     <xsl:include href="epub-ref-func.xslt"/>
+<xsl:include href="project.xslt"/><!--
     <xsl:param name="noverse1"/>
     <xsl:param name="spanclasstoremovelist" select="
 ' cnum
@@ -48,8 +49,8 @@ f
 x
  hiddenChapter'"/>
     <xsl:param name="paraclassnamelistquotlist" select="'li1v li2v q1v q2v qv'"/>
-    <xsl:param name="paraclassnameprechaplist" select="'c1p c2p c1q c2q'"/>
-    <!-- end of global params -->
+    <xsl:param name="paraclassnameprechaplist" select="'c1p c2p c1q c2q'"/> -->
+    <!-- end of global params --><!--
     <xsl:variable name="spanclasstoremove" select="tokenize($spanclasstoremovelist,'\s+')"/>
     <xsl:variable name="spanclasstocopy" select="tokenize($spanclasstocopylist,'\s+')"/>
     <xsl:variable name="spanclassnametoinline" select="tokenize($inlinelist,'\s+')"/>
@@ -58,7 +59,7 @@ x
     <xsl:variable name="paraclassnameremove" select="tokenize($paraclasstoremovelist,'\s+')"/>
     <xsl:variable name="paraclassnamelistquot" select="tokenize($paraclassnamelistquotlist,'\s+')"/>
     <xsl:variable name="paraclassnameprechap" select="tokenize($paraclassnameprechaplist,'\s+')"/>
-    <xsl:variable name="span2para" select="tokenize($span2paralist,'\s+')"/>
+    <xsl:variable name="span2para" select="tokenize($span2paralist,'\s+')"/> -->
     <!-- End of global variables -->
     <xsl:template match="/*">
         <xsl:apply-templates/>
