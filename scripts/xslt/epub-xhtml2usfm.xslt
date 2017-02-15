@@ -14,6 +14,7 @@
     <xsl:output method="text"/>
     <xsl:strip-space elements="*"/>
     <xsl:include href="epub-xhtml-func.xslt"/>
+<xsl:include href="project.xslt"/><!--
     <xsl:param name="noverse1"/>
     <xsl:param name="removelist" select="
 ' cnum
@@ -57,7 +58,7 @@ x
     <xsl:variable name="paraclassnameremove" select="tokenize($pararemovelist,'\s+')"/>
     <xsl:variable name="paraclassnamelistquot" select="tokenize($paraclassnamelistquotlist,'\s+')"/>
     <xsl:variable name="paraclassnameprechap" select="tokenize($paraclassnameprechaplist,'\s+')"/>
-    <xsl:variable name="span2para" select="tokenize($span2paralist,'\s+')"/>
+    <xsl:variable name="span2para" select="tokenize($span2paralist,'\s+')"/> -->
     <xsl:template match="/html/body/div">
         <xsl:apply-templates select="div[@class = 'IntroFrame']"/>
         <xsl:apply-templates select="div[@class = 'BodyFrame']"/>
