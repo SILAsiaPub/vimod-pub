@@ -599,7 +599,6 @@ cd %cctpath%
 %curcommand%
 cd %basepath%
 call :after "Consistent Changes"
-::
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
