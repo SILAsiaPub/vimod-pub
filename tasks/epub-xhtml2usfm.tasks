@@ -7,12 +7,13 @@ get the parameter             ;inputfile "%xhtmlpath%\%~2"
 #set startfile                 ;inputfile blank.xml
 #remove xhtml header           ;cct removeXHTMLheaders.cct
 #remove doctype                ;xslt remove-doctype  "file='%pathfilename%'"
+remove _id in class names     ;xslt epub-keep-first-class-attrib
 group noteId sets             ;xslt epub-4usfm-group-note-sets
 temp file                     ;outputfile "%projectpath%\xml\temp.xml"
 get usfm                      ;xslt epub-xhtml2f-func "" "" "scripts\xslt\epub-ref-func.xslt"
 
 set startfile                 ;inputfile "%projectpath%\xml\temp.xml"
-get usfm                      ;xslt epub-xhtml2usfm-v2
+get usfm                      ;xslt epub-xhtml2usfm-v4
 rename output                 ;outputfile "%projectpath%\usfm\%name%.USFM"
 
 
