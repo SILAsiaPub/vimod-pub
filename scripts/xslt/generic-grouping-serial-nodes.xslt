@@ -21,7 +21,7 @@
                   <xsl:copy>
                         <xsl:apply-templates/>
                   </xsl:copy>
-                  <xsl:apply-templates select="following-sibling::node()[1][local-name()=$serialnode]" mode="next"/>
+                  <xsl:apply-templates select="following-sibling::node()[1][local-name()=$serialnode[position() gt 1]]" mode="next"/>
             </xsl:element>
       </xsl:template>
       <xsl:template match="*[name() = $serialnode[position() gt 1]]">
@@ -32,6 +32,6 @@
             <xsl:copy>
                   <xsl:apply-templates/>
             </xsl:copy>
-            <xsl:apply-templates select="following-sibling::*[1][local-name()=$serialnode]" mode="next"/>
+            <xsl:apply-templates select="following-sibling::*[1][local-name()=$serialnode[position() gt 1]]" mode="next"/>
       </xsl:template>
 </xsl:stylesheet>
