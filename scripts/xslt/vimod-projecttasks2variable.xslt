@@ -18,7 +18,7 @@
       <xsl:variable name="projecttask" select="f:file2lines(concat($projectpath,'/setup/project.tasks'))"/>
       <!-- <xsl:variable name="projecttask" select="tokenize(unparsed-text($projecttaskuri),'\r?\n')"/> -->
       <xsl:variable name="cd" select="substring-before($projectpath,'\data\')"/>
-        <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/> 
+      <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/>
       <xsl:variable name="sq">
             <xsl:text>'</xsl:text>
       </xsl:variable>
@@ -42,6 +42,11 @@
                               <xsl:text>'</xsl:text>
                         </xsl:attribute>
                   </xsl:element>
+                  <!-- <xsl:element name="xsl:include">
+                        <xsl:attribute name="href">
+                              <xsl:text>inc-lookup.xslt</xsl:text>
+                        </xsl:attribute>
+                  </xsl:element> -->
                   <xsl:element name="xsl:variable">
                         <!-- Declare projectpath -->
                         <xsl:attribute name="name">
@@ -371,6 +376,16 @@
                               <xsl:value-of select="concat('tokenize($',$name,',',$apos,'\s+',$apos,')')"/>
                         </xsl:attribute>
                   </xsl:element>
+                  <xsl:if test="matches($value,'=')">
+                        <xsl:element name="xsl:variable">
+                              <xsl:attribute name="name">
+                                    <xsl:value-of select="replace($name,'_list','-key')"/>
+                              </xsl:attribute>
+                              <xsl:attribute name="select">
+                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^\s]+\s?',$apos,')')"/>
+                              </xsl:attribute>
+                        </xsl:element>
+                  </xsl:if>
             </xsl:if>
             <xsl:if test="matches($name,'_file-list$')">
                   <!-- adds a tokenized list from a file. Good for when the list is too long for batch line -->
@@ -395,6 +410,17 @@
                               <xsl:value-of select="concat('tokenize($',$name,',',$apos,'_',$apos,')')"/>
                         </xsl:attribute>
                   </xsl:element>
+                  <xsl:if test="matches($value,'=')">
+                        
+                        <xsl:element name="xsl:variable">
+                              <xsl:attribute name="name">
+                                    <xsl:value-of select="replace($name,'_underscore-list','-key')"/>
+                              </xsl:attribute>
+                              <xsl:attribute name="select">
+                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^_]+_?',$apos,')')"/>
+                              </xsl:attribute>
+                        </xsl:element>
+                  </xsl:if>
             </xsl:if>
             <xsl:if test="matches($name,'_equal-list$')">
                   <!-- equals delimited list -->
@@ -417,6 +443,18 @@
                               <xsl:value-of select="concat('tokenize($',$name,',',$apos,';',$apos,')')"/>
                         </xsl:attribute>
                   </xsl:element>
+                  <!--  now test if there are = in the list and make a key list -->
+                  <xsl:if test="matches($value,'=')">
+                        <xsl:variable name="key" select="tokenize($value,'=.* ?')"/>
+                        <xsl:element name="xsl:variable">
+                              <xsl:attribute name="name">
+                                    <xsl:value-of select="replace($name,'_semicolon-list','-key')"/>
+                              </xsl:attribute>
+                              <xsl:attribute name="select">
+                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^;]+;?',$apos,')')"/>
+                              </xsl:attribute>
+                        </xsl:element>
+                  </xsl:if>
             </xsl:if>
       </xsl:template>
 </xsl:stylesheet>
