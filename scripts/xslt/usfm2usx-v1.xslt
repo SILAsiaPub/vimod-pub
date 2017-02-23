@@ -31,14 +31,16 @@
                   <xsl:attribute name="version">
                         <xsl:text>2.5</xsl:text>
                   </xsl:attribute>
-                  <xsl:for-each select="$line"><!-- pass each line to the initial parser -->
+                  <xsl:for-each select="$line">
+                        <!-- pass each line to the initial parser -->
                         <xsl:variable name="sfm" select="replace(.,$sfmparse,'$1')"/>
                         <xsl:variable name="content" select="replace(.,$sfmparse,'$2')"/>
                         <xsl:variable name="bookid" select="replace(.,$idparse,'$2')"/>
                         <xsl:variable name="idrest" select="replace(.,$idparse,'$3')"/>
                         <xsl:variable name="pos" select="position()"/>
                         <xsl:choose>
-                              <xsl:when test="$sfm = 'id'"><!-- handle the id marker -->
+                              <xsl:when test="$sfm = 'id'">
+                                    <!-- handle the id marker -->
                                     <xsl:element name="book">
                                           <xsl:attribute name="code">
                                                 <xsl:value-of select="$bookid"/>
@@ -49,7 +51,8 @@
                                           <xsl:value-of select="normalize-space($idrest)"/>
                                     </xsl:element>
                               </xsl:when>
-                              <xsl:when test="$sfm = 'c'"><!-- handle chapters -->
+                              <xsl:when test="$sfm = 'c'">
+                                    <!-- handle chapters -->
                                     <xsl:element name="chapter">
                                           <xsl:attribute name="number">
                                                 <xsl:value-of select="normalize-space($content)"/>
@@ -59,7 +62,8 @@
                                           </xsl:attribute>
                                     </xsl:element>
                               </xsl:when>
-                              <xsl:when test="$sfm = $para"><!-- Paragraph styles are listed in $para parameter that can be overridden -->
+                              <xsl:when test="$sfm = $para">
+                                    <!-- Paragraph styles are listed in $para parameter that can be overridden -->
                                     <xsl:element name="para">
                                           <xsl:attribute name="style">
                                                 <xsl:value-of select="$sfm"/>
@@ -72,7 +76,8 @@
                                           </xsl:call-template>
                                     </xsl:element>
                               </xsl:when>
-                              <xsl:otherwise/><!-- only defined markers are handled -->
+                              <xsl:otherwise/>
+                              <!-- only defined markers are handled -->
                         </xsl:choose>
                   </xsl:for-each>
             </xsl:element>
@@ -122,16 +127,19 @@
             <xsl:variable name="note" select="substring-before(substring-after($text,concat('\', $style, ' ')),concat('\', $style, '*'))"/>
             <xsl:variable name="posttext" select="substring-after($text,concat('\', $style, '*'))"/>
             <xsl:choose>
-                  <xsl:when test="matches($text,'\\')"><!-- checks if there is backslash markers to handle -->
+                  <xsl:when test="matches($text,'\\')">
+                        <!-- checks if there is backslash markers to handle -->
                         <xsl:value-of select="$pretext"/>
                         <xsl:choose>
-                              <xsl:when test="$style = $notestyle"><!-- checks if the markup is notes -->
+                              <xsl:when test="$style = $notestyle">
+                                    <!-- checks if the markup is notes -->
                                     <xsl:call-template name="noteparser">
                                           <xsl:with-param name="text" select="$note"/>
                                           <xsl:with-param name="type" select="$style"/>
                                     </xsl:call-template>
                               </xsl:when>
-                              <xsl:otherwise><!-- Handles scr text inline markup -->
+                              <xsl:otherwise>
+                                    <!-- Handles scr text inline markup -->
                                     <xsl:call-template name="inlineparser">
                                           <xsl:with-param name="text" select="$note"/>
                                           <xsl:with-param name="type" select="$style"/>
@@ -167,7 +175,8 @@
             </xsl:variable>
             <!-- <xsl:variable name="bodypostref" select="replace($text,'^(. )([0-9\-a-e]+ )(.+)','$3')"/> -->
             <!-- <xsl:variable name="bodynoref" select="replace($text,'^(. )(.+)','$2')"/> -->
-            <xsl:element name="note"><!-- write the note -->
+            <xsl:element name="note">
+                  <!-- write the note -->
                   <xsl:attribute name="caller">
                         <xsl:value-of select="$caller"/>
                   </xsl:attribute>
@@ -175,12 +184,14 @@
                         <xsl:value-of select="$type"/>
                   </xsl:attribute>
                   <xsl:choose>
-                        <xsl:when test="matches($fnbody,'\\f. ')"><!-- checks if other markup is in the note -->
+                        <xsl:when test="matches($fnbody,'\\f. ')">
+                              <!-- checks if other markup is in the note -->
                               <xsl:call-template name="notebodyparse">
                                     <xsl:with-param name="text" select="$fnbody"/>
                               </xsl:call-template>
                         </xsl:when>
-                        <xsl:otherwise><!-- other markup not found so just write out the note -->
+                        <xsl:otherwise>
+                              <!-- other markup not found so just write out the note -->
                               <xsl:value-of select="$fnbody"/>
                         </xsl:otherwise>
                   </xsl:choose>
