@@ -114,7 +114,7 @@
                         </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
-                        <xsl:text></xsl:text>
+                        <xsl:value-of select="$string"/>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
