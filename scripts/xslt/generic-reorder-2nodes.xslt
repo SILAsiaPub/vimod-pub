@@ -23,6 +23,14 @@
             </xsl:copy>
       </xsl:template>
       <xsl:template match="*[name() = $serialnode[2]]">
+            <xsl:choose>
+                  <xsl:when test="preceding-sibling::*[1][local-name() = $serialnode[1]]"/>
+                  <xsl:otherwise>
+                        <xsl:copy>
+                              <xsl:apply-templates/>
+                        </xsl:copy>
+                  </xsl:otherwise>
+            </xsl:choose>
             <!-- Does not allow copying when the element occurs normally -->
       </xsl:template>
 </xsl:stylesheet>
