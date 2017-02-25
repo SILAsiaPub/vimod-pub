@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     #############################################################
-    # Name:         sfm2lift-mak.xslt
-    # Purpose:	convert SFM directly to LIFT for use in DAB
-    # Part of:      Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
-    # Author:       Ian McQuay <ian_mcquay@sil.org>
-    # Created:      2017-02-22
-    # Copyright:    (c) 2017 SIL International
-    # Licence:      <MIT>
+    # Name:         	sfm2lift-mak.xslt
+    # Purpose:		convert SFM directly to LIFT for use in DAB
+    # Part of:      	Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:       	Ian McQuay <ian_mcquay@sil.org>
+    # Created:      	2017-02-22
+    # Copyright:    	(c) 2017 SIL International
+    # Licence:      	<MIT>
     ################################################################ -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
@@ -106,14 +106,14 @@
                                     <xsl:text>subentry</xsl:text>
                               </xsl:attribute>
                               <xsl:attribute name="ref">
-                                    <xsl:value-of select="concat(se,'_')"/>
+                                    <xsl:value-of select="concat(se,'_lx',$pos)"/>
                               </xsl:attribute>
                         </xsl:element>
                   </xsl:when>
                   <xsl:otherwise>
                         <xsl:element name="entry">
                               <xsl:attribute name="id">
-                                    <xsl:value-of select="concat(se,'_')"/>
+                                    <xsl:value-of select="concat(se,'_lx',$pos)"/>
                               </xsl:attribute>
                               <xsl:attribute name="guid">
                                     <xsl:value-of select="concat('lx',$pos,'ps',$pspos,'se',$sepos)"/>
