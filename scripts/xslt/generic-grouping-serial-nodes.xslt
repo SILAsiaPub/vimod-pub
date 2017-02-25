@@ -15,23 +15,46 @@
       <xsl:strip-space elements="*"/>
       <xsl:param name="serialnodes"/>
       <xsl:variable name="serialnode" select="tokenize($serialnodes,'\s+')"/>
-      <xsl:template match="*[name() = $serialnode[1]]">
-            <!-- Match node that is equal to the first $serialnode in the array -->
-            <xsl:element name="{$serialnode[1]}Group">
-                  <xsl:copy>
-                        <xsl:apply-templates/>
-                  </xsl:copy>
-                  <xsl:apply-templates select="following-sibling::node()[1][local-name()=$serialnode[position() gt 1]]" mode="next"/>
-            </xsl:element>
-      </xsl:template>
-      <xsl:template match="*[name() = $serialnode[position() gt 1]]">
-            <!-- Does not allow copying when the element occurs normally -->
+      <xsl:template match="*[local-name() = $serialnode]">
+            <xsl:variable name="sibling" select="tokenize(replace($serialnodes,local-name(),''),' ')"/>
+            <xsl:choose>
+                  <xsl:when test="preceding-sibling::*[1][local-name() = $serialnode]">
+                        <xsl:choose>
+                              <xsl:when test="local-name() = local-name(parent::*/*[local-name() = $serialnode][1])">
+                                    <xsl:element name="{local-name()}Group">
+                                          <xsl:copy>
+                                                <xsl:apply-templates/>
+                                          </xsl:copy>
+                                          <xsl:apply-templates select="following-sibling::node()[1][local-name()=$sibling]" mode="next">
+                                                <xsl:with-param name="first" select="name()"/>
+                                          </xsl:apply-templates >
+                                    </xsl:element>
+                              </xsl:when>
+                              <xsl:otherwise/>
+                        </xsl:choose>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <!-- Match node that is equal to the first $serialnode in the array -->
+                        <xsl:element name="{local-name()}Group">
+                              <xsl:copy>
+                                    <xsl:apply-templates/>
+                              </xsl:copy>
+                              <xsl:apply-templates select="following-sibling::node()[1][local-name()=$sibling]" mode="next">
+                                    <xsl:with-param name="first" select="name()"/>
+                              </xsl:apply-templates >
+                        </xsl:element>
+                  </xsl:otherwise>
+            </xsl:choose>
       </xsl:template>
       <xsl:template match="*" mode="next">
             <!-- Recursive template used to match the next sibling if it is in the list after the first -->
+            <xsl:param name="first"/>
+            <xsl:variable name="sibling" select="tokenize(replace($serialnodes,$first,''),' ')"/>
             <xsl:copy>
                   <xsl:apply-templates/>
             </xsl:copy>
-            <xsl:apply-templates select="following-sibling::*[1][local-name()=$serialnode[position() gt 1]]" mode="next"/>
+            <xsl:apply-templates select="following-sibling::*[1][local-name()=$sibling]" mode=" next">
+                  <xsl:with-param name="first" select="$first"/>
+            </xsl:apply-templates >
       </xsl:template>
 </xsl:stylesheet>
