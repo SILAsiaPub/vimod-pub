@@ -19,6 +19,7 @@
       <!-- <xsl:variable name="projecttask" select="tokenize(unparsed-text($projecttaskuri),'\r?\n')"/> -->
       <xsl:variable name="cd" select="substring-before($projectpath,'\data\')"/>
       <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/>
+      <xsl:variable name="var" select="tokenize('var xvar',' ')"/>
       <xsl:variable name="sq">
             <xsl:text>'</xsl:text>
       </xsl:variable>
@@ -235,7 +236,7 @@
                                           </xsl:attribute>
                                     </xsl:element>
                               </xsl:when>
-                              <xsl:when test="matches($command,'var')">
+                              <xsl:when test="$command = $var">
                                     <!-- variable line -->
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
@@ -411,7 +412,6 @@
                         </xsl:attribute>
                   </xsl:element>
                   <xsl:if test="matches($value,'=')">
-                        
                         <xsl:element name="xsl:variable">
                               <xsl:attribute name="name">
                                     <xsl:value-of select="replace($name,'_underscore-list','-key')"/>
