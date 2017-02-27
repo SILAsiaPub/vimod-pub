@@ -49,7 +49,7 @@
                         </xsl:attribute>
                   </xsl:if>
                   <xsl:element name="lexical-unit">
-                        <xsl:apply-templates select="lx|vr"/>
+                        <xsl:apply-templates select="*[local-name() = $lexical-node"/>
                   </xsl:element>
                   <xsl:apply-templates select="*[local-name() = $top-level-node]">
                         <xsl:with-param name="pos" select="$pos"/>
@@ -57,17 +57,17 @@
                         <xsl:with-param name="secaller" select="'true'"/>
                   </xsl:apply-templates>
             </xsl:element>
-            <xsl:apply-templates select="seGroup">
+            <xsl:apply-templates select="*[local-name() = $subentry-group-node]">
                   <!-- Create the se as separate entries -->
                   <xsl:with-param name="pos" select="$pos"/>
                   <xsl:with-param name="id" select="$id"/>
             </xsl:apply-templates>
       </xsl:template>
-      <xsl:template match="*[local-name() = $pos-group]">
+      <xsl:template match="*[local-name() = $pos-group-node]">
             <xsl:param name="pos"/>
             <xsl:param name="id"/>
             <xsl:param name="secaller"/>
-            <xsl:variable name="pspos" select="count(preceding-sibling::psGroup) + 1"/>
+            <xsl:variable name="pspos" select="count(preceding-sibling::*[local-name() = $pos-group-node]) + 1"/>
             <xsl:element name="sense">
                   <xsl:attribute name="id">
                         <xsl:value-of select="concat('lx',$pos,'ps',$pspos)"/>
@@ -86,12 +86,12 @@
                   </xsl:apply-templates>
             </xsl:element>
       </xsl:template>
-      <xsl:template match="seGroup">
+      <xsl:template match="*[local-name() = $subentry-group-node]">
             <xsl:param name="pos"/>
             <xsl:param name="pspos"/>
             <xsl:param name="id"/>
             <xsl:param name="secaller"/>
-            <xsl:variable name="sepos" select="count(preceding-sibling::seGroup) + 1"/>
+            <xsl:variable name="sepos" select="count(preceding-sibling::*[local-name() = $subentry-group-node]) + 1"/>
             <xsl:variable name="refid" select="concat(se,$pos,'.',$sepos)"/>
             <xsl:choose>
                   <xsl:when test="$secaller = $true">
@@ -110,10 +110,10 @@
                                     <xsl:value-of select="$refid"/>
                               </xsl:attribute>
                               <xsl:attribute name="guid">
-                                    <xsl:value-of select="concat('lx',$pos,'se',$sepos)"/>
+                                    <xsl:value-of select="concat($id,$pos,'se',$sepos)"/>
                               </xsl:attribute>
                               <xsl:element name="lexical-unit">
-                                    <xsl:apply-templates select="se|vr"/>
+                                    <xsl:apply-templates select="*[$local-name() $lexical-node]"/>
                               </xsl:element>
                               <xsl:apply-templates select="*[local-name() = $second-level-node]">
                                     <xsl:with-param name="inse" select="'true'"/>
@@ -125,7 +125,7 @@
       <xsl:template match="*[name() = $form-element]">
             <!-- These are all the elements that use the form@lang with text inside. Note lont is an irregular field should be vr -->
             <xsl:choose>
-                  <xsl:when test="local-name() = 'va'">
+                  <xsl:when test="local-name() = $variant-node">
                         <xsl:element name="variant">
                               <xsl:call-template name="form">
                                     <xsl:with-param name="lang" select="f:keyvalue($element-lang,name())"/>
@@ -156,17 +156,17 @@
       <xsl:template match="ps">
             <grammatical-info value="{f:keyvalue($pos-value-substitute,.)}"/>
       </xsl:template>
-      <xsl:template match="xvGroup">
+      <xsl:template match="*[local-name() = $example-group-node]">
             <xsl:element name="example">
-                  <xsl:apply-templates select="xv"/>
+                  <xsl:apply-templates select="*[local-name() = $example-vern-node]"/>
                   <xsl:element name="translation">
-                        <xsl:apply-templates select="xn|xe|xr"/>
+                        <xsl:apply-templates select="*[local-name() = $example-trans-node]"/>
                   </xsl:element>
             </xsl:element>
       </xsl:template>
       <xsl:template match="*[name() = $note-element-key]">
             <note type="{f:keyvalue($note-element,name())}">
-                  <form lang="en">
+                  <form lang="{f:keyvalue($element-lang,name())}">
                         <xsl:element name="text">
                               <xsl:value-of select="f:keyvalue($note-value-substitute,.)"/>
                         </xsl:element>
@@ -192,17 +192,17 @@
                   <xsl:otherwise>
                         <xsl:element name="sense">
                               <xsl:attribute name="id">
-                                    <xsl:value-of select="concat('lx',$pos,'ps0')"/>
+                                    <xsl:value-of select="concat($id,$pos,'ps0')"/>
                               </xsl:attribute>
                               <xsl:apply-templates/>
                         </xsl:element>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:template>
-      <xsl:template match="sn"/>
+      <xsl:template match="*[local-name() = $pos-node]"/>
       <!--  Custom fields start ======================== -->
       <xsl:template match="lf">
-            <relation type="{f:keyvalue($relation-element,.)}" ref="{following-sibling::lv[1]}"/>
+            <relation type="{f:keyvalue($relation-element,.)}" ref="{following-sibling::*[1]}"/>
       </xsl:template>
       <xsl:template match="lv"/>
       <!-- Custom field end =========================== -->
@@ -236,36 +236,12 @@
                               </xsl:for-each>
                               <range-element id="en">
                                     <label>
-                                          <form lang="en">
-                                                <text>English</text>
-                                          </form>
-                                          <form lang="fr">
-                                                <text>anglais</text>
-                                          </form>
-                                          <form lang="es">
-                                                <text>Inglés</text>
-                                          </form>
-                                          <form lang="pt">
-                                                <text>Inglês</text>
-                                          </form>
-                                          <form lang="bg">
-                                                <text>английски</text>
-                                          </form>
-                                          <form lang="rw">
-                                                <text>Icyongereza</text>
-                                          </form>
-                                          <form lang="id">
-                                                <text>Bahasa Inggris</text>
-                                          </form>
-                                          <form lang="zh-CHT">
-                                                <text>英文</text>
-                                          </form>
-                                          <form lang="zh-CHS">
-                                                <text>英文</text>
-                                          </form>
-                                          <form lang="km">
-                                                <text>អង់គ្លេស</text>
-                                          </form>
+                                          <xsl:for-each select="$eng-lang-name-key">
+                                                <xsl:call-template name="form">
+                                                      <xsl:with-param name="lang" select="."/>
+                                                      <xsl:with-param name="text" select="f:keyvalue($eng-lang-name,.)"/>
+                                                </xsl:call-template>
+                                          </xsl:for-each>
                                     </label>
                                     <abbrev></abbrev>
                               </range-element>
