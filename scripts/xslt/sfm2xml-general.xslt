@@ -1,5 +1,15 @@
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
-      <!-- 
+<!--
+    #############################################################
+    # Name:         	sfm2xml-general.xslt
+    # Purpose:		Create xml from SFM
+    # Part of:      	Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:       	Ian McQuay <ian_mcquay@sil.org>
+    # Created:      	2013-01-30
+    # Modified:		2017-03-09
+    # Copyright:    	(c) 2017 SIL International
+    # Licence:      	<MIT>
+    ################################################################ -->
+<!-- 
 Simple SFM to XML importer
 This imports a sfm text and converts to a flat xml file.
 It can import inline sfm codes. like \bd bold words\bd*
@@ -8,11 +18,8 @@ and to include the first line.
 
 usage:
 java  -jar "saxon9.jar"   -o "output.xml" "sfm2xml-simple.xslt" "sfm2xml-simple.xslt" sourcetexturi="file:///path/source.sfm"
-
-Written by Ian McQuay
-Created 2013-01-30
-
 -->
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
       <xsl:output method="xml" version="1.0" encoding="utf-8" indent="yes"/>
       <xsl:include href="inc-file2uri.xslt"/>
       <xsl:param name="sourcetextfile"/>
