@@ -19,7 +19,7 @@
                   <feature name="show-subtitles" value="false"/>
                   <feature name="show-references" value="false"/>
                   <contents-items>
-                        <xsl:for-each select="$menu">
+                        <xsl:for-each select="$home-menu">
                               <xsl:call-template name="submenu-item">
                                     <xsl:with-param name="title" select="."/>
                                     <xsl:with-param name="target" select="position()"/>
@@ -30,10 +30,10 @@
                   <contents-screens>
                         <contents-screen id="1">
                               <title lang="default">
-                                    <xsl:value-of select="$menu[1]"/>
+                                    <xsl:value-of select="$home-menu[1]"/>
                               </title>
                               <items>
-                                    <xsl:for-each select="$menu[position() gt 1]">
+                                    <xsl:for-each select="$home-menu[position() gt 1]">
                                           <item id="{position() + 1}"/>
                                     </xsl:for-each>
                               </items>
@@ -42,7 +42,7 @@
                   </contents-screens>
             </contents>
       </xsl:template>
-      <xsl:template match="cGroup" mode="items">
+      <xsl:template match="*[local-name() = $page-group]" mode="items">
             <xsl:param name="seq"/>
             <xsl:variable name="thisfield" select="$field[number($seq)]"/>
             <xsl:if test="string-length(*[name() = $thisfield][1]) gt 0">
@@ -66,7 +66,7 @@
                   </contents-item>
             </xsl:if>
       </xsl:template>
-      <xsl:template match="cGroup" mode="order">
+      <xsl:template match="*[local-name() = $page-group]" mode="order">
             <xsl:param name="seq"/>
             <xsl:variable name="pos" select="count(preceding::cGroup) + 1 + 200 * number($seq)"/>
             <xsl:variable name="thisele" select="$field[number($seq)]"/>
@@ -87,52 +87,52 @@
       </xsl:template>
       <xsl:template name="bulkitems">
             <xsl:if test="$field[1] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="1"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[2] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="2"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[3] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="3"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[4] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="4"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[5] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="5"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[6] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="6"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[7] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="7"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[8] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="8"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[9] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="9"/>
                   </xsl:apply-templates>
             </xsl:if>
             <xsl:if test="$field[10] != ''">
-                  <xsl:apply-templates select="cGroup" mode="items">
+                  <xsl:apply-templates select="*[local-name() = $page-group]" mode="items">
                         <xsl:with-param name="seq" select="10"/>
                   </xsl:apply-templates>
             </xsl:if>
@@ -194,10 +194,10 @@
             <xsl:variable name="thisele" select="$field[number($seq)]"/>
             <contents-screen id="{number($seq) + 1}">
                   <title lang="default">
-                        <xsl:value-of select="$menu[number($seq) + 1]"/>
+                        <xsl:value-of select="$home-menu[number($seq) + 1]"/>
                   </title>
                   <items>
-                        <xsl:apply-templates select="cGroup" mode="order">
+                        <xsl:apply-templates select="*[local-name() = $page-group]" mode="order">
                               <xsl:sort select="replace(replace(*[name() = $thisele][1],'Tunu. ',''),'\((.+)\)','$1')" data-type="{if($thisele = 'c') then 'number' else 'text'}"/>
                               <xsl:with-param name="seq" select="$seq"/>
                         </xsl:apply-templates >

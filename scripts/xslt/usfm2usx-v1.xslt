@@ -18,12 +18,13 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-file2uri.xslt"/>
-      <xsl:param name="para_list" select="'p pi q q1 q2 q3 q4 m mi mt mt1 mt2 mt3 imt imt1 imt2 imt3 ip ip1 is is1 is2 io io1 io2 iot s s1 s2 s3 ide h toc1 toc2 toc3 r restore'"/>
+       <!-- <xsl:param name="para_list" select="'sp imt is ip ipi im imi ipq imq ipr iq ib ili iot io iex imte ie q qr qc qa qm b tr th thr tc tcr restore'"/> -->
+      <xsl:param name="para-re" select="'(id|ide|sts|rem|h|toc1|toc2|toc3|p|m|pmo|pm|pmc|pmr|pi|mi|nb|cls|li|pc|pr|ph|b|cl|cp|cd|mt|mte|ms|mr|s|sr|r|d|sp|imt|is|ip|ipi|im|imi|ipq|imq|ipr|iq|ib|ili|iot|io|iex|imte|ie|q|qr|qc|qa|qm|b|tr|th|thr|tc|tcr|restore)\d?'"/>
       <xsl:param name="file" select="'D:\My Paratext Projects\WEB\02EXOWEB.SFM'"/>
       <xsl:variable name="notestyle" select="tokenize('f x',' ')"/>
-      <xsl:variable name="para" select="tokenize($para_list,' ')"/>
+       <!-- <xsl:variable name="para" select="tokenize($para_list,' ')"/> -->
       <xsl:variable name="line" select="f:file2lines($file)"/>
-      <xsl:variable name="sfmparse" select="'^\\([a-z0-9]+)(.*)'"/>
+      <xsl:variable name="sfmparse" select="'^\\([a-z0-9]+) ?(.*)'"/>
       <xsl:variable name="idparse" select="'^\\([a-z0-9]+) (...)(.*)'"/>
       <!-- <xsl:variable name="text" select="tokenize($usfm,'\n\\' matches(.,''))"/> -->
       <xsl:template match="/">
@@ -62,13 +63,13 @@
                                           </xsl:attribute>
                                     </xsl:element>
                               </xsl:when>
-                              <xsl:when test="$sfm = $para">
-                                    <!-- Paragraph styles are listed in $para parameter that can be overridden -->
+                              <xsl:when test="matches($sfm,$para-re)">
+                                    <!-- Paragraph styles are listed in $para-re parameter that can be overritten but the list is complete for usfm 2.4-->
                                     <xsl:element name="para">
                                           <xsl:attribute name="style">
                                                 <xsl:value-of select="$sfm"/>
                                           </xsl:attribute>
-                                          <xsl:call-template name="inlinecheck">
+                                        <xsl:call-template name="inlinecheck">
                                                 <xsl:with-param name="text" select="$content"/>
                                           </xsl:call-template>
                                           <xsl:call-template name="get-para-line">
@@ -91,7 +92,7 @@
             <xsl:variable name="versedata" select="replace($nextline,'^\\(v) ([\da-e\-]+) (.*)','$3')"/>
             <xsl:choose>
                   <xsl:when test="$sfm = 'c'"/>
-                  <xsl:when test="$sfm = $para"/>
+                  <xsl:when test="matches($sfm,$para-re)"/>
                   <xsl:when test="$sfm = 'v'">
                         <xsl:text> </xsl:text>
                         <xsl:element name="verse">

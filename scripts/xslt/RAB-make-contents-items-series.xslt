@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     #############################################################
-    # Name:     RAB-make-contents-items-series.xslt
+    # Name:     RAB-phrasebook-make-contents.xslt
     # Purpose:	Take a Song file in SFM and generate a menu contents xml
     # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
     # Author:       Ian McQuay <ian_mcquay@sil.org>
@@ -19,7 +19,7 @@
                   <feature name="show-subtitles" value="false"/>
                   <feature name="show-references" value="false"/>
                   <contents-items>
-                        <xsl:for-each select="$menu">
+                        <xsl:for-each select="$home-menu">
                               <xsl:call-template name="submenu-item">
                                     <xsl:with-param name="title" select="."/>
                                     <xsl:with-param name="target" select="position()"/>
@@ -30,10 +30,10 @@
                   <contents-screens>
                         <contents-screen id="1">
                               <title lang="default">
-                                    <xsl:value-of select="$menu[1]"/>
+                                    <xsl:value-of select="$home-menu[1]"/>
                               </title>
                               <items>
-                                    <xsl:for-each select="$menu[position() gt 1]">
+                                    <xsl:for-each select="$home-menu[position() gt 1]">
                                           <item id="{position() + 1}"/>
                                     </xsl:for-each>
                               </items>
@@ -77,8 +77,8 @@
       <xsl:template name="submenu-item">
             <xsl:param name="title"/>
             <xsl:param name="target"/>
-            <xsl:variable name="id" select="$target"/>
-            <contents-item id="{$id}">
+             <!-- <xsl:variable name="id" select="$target"/> -->
+            <contents-item id="{$target}">
                   <title lang="default">
                         <xsl:value-of select="$title"/>
                   </title>
@@ -194,7 +194,7 @@
             <xsl:variable name="thisele" select="$field[number($seq)]"/>
             <contents-screen id="{number($seq) + 1}">
                   <title lang="default">
-                        <xsl:value-of select="$menu[number($seq) + 1]"/>
+                        <xsl:value-of select="$home-menu[number($seq) + 1]"/>
                   </title>
                   <items>
                         <xsl:apply-templates select="cGroup" mode="order">
