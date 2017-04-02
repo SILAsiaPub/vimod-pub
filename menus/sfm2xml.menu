@@ -1,0 +1,6 @@
+checks menu                             ;tasklist dict2web-sfm-checks-v2.tasks
+check encoding                          ;encoding "%source-sfm-legacy%" check
+                                        ;menublank
+change code page                        ;tasklist dict2web-change-codepage-v2.tasks
+convert sfm to xml                      ;tasklist dict2web-sfm2xml.tasks
+structure xml                           ;tasklist project-add-xml-structure.tasks

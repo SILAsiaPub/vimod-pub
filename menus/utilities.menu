@@ -14,4 +14,6 @@ Set debug variables 3                   ;menu functiondebug.settings "User Debug
 blank                                   ;menublank
 Create/Update Vimod-Pub GUI pages       ;tasklist electron-make-pages.tasks
 Start Vimod-Pub GUI                     ;tasklist electron-start-gui.tasks
+blank                                   ;menublank
+Kill off unwanted emulators             ;tasklist kill-android-emulators.tasks
 #Return to Groups menu                  ;menu data/setup/project.menu
