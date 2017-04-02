@@ -1,0 +1,11 @@
+# ivb dict2web-sfm2xml.tasks    
+# modified 2014-04-11
+get variables                           ;projectvar
+start file                              ;inputfile "%source-sfm-utf8%"
+prexml ccts                             ;cct "%prexmlccts%"
+output                                  ;outputfile "%projectpath%\source\%iso%-reg.sfm"
+start file                              ;inputfile "blank.xml"
+convert to xml                          ;xslt sfm2xml-group-level1 "sourcetext='%projectpath%\source\%iso%-reg.sfm' group-node1_list='lx' remove-node_list='%remove-node_list%'"
+#sort dict                               ;xslt dict-sort-with-custom-collation-option "translateaccents='%translateaccents%' customfind='%customfind%' customreplace='%customreplace%' collationname='%collationname%' decchar2remove='%decchar2remove%' secondarysort=%secondarysort%"
+rename staged file                      ;outputfile "%projectpath%\source\%iso%-level1.xml"
+

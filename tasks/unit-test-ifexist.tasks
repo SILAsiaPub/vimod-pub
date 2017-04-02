@@ -1,0 +1,8 @@
+# unit-test-ifexist.tasks   
+echo on                                 ;echo on
+echo on                                 ;echo par1 "C:\Program Files (x86)\desktop.ini"
+echo on                                 ;echo par2 func
+echo on                                 ;echo par3 command
+echo on                                 ;echo par4 "echo done!!"
+                                        ;ifexist "C:\Program Files (x86)\desktop.ini" func command "echo done!!"
+echo on                                 ;echo off

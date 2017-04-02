@@ -1,0 +1,5 @@
+# change code pages
+get variables                           ;tasklist project.tasks
+var for unichar count                   ;var unicc "C:\Program Files (x86)\bin\UnicodeCCount.exe"
+set input                               ;command2file "iconv -f Latin1 -t UTF-8 '%source-sfm-legacy%'" "%source-sfm-utf8%"
+count unicode char                      ;command2file "'%unicc%' '%source-sfm-utf8%'" "%projectpath%\checks\unicode-Char-count.txt" 

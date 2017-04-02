@@ -1,0 +1,18 @@
+# usfm2usx.tasks
+
+get var if not defined                  ;ifnotdefined ptproject var "'ptproject' '%~2'"
+get curbook                             ;var curbook "%~3"
+set the output path                     ;var outpath "%~4"
+set sfm extention if ot sfm             ;var sfmext "%~5"
+set the lookup file var                 ;var lookupbknumb "D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk\resources\book-chaps.txt"
+set the program param                   ;var usfm2usx "C:\Program Files (x86)\Paratext 7 Test\rdwrtp7.exe"
+set ext if not defined                  ;ifnotdefined sfmext var "'sfmext' 'sfm'"
+set outpath if not defined              ;ifnotdefined outpath var "'outpath' '%outputpath%\%ptproject%'"
+
+get the file name to see if it exists   ;command2var "dir *%curbook%*.%sfmext% /b" checksfm
+                                        ;echo on
+get the standard usx file name          ;lookup %curbook% "%lookupbknumb%" numbbook
+                                        ;pause
+                                        ;echo off
+if exist sfm                            ;ifexist "%myptp%\%ptproject%\%checksfm%" func "command" "'%usfm2usx%' -r %ptproject% %curbook% 0 '%outpath%\%numbbook%%curboook%.usx'"
+                                        ;pause

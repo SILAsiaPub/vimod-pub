@@ -1,5 +1,5 @@
 # 
 get var                                 ;projectvar
 get passed variables                    ;var months "%~2"
-
 run the xslt                            ;xslt youversion-combine-stats-msaccess "months='%months%'" blank.xml
+rename and put in upload folder         ;outputfile "%projectpath%\import\Access-import.xml"

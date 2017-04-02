@@ -1,0 +1,4 @@
+# kill android emulators
+#set adb var
+run stop servers command                ;command "%adb% kill-server"
+list devices                            ;command "%adb% devices"

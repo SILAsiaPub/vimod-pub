@@ -1,0 +1,9 @@
+# convert USFM to USX via rdwrtp7.exe
+  var                                    ;projectvar
+
+#get paratext dir                        ;command "reg query HKLM\Software\Wow6432Node\ScrChecks\1.0\Settings_Directory"
+ptproject                               ;var ptproject "%~2"
+books to get                            ;var bookstoget "%~3"
+output directory                        ;var outputpath "%usxcollection%\%ptproject%"
+
+run the loop                            ;loopstring "tasklist usfm2usx.tasks" "%bookstoget%"

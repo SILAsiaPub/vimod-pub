@@ -1,19 +1,19 @@
 # dict2web-sfm-checks.tasks
 get var                                 ;projectvar
                                         ;checkdir "%projectpath%\checks"
-set input file                          ;inputfile "%projectpath%\%source%"
+set input file                          ;inputfile "%source-sfm-legacy%"
 make a character count by cct           ;cct char-count.cct
 output file                             ;outputfile "%projectpath%\checks\char-count.txt"
-set input file                          ;inputfile "%projectpath%\%source%"
+set input file                          ;inputfile "%source-sfm-legacy%"
 count bar codes                         ;cct count4-bar-code.cct
 output file                             ;outputfile "%projectpath%\checks\count-bar-codes.txt"
-set input file                          ;inputfile "%projectpath%\%source%"
+set input file                          ;inputfile "%source-sfm-legacy%"
 list repeated bar codes                 ;cct checks-multibarcodes.cct
 output file                             ;outputfile "%projectpath%\checks\repeated-bar-codes.txt"
-set input file                          ;inputfile "%projectpath%\%source%"
+set input file                          ;inputfile "%source-sfm-legacy%"
 list repeated bar codes                 ;cct CountPLBcodes.cct
 output file                             ;outputfile "%projectpath%\checks\count-plb-sfm.txt"
-set input file                          ;inputfile "%projectpath%\%source%"
+set input file                          ;inputfile "%source-sfm-legacy%"
 list repeated bar codes                 ;cct CountMDFcodes.cct
 output file                             ;outputfile "%projectpath%\checks\count-mdf-sfm.txt"
 
