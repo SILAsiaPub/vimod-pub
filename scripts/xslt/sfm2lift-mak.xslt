@@ -48,8 +48,8 @@
                               <xsl:value-of select="hm"/>
                         </xsl:attribute>
                   </xsl:if>
-                  <xsl:element name="lexical-unit">
-                        <xsl:apply-templates select="*[local-name() = $lexical-node"/>
+                  <xsl:element name="lexical-unit" mode="lexical-unit">
+                        <xsl:apply-templates select="*[local-name() = $lexical-node]"/>
                   </xsl:element>
                   <xsl:apply-templates select="*[local-name() = $top-level-node]">
                         <xsl:with-param name="pos" select="$pos"/>
@@ -200,6 +200,27 @@
             </xsl:choose>
       </xsl:template>
       <xsl:template match="*[local-name() = $pos-node]"/>
+      <xsl:template match="lx" mode="lexical-unit">
+            <xsl:variable name="lx" select="replace(.,'\d$','')"/>
+            <xsl:variable name="homonym">
+                  <xsl:choose>
+                        <xsl:when test="matches(.,'\d$')">
+                              <xsl:value-of select="replace(.,'.+(\d)$','$1')"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                  </xsl:choose>
+            </xsl:variable>
+            <form lang="{f:keyvalue($element-lang,name())}">
+                  <xsl:element name="text">
+                        <xsl:value-of select="."/>
+                        <xsl:if test="following-sibling::hm">
+                              <span class="homonym">
+                                    <xsl:value-of select="following-sibling::hm"/>
+                              </span>
+                        </xsl:if>
+                  </xsl:element>
+            </form>
+      </xsl:template>
       <!--  Custom fields start ======================== -->
       <xsl:template match="lf">
             <relation type="{f:keyvalue($relation-element,.)}" ref="{following-sibling::*[1]}"/>

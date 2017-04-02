@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     #############################################################
     # Name:         	vimod-projecttasks2variable.xslt
     # Purpose:		Generate a XSLT that takes the project.tasks file and make var in there into param. Also includes xvarset files and xarray files as param and adds xslt files as includes in project.xslt 
@@ -8,8 +7,7 @@
     # Created:      	2014- -
     # Copyright:    	(c) 2013 SIL International
     # Licence:      	<LGPL>
-    ################################################################
--->
+    ################################################################-->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-file2uri.xslt"/>
@@ -96,30 +94,36 @@
                         <!-- copy the root folder files pub.cmd and local_var.cmd -->
                         <xsl:call-template name="parseline">
                               <xsl:with-param name="line" select="."/>
+                              <xsl:with-param name="sub" select="'-'"/>
+                              <xsl:with-param name="curpos" select="position()"/>
                         </xsl:call-template>
                   </xsl:for-each>
             </xsl:element>
       </xsl:template>
       <xsl:template name="parseline">
             <xsl:param name="line"/>
-            <xsl:variable name="comment" select="replace($line,$varparser,'$1')"/>
-            <xsl:variable name="command" select="replace($line,$varparser,'$2')"/>
-            <xsl:variable name="name" select="replace($line,$varparser,'$3')"/>
-            <xsl:variable name="value" select="replace($line,$varparser,'$4')"/>
-            <xsl:variable name="commandstring" select="substring-after($line,';')"/>
-            <!-- 
+            <xsl:param name="sub"/>
+            <xsl:param name="curpos"/>
+            <xsl:variable name="label" select="concat('comment',$sub,position())"/>
             <xsl:variable name="comment" select="substring-before($line,';')"/>
-
-            <xsl:variable name="postcommand" select="substring-after($commandstring,'\s+')"/>
-            <xsl:variable name="param1" select="substring-before($postcommand,'\s+')"/>
-            <xsl:variable name="postparam1" select="substring-after($postcommand,'\s+')"/>
-            <xsl:variable name="part" select="tokenize($commandstring,'\s+')"/>
-            <xsl:variable name="command" select="lower-case($part[1])"/>
-            <xsl:variable name="name" select="$part[2]"/>
-            <xsl:variable name="value" select="substring-after($commandstring,concat($name,'\s+'))"/>
-            <xsl:variable name="value" select="normalize-space($postparam1)"/>
-            <xsl:variable name="value" select="substring($commandstring,6 + string-length($part[2]))"/> -->
+            <xsl:variable name="commandstring" select="substring-after($line,';')"/>
+            <xsl:variable name="command" select="tokenize($commandstring,' ')[1]"/>
+            <xsl:variable name="name" select="tokenize($commandstring,' ')[2]"/>
+            <xsl:variable name="value">
+                  <xsl:for-each select="tokenize($commandstring,' ')[position() gt 2]">
+                        <xsl:if test="position() gt 1">
+                              <xsl:text> </xsl:text>
+                        </xsl:if>
+                        <xsl:value-of select="."/>
+                  </xsl:for-each>
+            </xsl:variable>
+            <!-- <xsl:comment select="concat('comment=',$comment)"/> -->
+            <!-- <xsl:comment select="concat('command=',$command)"/> -->
+            <!-- <xsl:comment select="concat('name=',$name)"/> -->
+            <!-- <xsl:comment select="concat('value=',$value)"/> -->
             <xsl:variable name="commonuri" select="f:file2uri(concat($cd,'\tasks\',$name))"/>
+            <xsl:variable name="projecturi" select="f:file2uri(concat($projectpath,'\setup\',$name))"/>
+            <!-- <xsl:comment select="$projecturi"/> -->
             <xsl:variable name="onevar">
                   <xsl:if test="matches($value,'^%[\w\d\-_]+%$') or matches($value,'^&#34;%[\w\d\-_]+%&#34;$')">
                         <xsl:text>onevar</xsl:text>
@@ -130,7 +134,7 @@
                         <!-- the above removes comment lines so lines that contain commented out things are not processed -->
                         <xsl:element name="xsl:variable">
                               <xsl:attribute name="name">
-                                    <xsl:value-of select="concat('comment',position())"/>
+                                    <xsl:value-of select="$label"/>
                               </xsl:attribute>
                               <xsl:attribute name="select">
                                     <xsl:value-of select="concat($sq,replace($line,$sq,' '),$sq)"/>
@@ -142,7 +146,7 @@
                               <xsl:when test="matches($command,'xinclude')">
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:value-of select="$line"/>
                                     </xsl:element>
@@ -159,7 +163,7 @@
                                     <xsl:variable name="xarray" select="unparsed-text($xarrayuri)"/>
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:value-of select="$comment"/>
                                     </xsl:element>
@@ -175,7 +179,7 @@
                                     <!-- <xsl:variable name="xvarset" select="tokenize(unparsed-text($xvarseturi),'\r?\n')"/> -->
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:attribute name="select">
                                                 <xsl:value-of select="concat($sq,$comment,$sq)"/>
@@ -198,16 +202,27 @@
                                           </xsl:choose>
                                     </xsl:for-each>
                               </xsl:when>
-                              <xsl:when test="matches($command,'inc|tasklist')">
+                              <xsl:when test="matches($command,'tasklist')">
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:attribute name="select">
                                                 <xsl:value-of select="concat($sq,$comment,$sq)"/>
                                           </xsl:attribute>
                                     </xsl:element>
                                     <xsl:choose>
+                                          <xsl:when test="unparsed-text-available($projecturi)">
+                                                <xsl:variable name="projecttask" select="tokenize(unparsed-text($projecturi),'\r?\n')"/>
+                                                <xsl:for-each select="$projecttask">
+                                                      <!-- copy the root folder files pub.cmd and local_var.cmd -->
+                                                      <xsl:call-template name="parseline">
+                                                            <xsl:with-param name="line" select="."/>
+                                                            <xsl:with-param name="curpos" select="$curpos"/>
+                                                            <xsl:with-param name="sub" select="concat('-sub',$curpos,'-')"/>
+                                                      </xsl:call-template>
+                                                </xsl:for-each>
+                                          </xsl:when>
                                           <xsl:when test="unparsed-text-available($commonuri)">
                                                 <xsl:variable name="projecttask" select="tokenize(unparsed-text($commonuri),'\r?\n')"/>
                                                 <xsl:for-each select="$projecttask">
@@ -229,7 +244,7 @@
                               <xsl:when test="matches($command,'projectxslt')">
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:attribute name="select">
                                                 <xsl:value-of select="concat($sq,$comment,$sq)"/>
@@ -240,7 +255,7 @@
                                     <!-- variable line -->
                                     <xsl:element name="xsl:variable">
                                           <xsl:attribute name="name">
-                                                <xsl:value-of select="concat('comment',position())"/>
+                                                <xsl:value-of select="$label"/>
                                           </xsl:attribute>
                                           <xsl:value-of select="$comment"/>
                                     </xsl:element>
@@ -249,31 +264,9 @@
                                           <xsl:with-param name="name" select="$name"/>
                                           <xsl:with-param name="value">
                                                 <xsl:choose>
-                                                      <!--  <xsl:when test="matches($value,'^%.*:.*=.*%')">
-                                                replace string in variable
-                                                <xsl:variable name="vpart" select="tokenize($value,':')"/>
-                                                <xsl:variable name="fpart" select="tokenize($vpart[2],'=')"/>
-                                                <xsl:variable name="varname" select="replace($vpart[1],'%','')"/>
-                                                <xsl:variable name="find" select="$fpart[1]"/>
-                                                <xsl:variable name="replace" select="replace($fpart[2],'%','')"/>
-                                                <xsl:text>replace($</xsl:text>
-                                                <xsl:value-of select="$varname"/>
-                                                <xsl:text>,'</xsl:text>
-                                                <xsl:value-of select="$find"/>
-                                                <xsl:text>','</xsl:text>
-                                                <xsl:value-of select="$replace"/>
-                                                <xsl:text>')</xsl:text>
-                                          </xsl:when>
-                                          <xsl:when test="matches($value,'^&#34;?%[^%]+%&#34;?')">
-                                                <xsl:text>$</xsl:text>
-                                                <xsl:value-of select="replace($value,'%','')"/>
-                                          </xsl:when> -->
                                                       <xsl:when test="matches($value,'%semicolon%')">
                                                             <xsl:text>';'</xsl:text>
                                                       </xsl:when>
-                                                      <!--    <xsl:when test="matches($value,'%voltitle: =%')">
-                                                <xsl:text>translate($voltitle,' ', '')</xsl:text>
-                                          </xsl:when> -->
                                                       <xsl:when test="matches($value,'^&#34;?%[\w\d\-_]+:.*=.*%&#34;?$')">
                                                             <!-- Matches batch variable with a find and replace structure -->
                                                             <xsl:variable name="re" select="'^&#34;?%([\w\d\-_]+):(.*)=(.*)%&#34;?$'"/>
@@ -445,7 +438,7 @@
                   </xsl:element>
                   <!--  now test if there are = in the list and make a key list -->
                   <xsl:if test="matches($value,'=')">
-                        <xsl:variable name="key" select="tokenize($value,'=.* ?')"/>
+                        <xsl:variable name="key" select="tokenize($value,'=.*_?')"/>
                         <xsl:element name="xsl:variable">
                               <xsl:attribute name="name">
                                     <xsl:value-of select="replace($name,'_semicolon-list','-key')"/>

@@ -29,7 +29,15 @@
       <xsl:template match="lxGroup">
             <xsl:variable name="pos" select="count(preceding-sibling::lxGroup) + 1"/>
             <xsl:variable name="id" select="lx"/>
-            <xsl:variable name="homonym" select="replace(lx,'.+(\d?)$','$1')"/>
+            <xsl:variable name="lx" select="replace(lx,'\d$','')"/>
+            <xsl:variable name="homonym">
+                  <xsl:choose>
+                        <xsl:when test="matches(lx,'\d$')">
+                              <xsl:value-of select="replace(lx,'.+(\d)$','$1')"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                  </xsl:choose>
+            </xsl:variable>
             <xsl:element name="entry">
                   <xsl:attribute name="dateCreated">
                         <xsl:value-of select="current-dateTime()"/>
@@ -44,31 +52,69 @@
                         <!-- <xsl:value-of select="concat(lx,'_',hm,'_','lx',$pos)"/> -->
                         <xsl:value-of select="$id"/>
                   </xsl:attribute>
-                  <xsl:if test="$homonym">
+                  <xsl:if test="matches(lx/text(),'\d$')">
                         <xsl:attribute name="order">
                               <xsl:value-of select="$homonym"/>
                         </xsl:attribute>
                   </xsl:if>
-                  <xsl:choose>
-                        <xsl:when test="child::*[local-name() = $lexical-node]">
-                              <xsl:element name="lexical-unit">
-                                    <xsl:apply-templates select="*[local-name() = $lexical-node]"/>
-                              </xsl:element>
-                        </xsl:when>
-                        <xsl:otherwise>
-                              <xsl:apply-templates select="*">
-                                    <xsl:with-param name="pos" select="$pos"/>
-                                    <xsl:with-param name="id" select="$id"/>
-                                    <xsl:with-param name="secaller" select="'true'"/>
-                              </xsl:apply-templates>
-                        </xsl:otherwise>
-                  </xsl:choose>
+                  <xsl:element name="lexical-unit">
+                        <xsl:apply-templates select="lx" mode="lexical-unit"/>
+                  </xsl:element>
+                  <!-- <xsl:if test="lc">
+                        <xsl:element name="citation">
+                              <xsl:apply-templates select="lc" mode="citation"/>
+                        </xsl:element>
+                  </xsl:if> -->
+                  <xsl:apply-templates select="*">
+                        <xsl:with-param name="pos" select="$pos"/>
+                        <xsl:with-param name="id" select="$id"/>
+                        <xsl:with-param name="secaller" select="'true'"/>
+                  </xsl:apply-templates>
             </xsl:element>
-            <xsl:apply-templates select="*[local-name() = $subentry-group-node]">
+            <xsl:apply-templates select="*[local-name() = $se-group-node]">
                   <!-- Create the se as separate entries -->
                   <xsl:with-param name="pos" select="$pos"/>
                   <xsl:with-param name="id" select="$id"/>
             </xsl:apply-templates>
+      </xsl:template>
+      <xsl:template match="lx"/>
+      <xsl:template match="lx" mode="lexical-unit">
+            <xsl:variable name="lx" select="replace(.,'\d$','')"/>
+            <!-- <xsl:variable name="homonym" select="replace(.,'.+(\d?)$','$1')"/> -->
+            <xsl:variable name="homonym">
+                  <xsl:choose>
+                        <xsl:when test="matches(.,'\d$')">
+                              <xsl:value-of select="replace(.,'.+(\d)$','$1')"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                  </xsl:choose>
+            </xsl:variable>
+            <form lang="{f:keyvalue($element-lang,name())}">
+                  <xsl:element name="text">
+                        <xsl:value-of select="$lx"/>
+                  </xsl:element>
+            </form>
+            <xsl:if test="matches(.,'\d$')">
+                  <form lang="numb">
+                        <xsl:element name="text">
+                               <!-- <span class="homonym"> -->
+                                    <xsl:value-of select="$homonym"/>
+                               <!-- </span> -->
+                        </xsl:element>
+                  </form>
+            </xsl:if>
+      </xsl:template>
+      <xsl:template match="lc" mode="citation">
+            <xsl:variable name="lx" select="replace(.,'\d$','')"/>
+            <xsl:variable name="homonym" select="replace(.,'.+(\d?)$','$1')"/>
+            <form lang="{f:keyvalue($element-lang,name())}">
+                  <xsl:element name="text">
+                        <xsl:value-of select="$lx"/>
+                        <sub>
+                              <xsl:value-of select="$homonym"/>
+                        </sub>
+                  </xsl:element>
+            </form>
       </xsl:template>
       <xsl:template match="*[local-name() = $pos-group-node]">
             <xsl:param name="pos"/>
@@ -82,8 +128,9 @@
                   <xsl:attribute name="order">
                         <xsl:value-of select="$pspos"/>
                   </xsl:attribute>
-                  <xsl:apply-templates select="ps"/>
+                  <!--  <xsl:apply-templates select="ps"/>
                   <xsl:apply-templates select="*[local-name() = $gloss-element]"/>
+                  <xsl:apply-templates select="*[local-name() =$second-level-node]"> -->
                   <xsl:apply-templates select="*[local-name() =$second-level-node]">
                         <xsl:with-param name="pos" select="$pos"/>
                         <xsl:with-param name="pspos" select="$pspos"/>
@@ -93,12 +140,12 @@
                   </xsl:apply-templates>
             </xsl:element>
       </xsl:template>
-      <xsl:template match="*[local-name() = $subentry-group-node]">
+      <xsl:template match="*[local-name() = $se-group-node]">
             <xsl:param name="pos"/>
             <xsl:param name="pspos"/>
             <xsl:param name="id"/>
             <xsl:param name="secaller"/>
-            <xsl:variable name="sepos" select="count(preceding-sibling::*[local-name() = $subentry-group-node]) + 1"/>
+            <xsl:variable name="sepos" select="count(preceding-sibling::*[local-name() = $se-group-node]) + 1"/>
             <xsl:variable name="refid" select="concat(se,$pos,'.',$sepos)"/>
             <xsl:choose>
                   <xsl:when test="$secaller = $true">
@@ -122,7 +169,7 @@
                               <xsl:element name="lexical-unit">
                                     <xsl:apply-templates select="*[local-name() = $lexical-node]"/>
                               </xsl:element>
-                              <xsl:apply-templates select="*[local-name() = $second-level-node]">
+                              <xsl:apply-templates>
                                     <xsl:with-param name="inse" select="'true'"/>
                               </xsl:apply-templates>
                         </xsl:element>
@@ -134,17 +181,19 @@
             <xsl:choose>
                   <xsl:when test="local-name() = $variant-node">
                         <xsl:element name="variant">
-                              <xsl:call-template name="form">
-                                    <xsl:with-param name="lang" select="f:keyvalue($element-lang,name())"/>
-                                    <xsl:with-param name="text" select="."/>
-                              </xsl:call-template>
+                              <form lang="{f:keyvalue($element-lang,name())}">
+                                    <xsl:element name="text">
+                                          <xsl:apply-templates/>
+                                    </xsl:element>
+                              </form>
                         </xsl:element>
                   </xsl:when>
                   <xsl:otherwise>
-                        <xsl:call-template name="form">
-                              <xsl:with-param name="lang" select="f:keyvalue($element-lang,name())"/>
-                              <xsl:with-param name="text" select="."/>
-                        </xsl:call-template>
+                        <form lang="{f:keyvalue($element-lang,name())}">
+                              <xsl:element name="text">
+                                    <xsl:apply-templates/>
+                              </xsl:element>
+                        </form>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:template>
@@ -167,17 +216,20 @@
             <xsl:element name="example">
                   <xsl:apply-templates select="*[local-name() = $example-vern-node]"/>
                   <xsl:element name="translation">
-                        <xsl:apply-templates select="*"/>
+                        <xsl:apply-templates select="*[local-name() ne $example-vern-node]"/>
                   </xsl:element>
             </xsl:element>
       </xsl:template>
       <xsl:template match="*[name() = $note-element-key]">
             <note type="{f:keyvalue($note-element,name())}">
-                  <form lang="{f:keyvalue($element-lang,name())}">
-                        <xsl:element name="text">
-                              <xsl:value-of select="f:keyvalue($note-value-substitute,.)"/>
-                        </xsl:element>
-                  </form>
+                  <xsl:choose>
+                        <xsl:when test=". = ''">
+                              <xsl:value-of select="f:keyvalue($note-element-empty-meaning,name())"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                              <xsl:apply-templates/>
+                        </xsl:otherwise>
+                  </xsl:choose>
             </note>
       </xsl:template>
       <xsl:template match="*[name() = $relation-element-key]">
@@ -206,8 +258,47 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:template>
-      <xsl:template match="*[local-name() = $pos-node]"/>
+      <!-- <xsl:template match="*[local-name() = $pos-node]"/> -->
       <!--  Custom fields start ======================== -->
+      <xsl:template match="glGroup">
+            <definition>
+                  <xsl:apply-templates/>
+            </definition>
+            <xsl:apply-templates mode="reversal"/>
+      </xsl:template>
+      <xsl:template match="gl">
+            <form lang="{f:keyvalue($element-lang,name())}">
+                  <text>
+                        <xsl:value-of select="translate(.,'*','')"/>
+                  </text>
+            </form>
+      </xsl:template>
+      <xsl:template match="gl" mode="reversal">
+            <xsl:variable name="word" select="tokenize(.,' ')"/>
+            <xsl:comment select="$word"/>
+            <xsl:for-each select="$word">
+                  <xsl:if test="matches(.,'^.')">
+                        <reversal type="eng">
+                              <form lang="en">
+                                    <xsl:element name="text">
+                                          <xsl:value-of select="translate(.,'*','')"/>
+                                    </xsl:element>
+                              </form>
+                        </reversal>
+                  </xsl:if>
+            </xsl:for-each>
+      </xsl:template>
+      <xsl:template match="span">
+            <xsl:copy>
+                  <xsl:attribute name="class">
+                        <xsl:value-of select="@class"/>
+                  </xsl:attribute>
+                  <xsl:apply-templates/>
+            </xsl:copy>
+      </xsl:template>
+      <xsl:template match="coGroup">
+            <xsl:apply-templates/>
+      </xsl:template>
       <xsl:template match="lf">
             <relation type="{f:keyvalue($relation-element,.)}" ref="{following-sibling::*[1]}"/>
       </xsl:template>

@@ -1,0 +1,20 @@
+begin               >                   use(main)
+
+group(main)
+c bar codes and Plus codes and * index Eng codeing
+'|b'                >                   store(endmkr) '</span>' endstore '<span class="bold">' use(endchar)
+'|i'                >                   store(endmkr) '</span>' endstore '<span class="emphasis">' use(endchar)
+'|b|i'              >                   store(endmkr) '</span></span>' endstore '<span class="bold"><span class="emphasis">' use(endchar)
+'|i|b'              >                   store(endmkr) '</span></span>' endstore '<span class="emphasis"><span class="bold">' use(endchar)
+' +'                >                   store(endmkr) '</span>' endstore ' <span class="bold">' use(endcharspace)
+'+'                 >                   store(endmkr) '</span>' endstore '<span class="bold">' use(endcharspace)
+
+
+group(endchar)
+'|r'                >                   out(endmkr) use(main)
+'<'                  >                    out(endmkr) dup use(main)
+
+group(endcharspace)
+' '                >                   out(endmkr) ' ' use(main)       c handles + marked words
+'<'                  >                    out(endmkr) dup use(main)
+nl                   >                    out(endmkr) dup use(main)    c added to cope with wrapped lines

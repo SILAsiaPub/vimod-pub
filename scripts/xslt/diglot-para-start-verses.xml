@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    #############################################################
+    # Name:   		.xslt
+    # Purpose:		.
+    # Part of:		Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:		Ian McQuay <ian_mcquay@sil.org>
+    # Created:		2017- -
+    # Copyright:   	(c) 2017 SIL International
+    # Licence:		<MIT>
+    ################################################################ -->
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+      <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
+      <xsl:template match="/*">
+            <xsl:element name="xsl:stylesheet">
+                  <xsl:attribute name="version">
+                        <xsl:text>2.0</xsl:text>
+                  </xsl:attribute>
+                  <xsl:namespace name="f" select="'myfunctions'"/>
+                  <xsl:attribute name="exclude-result-prefixes">
+                        <xsl:text>f</xsl:text>
+                  </xsl:attribute>
+                  <xsl:apply-templates select="usxcollection[1]//chapterGroup">
+                        <xsl:with-param name="pair" select="'inner'"/>
+                  </xsl:apply-templates>
+                  <xsl:apply-templates select="usxcollection[2]//chapterGroup">
+                        <xsl:with-param name="pair" select="'outer'"/>
+                  </xsl:apply-templates>
+            </xsl:element>
+      </xsl:template>
+      <xsl:template match="chapterGroup">
+            <xsl:param name="pair"/>
+            <xsl:element name="xsl:variable">
+                  <!-- Declare projectpath -->
+                  <xsl:attribute name="name">
+                        <xsl:value-of select="$pair"/>
+                        <xsl:text>-</xsl:text>
+                        <xsl:value-of select="@book"/>
+                        <xsl:value-of select="@number"/>
+                  </xsl:attribute>
+                  <xsl:attribute name="select">
+                        <xsl:for-each select="para/verse[1]/@number">
+                              <xsl:text>'</xsl:text>
+                              <xsl:value-of select="tokenize(.,'[\-,]')[1]"/>
+                              <xsl:text>'</xsl:text>
+                              <xsl:choose>
+                                    <xsl:when test="position() = last()"/>
+                                    <xsl:otherwise>
+                                          <xsl:text>, </xsl:text>
+                                    </xsl:otherwise>
+                              </xsl:choose>
+                        </xsl:for-each>
+                        <!-- <xsl:sequence select="para/verse/@number"/> -->
+                  </xsl:attribute>
+            </xsl:element>
+            <!-- <xxx:variable name="{$pair}-{@book}{@number}" select="para/verse/@number"/> -->
+      </xsl:template>
+</xsl:stylesheet>

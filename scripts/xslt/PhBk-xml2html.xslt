@@ -20,17 +20,20 @@
             <xsl:apply-templates select="*"/>
       </xsl:template>
       <xsl:template match="*[local-name() = $page-group]">
-            <xsl:variable name="pos" select="count(preceding-sibling::*)"/>
-            <xsl:variable name="href" select="f:file2uri(concat('file:///',$projectpath,'/html/group-',$pos,'.html'))"/>
-            <xsl:value-of select="sGroup/s[1]"/>
+            <xsl:variable name="page-ref">
+                  <xsl:number value="count(preceding-sibling::*)" format="001"/>
+            </xsl:variable>
+             <!-- <xsl:variable name="pos" select="count(preceding-sibling::*)"/> -->
+            <xsl:variable name="href" select="f:file2uri(concat('file:///',$projectpath,'/html/group-',$page-ref,'.html'))"/>
+            <xsl:value-of select="*[1]/*[1]"/>
             <xsl:text>&#10;</xsl:text>
             <xsl:result-document href="{$href}" format="html5">
                   <html>
                         <head>
                               <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
-                              <link rel="stylesheet" href="{$cssfile}" type="text/css"/>
+                              <link rel="stylesheet" href="../css/{$cssfile}" type="text/css"/>
                               <title>
-                                    <xsl:value-of select="sGroup/s[1]"/>
+                                    <xsl:value-of select="*[1]/*[1]"/>
                               </title>
                         </head>
                         <body>

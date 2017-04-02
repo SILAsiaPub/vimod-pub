@@ -20,7 +20,7 @@ usage:
 java  -jar "saxon9.jar"   -o "output.xml" "sfm2xml-simple.xslt" "sfm2xml-simple.xslt" sourcetexturi="file:///path/source.sfm"
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
-      <xsl:output method="xml" version="1.0" encoding="utf-8" indent="yes"/>
+      <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="yes" indent="yes"/>
       <xsl:include href="inc-file2uri.xslt"/>
       <xsl:param name="sourcetextfile"/>
       <xsl:variable name="sourcetexturi" select="f:file2uri($sourcetextfile)"/>

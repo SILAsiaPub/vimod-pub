@@ -65,6 +65,7 @@
                                           <button type="button" onclick="resetLog()" style="width:60%">Clear log</button>
                                           <br/>
                                           <ul id="log-container"></ul>
+                                          <button type="button" onclick="resetLog()" style="width:60%">Clear log</button>
                                           <script>'use strict';
     function resetLog(){
         return document.getElementById("log-container").innerHTML = "";
