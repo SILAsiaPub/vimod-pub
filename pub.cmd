@@ -415,6 +415,18 @@ set list=%~1
 call :loopstring tasklist "%list%"
 goto :eof
 
+:detectdateformat
+:: Description: Get the date format from the Registery: 0=US 1=AU 2=iso
+set KEY_DATE="HKCU\Control Panel\International"
+FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v iDate`) DO set dateformat=%%A
+rem get the date separator: / or -
+FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v sDate`) DO set dateseparator=%%A
+rem get the time separator: : or ?
+FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v sTime`) DO set timeseparator=%%A
+rem set project log file name by date
+goto :eof
+
+
 :setup
 :: Description: sets variables for the batch file
 :: Revised: 2016-05-04
@@ -434,14 +446,9 @@ set endfuncstring=-------------------------------------- end func
 rem check if logs directory exist and create if not there  DO NOT change to checkdir
 if not exist "%cd%\logs" md "%cd%\logs"
 
-rem Get the date format from the Registery: 0=US 1=AU 2=iso
-set KEY_DATE="HKCU\Control Panel\International"
-FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v iDate`) DO set dateformat=%%A
-rem get the date separator: / or -
-FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v sDate`) DO set dateseparator=%%A
-rem get the time separator: : or ?
-FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY %KEY_DATE% /v sTime`) DO set timeseparator=%%A
+
 rem set project log file name by date
+call :detectdateformat
 call :date
 set projectlog=logs\%curdate%-build.log
 
@@ -1180,6 +1187,8 @@ set outfile=%defaultoutfile%
 ) else (
 set outfile=%testoutfile%
 )
+call :drivepath "%outfile%"
+call :checkdir "%drivepath%"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
@@ -1339,7 +1348,7 @@ if "%looptype%" == "listinfile" (
 )
 rem the string type is used to process a space sepparated string.
 if "%looptype%" == "string" (
-      FOR /F "%foroptions%" %%s IN (%string%) DO call :%function% "%%s"
+      FOR /F "%foroptions%" %%s IN ("%string%") DO call :%function% "%%s"
 )
 rem clear function and tasklist variables in case of later use.
 set function=
@@ -1362,14 +1371,40 @@ if defined masterdebug call :funcdebug %0
 if "%~1" neq "" set action=%~1
 if "%~2" neq "" set list=%~2
 if "%~3" neq "" set comment=%~3
-if defined action echo missing action parameter & goto :eof
-if defined list echo missing list parameter & goto :eof
+if not defined action echo missing action parameter & goto :eof
+if not defined list echo missing list parameter & goto :eof
 echo "%comment%"
 ::echo on
 FOR /F %%s IN ('%list%') DO call :%action% "%%s"
 set action=
 set list=
 set comment=
+if defined masterdebug call :funcdebug %0 end
+goto :eof
+
+:command2var
+:: Description: creates a variable from the command line
+:: Class: command - loop
+:: Required parameters:
+:: varname
+:: command
+:: comment
+:: Depends on:
+:: funcdebug
+:: * - Maybe any function but most likely a tasklist
+:: Note: Either preset or command parameters can be used
+if defined masterdebug call :funcdebug %0
+set commandline=%~1
+set varname=%~2
+set invalid=%~3
+if not defined varname echo missing varname parameter & goto :eof
+if not defined commandline echo missing list parameter & goto :eof
+if defined comment echo %comment%
+FOR /F %%s IN ('%commandline%') DO set %varname%=%%s
+set varname=
+set commandline=
+set comment=
+if "%varname%" == "%invalid%" echo invalid & set skip=on
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -1416,7 +1451,7 @@ if not defined action echo Missing action parameter & goto :eof
 if not defined string echo Missing string parameter & goto :eof
 echo %comment%
 ::echo on
-FOR %%s IN (%string%) DO call :%action% %%s
+FOR /F "delims= " %%s IN ("%string%") DO call :%action% %%s& echo param %%s
 rem clear variables
 set action=
 set string=
@@ -1499,7 +1534,9 @@ set param6=%~6
 if not defined testfile echo missing testfile parameter & goto :eof
 if not defined action echo missing action parameter & goto :eof
 rem if defined param4 set param4=%param4:'="%
+
 call :nameext "%~1"
+
 if exist "%testfile%" (
   rem say what will happen
   if "%action%" == "xcopy" echo %action% %param4% "%testfile%" "%param3%"
@@ -1507,14 +1544,14 @@ if exist "%testfile%" (
   if "%action%" == "move" echo %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "rename" echo %action% "%testfile%" "%param3%"
   if "%action%" == "del" echo %action% %param4% "%testfile%"
-  if "%action%" == "func" echo call :%param3% "%param4%"
+  rem if "%action%" == "func" echo call :%param3% "%param4%"
   if "%action%" == "command" echo call :command "%param3%" "%param4%"  "%param5%"
   if "%action%" == "command2file" echo call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" echo call :tasklist "%param3%" "%param4%"
   if "%action%" == "append" echo copy "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendtext" echo copy /A "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendbin" echo copy /b "%param3%"+"%testfile%" "%param3%"
-  if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
+  rem if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
   if "%action%" == "type" echo type "%testfile%" ^>^> "%param3%"
   if "%action%" == "emptyfile" echo echo. ^> "%testfile%"
   rem now do what was said
@@ -1523,14 +1560,14 @@ if exist "%testfile%" (
   if "%action%" == "move" %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "rename" %action% "%testfile%" "%param3%"
   if "%action%" == "del" %action% /Q "%testfile%"
-  if "%action%" == "func" call :%param3% "%param4%"
+  rem if "%action%" == "func" call :%param3% "%param4%"
   if "%action%" == "command" call :command "%param3%" "%param4%"  "%param5%"
   if "%action%" == "command2file" call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" call :tasklist "%param3%" "%param4%"
   if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendtext" copy /A "%param3%"+"%testfile%" /A "%param3%" /A
   if "%action%" == "append" copy /b "%param3%"+"%testfile%" /b "%param3%" /b
-  if "%action%" == "addtext" echo %param3% >> "%param4%"
+  rem if "%action%" == "addtext" echo %param3% >> "%param4%"
   if "%action%" == "type" type "%testfile%" >> "%param3%"
   if "%action%" == "emptyfile" echo.  > "%testfile%"
   if "%action%" == "fatal" (
@@ -1542,7 +1579,7 @@ if exist "%testfile%" (
     goto :eof
   )
 ) else (
-  echo %testfile% was not found to %action%
+  echo "%testfile%" was not found to %action%
 )
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -1583,7 +1620,7 @@ if not exist  "%testfile%" (
   if "%action%" == "report" call :echolog "File not found! %testfile% - %param3%"
   if "%action%" == "recover" call :echolog "File not found! %testfile% - %param3%"  & goto :eof
   if "%action%" == "command" call :echolog "File not found! %testfile%"  & call :command "%param3%" "%param4%"
-  if "%action%" == "tasklist" call :echolog "File not found! %testfile%" & call :tasklist "%tasklist%" "%param4%"
+  if "%action%" == "tasklist" call :echolog "File not found! %testfile%" & call :tasklist "%param3%" "%param4%"
   if "%action%" == "func" call :echolog "File not found! %testfile%"     & call :%param3% "%param4%" "%param5%"
   if "%action%" == "createfile" call :echolog "File not found! %testfile%" Create empty file.    & echo. > "%testfile%"
   if "%action%" == "fatal" (
@@ -1710,9 +1747,9 @@ FOR /F "eol=# delims== tokens=1,2" %%s IN (%list%) DO (
     set val=
     rem selfvalue is set to let a value equal itself like in user_path_installed.tools
     if not defined selfvalue (
-    set %%s=%%t
+      set %%s=%%t
     ) else (
-    set %%s=%%s
+      set %%s=%%s
     )
     if defined echoeachvariablelistitem echo %%s=%%t
     if defined checktype (
@@ -1802,9 +1839,9 @@ goto :eof
 @echo off
 @if defined debugfuncdebug @echo on
 set entryfunc=%~1
+set debugend=%~2
 if not defined entryfunc echo entryfunc is missing, skipping this function & goto :eof
 set testfunc=debug%entryfunc:~1%
-set debugend=%~2
 if "%debugend%" == "end" (
   set debugstack=%debugstack:~1%
   set nextdebug=%debugstack:~0,1%
@@ -1925,9 +1962,9 @@ goto :eof
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set test=%~1
 set func=%~2
+set funcparams=%~3
 if not defined test echo missing test parameter & goto :eof
 if not defined func echo missing func parameter & goto :eof
-set funcparams=%~3
 if defined funcparams set funcparams=%funcparams:'="%
 if not defined %test% call :%func% %funcparams%
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
@@ -2081,8 +2118,9 @@ if defined errorsuspendprocessing goto :eof
 if defined masterdebug call :funcdebug %0
 call :inccount
 set command=%~1
+set out=%~2
 if not defined command echo missing command & goto :eof
-call :outfile "%~2" "%projectpath%\xml\%pcode%-%count%-command2file.xml"
+call :outfile "%out%" "%projectpath%\xml\%pcode%-%count%-command2file.xml"
 set commandpath=%~3
 set append=%~4
 rem the following is used for the feed back but not for the actual command
@@ -2224,8 +2262,8 @@ goto :eof
 :: Description: to check the encoding of a file
 :: Created: 2016-05-17
 :: Required parameters:
-:: activity = validate or check
 :: file
+:: activity = validate or check
 :: Optional parameters:
 :: validateagainst
 :: Depends on:
@@ -2239,14 +2277,14 @@ set activity=%~2
 set validateagainst=%~3
 call :infile "%testfile%"
 call :nameext "%infile%"
-set command=%encodingchecker% -m %magic% --mime-encoding %infile%
+set command=%encodingchecker% -m %magic% --mime-encoding "%infile%"
 FOR /F "tokens=1-2" %%A IN ('%command%') DO set fencoding=%%B
-rem echo encoding check = %fencoding%
+
 if "%activity%" == "validate" (
     if "%fencoding%" == "%validateagainst%"  (
-        rem %validateagainst%
-      ) else "%fencoding%" == "us-ascii" (
-        rem us-ascii
+        echo Encoding is %fencoding% for file %nameext%.
+      ) else if "%fencoding%" == "us-ascii" (
+        echo Encoding is %fencoding% not %validateagainst% but is usable.
       ) else (
       echo File %nameext% encoding is invalid! 
       echo Encoding found to be %fencoding%! But it was expected to be %validateagainst%.
@@ -2340,13 +2378,14 @@ goto :eof
 :: Required parameters:
 :: findval
 :: datafile
-if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+rem if defined skip goto :eof
+if defined masterdebug call :funcdebug %0
 SET findval=%~1
 set datafile=%~2
 set lookupreturn=
-FOR /F "tokens=1,2 delims==" %%i IN (%datafile%) DO IF %%i EQU %findval% SET lookupreturn=%%j
+FOR /F "tokens=1-2" %%i IN (%datafile%) DO IF "%%i" EQU "%findval%" SET lookupreturn=%%j
 @echo lookup of %findval% returned: %lookupreturn%
-if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
+if defined masterdebug call :funcdebug %0 end
 goto :eof
 
 :start
