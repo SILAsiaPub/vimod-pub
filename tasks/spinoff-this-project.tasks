@@ -8,12 +8,16 @@ select group                        ;ifexist "%copybat%" del
 # now copy essential vimod files
 check dir exists                    ;checkdir "%outprojectpath%\setup-pub\"
 check dir exists                    ;checkdir "%outprojectpath%\tools\"
+pub.cmd                            ;ifexist "%cd%\pub.cmd" xcopy "%outprojectpath%\pub.cmd"
+pub.cmd                            ;ifexist "%cd%\blank.xml" xcopy "%outprojectpath%\blank.xml"
+pub.cmd                            ;ifexist "%cd%\readme.txt" xcopy "%outprojectpath%\readme.txt"
+pub.cmd                            ;ifexist "%cd%\GettingStarted.txt" xcopy "%outprojectpath%\GettingStarted.txt"
 
-copy setup-pub folder data files    ;ifexist "%projectpath%\setup-pub\*.*" xcopy "%outprojectpath%\setup-pub\"
-copy saxon9                         ;ifexist "%projectpath%\tools\saxon9.jar" xcopy "%outprojectpath%\tools\"
+copy setup-pub folder data files    ;ifexist "%cd%\setup-pub\*.*" xcopy "%outprojectpath%\setup-pub\"
+copy saxon9                         ;ifexist "%cd%\tools\saxon\saxon9.jar" xcopy "%outprojectpath%\tools\saxon"
 # copy project files
-copy proj data files                ;ifexist "%projectpath%\*.*" xcopy "%outprojectpath%\"
-copy proj data files                ;ifexist "%projectpath%\setup\*.*" xcopy "%outpath%\%group%\data\%group%\%project%\setup\"
+copy proj data files                ;ifexist "%projectpath%\*.*" xcopy "%outprojectpath%\" \s
+#copy proj data files                ;ifexist "%projectpath%\setup\*.*" xcopy "%outpath%\%group%\data\%group%\%project%\setup\"
 
 
 
