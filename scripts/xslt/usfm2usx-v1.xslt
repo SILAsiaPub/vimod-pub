@@ -20,7 +20,7 @@
       <xsl:include href="inc-file2uri.xslt"/>
        <!-- <xsl:param name="para_list" select="'sp imt is ip ipi im imi ipq imq ipr iq ib ili iot io iex imte ie q qr qc qa qm b tr th thr tc tcr restore'"/> -->
       <xsl:param name="para-re" select="'(id|ide|sts|rem|h|toc1|toc2|toc3|p|m|pmo|pm|pmc|pmr|pi|mi|nb|cls|li|pc|pr|ph|b|cl|cp|cd|mt|mte|ms|mr|s|sr|r|d|sp|imt|is|ip|ipi|im|imi|ipq|imq|ipr|iq|ib|ili|iot|io|iex|imte|ie|q|qr|qc|qa|qm|b|tr|th|thr|tc|tcr|restore)\d?'"/>
-      <xsl:param name="file" select="'D:\My Paratext Projects\WEB\02EXOWEB.SFM'"/>
+      <xsl:param name="file" />
       <xsl:variable name="notestyle" select="tokenize('f x',' ')"/>
        <!-- <xsl:variable name="para" select="tokenize($para_list,' ')"/> -->
       <xsl:variable name="line" select="f:file2lines($file)"/>
