@@ -1,4 +1,14 @@
 <?xml version="1.0"?>
+    <!--
+    #############################################################
+    # Name:   		.xslt
+    # Purpose:		Create a separate project with all needed bits.
+    # Part of:		Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:		Ian McQuay <ian_mcquay@sil.org>
+    # Created:		2017- -
+    # Copyright:   	(c) 2017 SIL International
+    # Licence:		<MIT>
+    ################################################################ -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
       <xsl:param name="projectpath"/>
       <xsl:param name="outpath"/>
