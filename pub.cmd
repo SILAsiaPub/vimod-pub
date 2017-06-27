@@ -369,8 +369,10 @@ if defined masterdebug call :funcdebug %0
 set commandline=%~1
 set varname=%~2
 set invalid=%~3
+set comment=%~4
 if not defined varname echo missing varname parameter & goto :eof
 if not defined commandline echo missing list parameter & goto :eof
+set commandline=%commandline:'="%
 if defined comment echo %comment%
 FOR /F %%s IN ('%commandline%') DO set %varname%=%%s
 set varname=
@@ -525,7 +527,8 @@ goto :eof
 
 :drive
 :: Description: returns the drive
-set drive=%~d1
+set drive=%~d1
+
 goto :eof
 
 
@@ -812,7 +815,8 @@ if "%ampm%" == "AM"  (
   )
 ) else (
   set fhh=%thh%
-)goto :eof
+)
+goto :eof
 
 
 :html2xml
@@ -914,20 +918,27 @@ rem if defined param4 set param4=%param4:'="%
 call :nameext "%~1"
 
 if exist "%testfile%" (
+  if "%param3%" == "%param3: =%" (
+     rem prevent param3 with space trying to match these actions
+     if "%action%" == "func" echo call :%param3% "%param4%"
+     if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
+     if "%action%" == "func" call :%param3% "%param4%"
+     if "%action%" == "addtext" echo %param3% >> "%param4%"
+  )
   rem say what will happen
   if "%action%" == "xcopy" echo %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "copy" echo %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "move" echo %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "rename" echo %action% "%testfile%" "%param3%"
   if "%action%" == "del" echo %action% %param4% "%testfile%"
-  rem if "%action%" == "func" echo call :%param3% "%param4%"
+  
   if "%action%" == "command" echo call :command "%param3%" "%param4%"  "%param5%"
   if "%action%" == "command2file" echo call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" echo call :tasklist "%param3%" "%param4%"
   if "%action%" == "append" echo copy "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendtext" echo copy /A "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendbin" echo copy /b "%param3%"+"%testfile%" "%param3%"
-  rem if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
+  
   if "%action%" == "type" echo type "%testfile%" ^>^> "%param3%"
   if "%action%" == "emptyfile" echo echo. ^> "%testfile%"
   rem now do what was said
@@ -936,14 +947,14 @@ if exist "%testfile%" (
   if "%action%" == "move" %action% %param4% "%testfile%" "%param3%"
   if "%action%" == "rename" %action% "%testfile%" "%param3%"
   if "%action%" == "del" %action% /Q "%testfile%"
-  rem if "%action%" == "func" call :%param3% "%param4%"
+  
   if "%action%" == "command" call :command "%param3%" "%param4%"  "%param5%"
   if "%action%" == "command2file" call :command2file "%param3%" "%param4%" "%param5%" "%param6%"
   if "%action%" == "tasklist" call :tasklist "%param3%" "%param4%"
   if "%action%" == "append" copy "%param3%"+"%testfile%" "%param3%"
   if "%action%" == "appendtext" copy /A "%param3%"+"%testfile%" /A "%param3%" /A
   if "%action%" == "append" copy /b "%param3%"+"%testfile%" /b "%param3%" /b
-  rem if "%action%" == "addtext" echo %param3% >> "%param4%"
+  
   if "%action%" == "type" type "%testfile%" >> "%param3%"
   if "%action%" == "emptyfile" echo.  > "%testfile%"
   if "%action%" == "fatal" (
@@ -1003,22 +1014,6 @@ if "%equal1%" neq "%equal2%" call :%func% %funcparams%
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
-
-
-rem shift
-rem shift
-rem set extraparam=
-rem if ""%~1""=="""" goto :ifNotDefinedDoneStart
-rem set extraparam='%~1'
-rem shift
-rem :ifNotDefinedArgs
-rem if ""%1""=="""" goto :ifNotDefinedDoneStart
-rem set extraparam=%extraparam% '%1'
-rem shift
-rem goto :ifNotdefinedArgs
-rem :ifNotDefinedDoneStart
-rem set extraparam=%extraparam:'="%
-
 :ifnotexist
 :: Description: If a file or folder do not exist, then performs an action.
 :: Required parameters:
@@ -1056,7 +1051,7 @@ if not exist  "%testfile%" (
   if "%action%" == "recover" call :echolog "File not found! %testfile% - %param3%"  & goto :eof
   if "%action%" == "command" call :echolog "File not found! %testfile%"  & call :command "%param3%" "%param4%"
   if "%action%" == "tasklist" call :echolog "File not found! %testfile%" & call :tasklist "%param3%" "%param4%"
-  if "%action%" == "func" call :echolog "File not found! %testfile%"     & call :%param3% "%param4%" "%param5%"
+rem  if "%action%" == "func" call :echolog "File not found! %testfile%"     & call :%param3% "%param4%" "%param5%"
   if "%action%" == "createfile" call :echolog "File not found! %testfile%" Create empty file.    & echo. > "%testfile%"
   if "%action%" == "fatal" (
   call :echolog "File not found! %message%"
@@ -1137,7 +1132,7 @@ rem if defined skip goto :eof
 if defined masterdebug call :funcdebug %0
 SET findval=%~1
 set datafile=%~2
-set lookupreturn=
+set lookupreturn=%~3
 FOR /F "tokens=1-2" %%i IN (%datafile%) DO IF "%%i" EQU "%findval%" SET lookupreturn=%%j
 @echo lookup of %findval% returned: %lookupreturn%
 if defined masterdebug call :funcdebug %0 end
@@ -1554,7 +1549,7 @@ if "%menutype%" == "createdynamicmenu" for /F "eol=# delims=" %%i in ('dir "%pro
     call :checkifvimodfolder %%i
     if not defined skipwriting call :menuwriteoption %%i
 )
-if "%menulist%" neq "utilities.menu" (
+if "%menulist%" neq "%contextmenu%.menu" (
     if defined echoutilities echo.
     if defined echoutilities echo        %utilityletter%. Utilities
 )
@@ -1563,7 +1558,7 @@ if defined breakpointmenu2 pause
 if "%newmenulist%" == "data\%projectsetupfolder%\project.menu" (
     echo        %exitletter%. Exit batch menu
 ) else (
-    if "%newmenulist%" == "%commonmenufolder%\utilities.menu" (
+    if "%newmenulist%" == "%commonmenufolder%\%contextmenu%.menu" (
       echo        %exitletter%. Return to Groups menu
     ) else (
       echo        %exitletter%. Return to calling menu
@@ -1576,9 +1571,9 @@ SET /P Choice=Type the letter and press Enter:
 rem The syntax in the next line extracts the substring
 rem starting at 0 (the beginning) and 1 character long
 IF NOT '%Choice%'=='' SET Choice=%Choice:~0,1%
-IF /I '%Choice%' == '%utilityletter%' call :menu utilities.menu "Utilities Menu" "%projectpath%"
+IF /I '%Choice%' == '%utilityletter%' call :menu %contextmenu%.menu "Context Menu" "%projectpath%"
 IF /I '%Choice%'=='%exitletter%' (
-    if "%menulist%" == "%commonmenufolder%\utilities.menu" (
+    if "%menulist%" == "%commonmenufolder%\%contextmenu%.menu" (
       set skipsettings=on
       pub
     ) else (
