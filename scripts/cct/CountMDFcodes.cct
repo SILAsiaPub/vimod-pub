@@ -80,6 +80,8 @@ begin	>	store(char) 'abcdefghijklmnopqrstuvwxyz01234567890' store(nul)
 		store(lbl-sc) 'Scientific name'
 		store(lbl-sd) 'Semantic domain'
 		store(lbl-se) 'Subentry'
+		store(lbl-sf) 'Sound file'
+		store(lbl-sfx) 'Sound file'
 		store(lbl-sg) 'Singular form'
 		store(lbl-sn) 'Sense number'
 		store(lbl-so) 'Source'
@@ -184,6 +186,8 @@ begin	>	store(char) 'abcdefghijklmnopqrstuvwxyz01234567890' store(nul)
 		store(sc) "0"
 		store(sd) "0"
 		store(se) "0"
+		store(sf) "0"
+		store(sfx) "0"
 		store(sg) "0"
 		store(sn) "0"
 		store(so) "0"
@@ -289,6 +293,8 @@ begin	>	store(char) 'abcdefghijklmnopqrstuvwxyz01234567890' store(nul)
 		clear(xsc)
 		clear(xsd)
 		clear(xse)
+		clear(xsf)
+		clear(xsfx)
 		clear(xsg)
 		clear(xsn)
 		clear(xso)
@@ -475,7 +481,8 @@ group(main)
 '\sd '	>	dup incr(sd) set(xsd)
 '\sd'	>	dup incr(sd) set(xsd)
 '\se '	>	dup incr(se) set(xse)
-'\se'	>	dup incr(se) set(xse)
+'\sf'	>	dup incr(sf) set(xsf)
+'\sfx'	>	dup incr(sfx) set(xsfx)
 '\sg '	>	dup incr(sg) set(xsg)
 '\sg'	>	dup incr(sg) set(xsg)
 '\sn '	>	dup incr(sn) set(xsn)
@@ -611,6 +618,8 @@ endfile	>	dup
 		if(xsc) 'sc' tab out(sc) tab out(lbl-sc) nl endif
 		if(xsd) 'sd' tab out(sd) tab out(lbl-sd) nl endif
 		if(xse) 'se' tab out(se) tab out(lbl-se) nl endif
+		if(xsf) 'sf' tab out(sf) tab out(lbl-sf) nl endif
+		if(xsfx) 'sfx' tab out(sfx) tab out(lbl-sfx) nl endif
 		if(xsg) 'sg' tab out(sg) tab out(lbl-sg) nl endif
 		if(xsn) 'sn' tab out(sn) tab out(lbl-sn) nl endif
 		if(xso) 'so' tab out(so) tab out(lbl-so) nl endif
@@ -716,6 +725,8 @@ endfile	>	dup
 		if(xsc) "sc " endif
 		if(xsd) "sd " endif
 		if(xse) "se " endif
+		if(xsf) "sf " endif
+		if(xsfx) "sfx " endif
 		if(xsg) "sg " endif
 		if(xsn) "sn " endif
 		if(xso) "so " endif
