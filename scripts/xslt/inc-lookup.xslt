@@ -158,6 +158,46 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
+      <xsl:function name="f:lookupcsv">
+            <!-- generic lookup function 7 parameters
+				uses existing array as input not a string-->
+            <xsl:param name="label"/>
+            <xsl:param name="array"/>
+            <xsl:param name="string"/>
+            <xsl:param name="find-column"/>
+            <xsl:param name="return-column"/>
+            <xsl:param name="altnomatch"/>
+            <xsl:variable name="searchvalues_list">
+                  <xsl:for-each select="$array">
+                        <xsl:variable name="subarray" select="f:csvTokenize(.)"/>
+                        <xsl:value-of select="concat($subarray[$find-column],'&#9;')"/>
+                  </xsl:for-each>
+            </xsl:variable>
+            <xsl:variable name="searchvalues" select="tokenize($searchvalues_list,'&#9;')"/>
+            <xsl:choose>
+                  <!-- make sure the item is in the set of data being searched, if not then return error message in output with string of un matched item -->
+                  <xsl:when test="$searchvalues=$string">
+                        <xsl:for-each select="$array">
+                              <!-- loop through the known data to find a match -->
+                              <xsl:variable name="subarray" select="f:csvTokenize(.)"/>
+                              <xsl:if test="$subarray[$find-column] = $string">
+                                    <xsl:value-of select="$subarray[$return-column]"/>
+                              </xsl:if>
+                        </xsl:for-each>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:choose>
+                              <xsl:when test="$altnomatch">
+                                    <xsl:value-of select="$altnomatch"/>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                    <xsl:value-of select="concat('XXXX-',$string,'-not-found-by-',$label,'-LUP-XX')"/>
+                              </xsl:otherwise>
+                        </xsl:choose>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:function>
+
       <xsl:function name="f:position">
             <xsl:param name="array"/>
             <xsl:param name="find"/>
@@ -181,6 +221,33 @@
                   <xsl:variable name="subarray" select="tokenize(.,$separator)"/>
                   <xsl:sequence select="$subarray[$chosen-column]"/>
             </xsl:for-each>
+      </xsl:function>
+      <xsl:function name="f:subsetcsvarray">
+            <!-- The following f:subsetarray subsets a two dimentional array, into a one dimentional array. 
+		  Returning the field selected in a new array.
+		  This is important if the parent is large and used in a lookup. 
+		  i.e. a 2500 line by 3 field array, 
+		   in a regular lookup takes 3.5 min but reduces to less than 30 seconds if subseted first. -->
+            <xsl:param name="array"/>
+            <xsl:param name="chosen-column"/>
+            <xsl:for-each select="$array">
+                  <xsl:variable name="subarray" select="f:csvTokenize(.)"/>
+                  <xsl:sequence select="$subarray[$chosen-column]"/>
+            </xsl:for-each>
+      </xsl:function>
+      <xsl:function name="f:csvTokenize" as="xs:string+">
+            <!-- 
+            From: http://andrewjwelch.com/code/xslt/csv/csv-to-xml_v2.html
+            Modifications by: Ian McQuay 2014-12-22
+            1: changed the function name space to conform to my function namespace
+		2: changed the function name from getTokens to csvTokenize
+		s-->
+            <xsl:param name="str" as="xs:string"/>
+            <xsl:analyze-string select="concat($str, ',')" regex='(("[^"]*")+|[^,]*),'>
+                  <xsl:matching-substring>
+                        <xsl:sequence select='replace(regex-group(1), "^""|""$|("")""", "$1")'/>
+                  </xsl:matching-substring>
+            </xsl:analyze-string>
       </xsl:function>
       <xsl:template name="lookup">
             <!-- This function is depreciated but still kept for backwards compatability 
