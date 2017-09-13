@@ -25,7 +25,7 @@
             <xsl:apply-templates select="book"/>
       </xsl:template>
       <xsl:template match="book">
-            <xsl:variable name="outfile" select="concat($sfmoutpath,'\',$iso,@bkseq,@book,'.sfm')"/>
+            <xsl:variable name="outfile" select="concat($sfmoutpath,'\',$iso,@ptbknumb,'-',@book,'.sfm')"/>
             <xsl:variable name="outfileuri" select="f:file2uri($outfile)"/>
             <xsl:value-of select="concat($outfile,'&#10;')"/>
             <xsl:result-document href="{$outfileuri}" format="text">
@@ -157,6 +157,14 @@
                   <xsl:when test="@class = $b">
                         <xsl:value-of select="'&#10;\b '"/>
                   </xsl:when>
+                  <xsl:when test="@class = $k">
+                        <xsl:value-of select="'&#10;\p \k '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $k-close">
+                        <xsl:value-of select="'\k* '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
                   <xsl:when test="@class = $iot">
                         <xsl:value-of select="'&#10;'"/>
                         <xsl:value-of select="'\iot '"/>
@@ -195,6 +203,11 @@
                   <xsl:when test="@class = $s">
                         <xsl:value-of select="'&#10;'"/>
                         <xsl:value-of select="'\s '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $s2">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\s2 '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
                   <xsl:when test="@class = $r">
