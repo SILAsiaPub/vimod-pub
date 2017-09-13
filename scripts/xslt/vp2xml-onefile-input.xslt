@@ -19,9 +19,44 @@
       <xsl:include href="vpxml-cmap.xslt"/>
       <xsl:include href="project.xslt"/>
       <xsl:variable name="vptext" select="f:file2text($allvptextutf8file)"/>
-      <xsl:variable name="vptext2" select="translate(f:replace-array($vptext,$replacearray,1,'&#9;'),'&lt;&gt;&#13;','{}')"/>
-      <xsl:variable name="bookraw" select="tokenize($vptext2,'@@@ scr ')"/>
       <xsl:variable name="replacearray" select="f:file2lines($replacearrayfile)"/>
+      <xsl:include href="inc-lookup.xslt"/>
+      <xsl:param name="inputfile" select="'setup\book2let-lookup.txt'"/>
+      <xsl:variable name="line" select="f:file2lines(concat($projectpath,'\',$inputfile))"/>
+      <xsl:variable name="alltext">
+            <xsl:call-template name="jointext"/>
+      </xsl:variable>
+      <xsl:variable name="alltext2" select="translate(f:replace-array($alltext,$replacearray,1,'&#9;'),'&lt;&gt;&#13;','{}')"/>
+      <xsl:variable name="bookraw" select="tokenize($alltext2,'@@@ scr ')"/>
+      <xsl:template name="jointext">
+            <xsl:text>&#10;&#10;</xsl:text>
+            <xsl:for-each select="$line">
+                  <!-- <xsl:comment select="."/> -->
+                  <xsl:variable name="bk" select="tokenize(.,'=')"/>
+                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$intropart,$fileext))"/>
+                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$fileext))"/>
+                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$fnpart,$fileext))"/>
+                  <!-- <xsl:comment select="$bkbody"/> -->
+                  <xsl:if test="unparsed-text-available($bkbody)">
+                        <xsl:value-of select="'@@@ scr '"/>
+                        <xsl:value-of select="$bk[number($if2let)]"/>
+                        <xsl:text>&#10;</xsl:text>
+                  </xsl:if>
+                  <!-- <xsl:comment select="$bkbody"/> -->
+                  <xsl:if test="unparsed-text-available($bkintro)">
+                        <xsl:value-of select="unparsed-text($bkintro)"/>
+                  </xsl:if>
+                  <xsl:if test="unparsed-text-available($bkbody)">
+                        <xsl:value-of select="unparsed-text($bkbody)"/>
+                  </xsl:if>
+                  <xsl:if test="unparsed-text-available($bkfn)">
+                        <xsl:text>&#10;</xsl:text>
+                        <xsl:text>@@@ fn  </xsl:text>
+                        <xsl:text>&#10;</xsl:text>
+                        <xsl:value-of select="unparsed-text($bkfn)"/>
+                  </xsl:if>
+            </xsl:for-each>
+      </xsl:template>
       <xsl:template match="/">
             <xsl:comment select="substring($vptext,0,100)"/>
             <!-- starting template -->
@@ -68,7 +103,7 @@
             <xsl:param name="book"/>
             <xsl:param name="type"/>
             <xsl:param name="text"/>
-            <xsl:variable name="para" select="tokenize($text,'\n@')"/>
+            <xsl:variable name="para" select="tokenize($text,'\n?@')"/>
             <!--<xsl:value-of select="$text"/>
             <xsl:value-of select="'&#10;'"/> -->
             <xsl:element name="{$type}">
