@@ -16,7 +16,7 @@
     # lookup param: label array string field-separator find-column return-column
     ################################################################
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <!--<xsl:include href="project.xslt"/>-->
       <xsl:variable name="yestrue" select="tokenize('true yes on 1','\s+')"/>
       <xsl:function name="f:lookup">
@@ -197,7 +197,6 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
-
       <xsl:function name="f:position">
             <xsl:param name="array"/>
             <xsl:param name="find"/>
@@ -235,14 +234,14 @@
                   <xsl:sequence select="$subarray[$chosen-column]"/>
             </xsl:for-each>
       </xsl:function>
-      <xsl:function name="f:csvTokenize" as="xs:string+">
+      <xsl:function name="f:csvTokenize">
             <!-- 
             From: http://andrewjwelch.com/code/xslt/csv/csv-to-xml_v2.html
             Modifications by: Ian McQuay 2014-12-22
             1: changed the function name space to conform to my function namespace
 		2: changed the function name from getTokens to csvTokenize
 		s-->
-            <xsl:param name="str" as="xs:string"/>
+            <xsl:param name="str"/>
             <xsl:analyze-string select="concat($str, ',')" regex='(("[^"]*")+|[^,]*),'>
                   <xsl:matching-substring>
                         <xsl:sequence select='replace(regex-group(1), "^""|""$|("")""", "$1")'/>
