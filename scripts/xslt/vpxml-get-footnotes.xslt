@@ -12,7 +12,6 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
-      
       <xsl:include href="inc-copy-anything.xslt"/>
       <xsl:include href="project.xslt"/>
       <xsl:template match="caller">
@@ -22,7 +21,7 @@
             <xsl:if test="//fnote[@seq = $callerno] and $calleeletter ne $callerletter">
                   <xsl:text>&lt;!-- match error --&gt;</xsl:text>
             </xsl:if>
-            <xsl:copy-of select="//fnote[@nseq = $callerno]"/>
+            <xsl:copy-of select="ancestor::book/note/fnote[@nseq = $callerno]"/>
       </xsl:template>
       <xsl:template match="note"/>
 </xsl:stylesheet>
