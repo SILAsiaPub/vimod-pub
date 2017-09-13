@@ -14,14 +14,35 @@
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-copy-anything.xslt"/>
       <xsl:include href="project.xslt"/>
+      <xsl:template match="scr">
+            <xsl:copy>
+                  <xsl:apply-templates select="@*"/>
+                  <xsl:apply-templates select="node()">
+                        <xsl:with-param name="fnbefore" select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller])"/>
+                  </xsl:apply-templates>
+            </xsl:copy>
+      </xsl:template>
+      <xsl:template match="para">
+            <xsl:param name="fnbefore"/>
+            <xsl:copy>
+                  <xsl:apply-templates select="@*"/>
+                  <xsl:apply-templates select="node()">
+                        <xsl:with-param name="fnbefore" select="$fnbefore"/>
+                  </xsl:apply-templates>
+            </xsl:copy>
+      </xsl:template>
       <xsl:template match="tag[@value = $caller-feature][normalize-space(.) = $caller][not(matches(preceding-sibling::*[1],'^\d+$'))]">
             <!--<xsl:template match="tag[matches(@value,$f_match)]"> -->
+            <xsl:param name="fnbefore"/>
             <xsl:choose>
                   <xsl:when test="string-length(.) = 0"/>
                   <xsl:otherwise>
                         <xsl:element name="caller">
                               <xsl:attribute name="cseq">
-                                    <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller][not(matches(preceding-sibling::*[1],'^\d+$'))]) + 1"/>
+                                       <!-- <xsl:number count="//tag[@value = $caller-feature][normalize-space(.) = $caller]" format="01."/>  -->
+                                    <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller]) + 1 - number($fnbefore)"/>
+ <!-- <xsl:text>-</xsl:text> -->
+                                     <!-- <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller][ancestor::book/scr/para/tag]) + 1"/> -->
                               </xsl:attribute>
                               <xsl:attribute name="value">
                                     <xsl:value-of select="@value"/>
@@ -47,7 +68,7 @@
             <!-- this is when footnotes are in individual paragraphs -->
             <xsl:element name="fnote">
                   <xsl:attribute name="nseq">
-                        <xsl:value-of select="count(preceding::para[@class = $fnote]) + 1"/>
+                        <xsl:value-of select="count(preceding-sibling::*[@class = $fnote]) + 1"/>
                   </xsl:attribute>
                   <xsl:apply-templates/>
             </xsl:element>
@@ -56,7 +77,7 @@
             <!-- this is when multiple footnotes are in one paragraphs -->
             <xsl:element name="fnote">
                   <xsl:attribute name="nseq">
-                        <xsl:value-of select="count(preceding::calleeGroup)   + 1"/>
+                        <xsl:value-of select="count(preceding-sibling::calleeGroup)   + 1"/>
                   </xsl:attribute>
                   <xsl:apply-templates/>
             </xsl:element>
