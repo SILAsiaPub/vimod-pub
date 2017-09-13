@@ -2,7 +2,7 @@
 <!--
     #############################################################
     # Name:         vpxml-generate-callee-report.xslt
-    # Purpose:
+    # Purpose:	Generate a callee report to compare to caller report.
     # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
     # Author:       Ian McQuay <ian_mcquay.org>
     # Created:      2015- -
@@ -35,7 +35,7 @@
       <xsl:template match="tag[@value = $callee-ref-tag]">
             <xsl:choose>
                   <xsl:when test="matches(normalize-space(.),'^[\d:\-,ab]+$')">
-                        <xsl:value-of select="."/>
+                        <xsl:value-of select="normalize-space(.)"/>
                   </xsl:when>
                   <xsl:otherwise/>
             </xsl:choose>
