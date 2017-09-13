@@ -80,6 +80,14 @@
                               <xsl:text>sfm = s</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
+                        <xsl:if test="$class = $s1">
+                              <xsl:text>sfm = s1</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$class = $s2">
+                              <xsl:text>sfm = s2</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
                         <xsl:if test="$class = $r">
                               <xsl:text>sfm = r</xsl:text>
                               <xsl:text>&#9;</xsl:text>
@@ -162,6 +170,14 @@
                         </xsl:if>
                         <xsl:if test="$class = $b">
                               <xsl:text>sfm = b </xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$class = $k">
+                              <xsl:text>sfm = k </xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$class = $k-close">
+                              <xsl:text>sfm = k* </xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $inline_para">
