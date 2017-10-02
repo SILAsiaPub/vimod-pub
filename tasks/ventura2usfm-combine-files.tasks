@@ -6,9 +6,9 @@ get var                       ;projectvar
 #run vpjoinfiles.cmd file      ;command "call resources\cmd\vpjoinfiles.cmd %filename%"
 #for %%b in (%books%) do call :copy %%b
 # The following sets the book names for 3 (default) or 2 leter codes
-get boo codes to use          ;tasklist books%if2let%.tasks
+get book codes to use          ;tasklist books%if2let%.tasks
 #delete file                   ;ifexist "%allvptextfile%" emptyfile 
-mank new file                 ;command2file "echo @@@start = "  "%allvptextfile%"
+make new file                 ;command2file "echo @@@start = "  "%allvptextfile%"
 #create empty file             ;echo add2file "@dummy" "%allvptextfile%"
 run book loop                 ;loopstring "tasklist join-vp-files.tasks" "%books%"
 #remove unwanted char          ;command2file "sfk xed '%outfile%' /\x1a//" "%allvptextfileprecleaned%"

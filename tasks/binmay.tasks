@@ -4,5 +4,8 @@ get inputs                    ;var find "%~2"
                               ;var replace "%~3"
                               ;infile "%~4"
                               ;outfile "%~5" "%projectpath%\xml\binmay-mod%count%.xml" 
+                              ;var command "'%binmay%' -s '%find%' -r '%replace%' -i '%infile%' -o '%outfile%'"
+                              ;before
                               ;command "'%binmay%' -s '%find%' -r '%replace%' -i '%infile%' -o '%outfile%'"
+                              ;after
                              

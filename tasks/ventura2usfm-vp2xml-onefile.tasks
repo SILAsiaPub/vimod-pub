@@ -1,7 +1,9 @@
 # one file tasks
 vars                                    ;projectvar
-pcode                                   ;var pcode onefile-%iso%
-import all available files into xml     ;xslt vp2xml-onefile-input "" blank.xml "%projectpath%\xml\%iso%-base.xml"
+pcode                                   ;var pcode "onefile-%iso%"
+remove files                            ;ifexist "%projectpath%\temp\*%fileext%" del
+count characters                        ;cct remove-illegal-for-xml.cct "%projectpath%\%sourcefolder%\*%fileext%" "%projectpath%\temp\*%fileext%"
+import all available files into xml     ;xslt vp2xml-multifile-input "" blank.xml "%projectpath%\xml\%iso%-base.xml"
 # make base xml file                      ;outputfile 
                                         ;xslt vpxml-remove-empty
                                         ;xslt vpxml-remove-unwanted
