@@ -1,0 +1,7 @@
+# fnr.exe" --cl --dir "D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk\data\Ventura\ventura2usfm\WAF-publications\source" --fileMask "*.txt" --find "}" --replace "Ʋ"
+get inputs                    ;var find "%~2"
+                              ;var replace "%~3"
+                              ;var inpath "%~4"
+                              ;var pattern "%~5"
+                              ;ifnotdefined fnr var "fnr fnr"
+                              ;command "%fnr% --cl --dir '%inpath%' --fileMask '*%pattern%' --useRegEx --find '%find%' --replace '%replace%'"

@@ -1,0 +1,6 @@
+# sfk rep -binary /1A/20/ -dir docs -file .txt
+get inputs                    ;var find "%~2"
+                              ;var replace "%~3"
+                              ;var inpath "%~4"
+                              ;var pattern "%~5"
+                              ;command "sfk rep -text /%find%/%replace%/  -dir '%inpath%' -file %pattern% -yes"

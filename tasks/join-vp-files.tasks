@@ -1,3 +1,4 @@
+echo for debugging            ;echo on
 get book code		;var bk %~2
 file			;var file "%projectpath%\%sourcefolder%\%langpre%%bk%%fileext%"
 intro file		;var introfile "%projectpath%\%sourcefolder%\%langpre%%bk%%intropart%%fileext%"
@@ -10,5 +11,5 @@ get text		          ;ifexist "%file%"  command "sfk xed '%file%' /\x1a//  >> '%a
 add footnote header           ;ifexist "%fnfile%" addtext "@@@ fn " "%allvptextfile%"
 #get footnote		;ifexist "%fnfile%"  type "%allvptextfile%"
 get footnote		;ifexist "%fnfile%" command "sfk xed '%fnfile%' /\x1a//  >> '%allvptextfile%'"
-
+turn off debugging            ;echo off
 

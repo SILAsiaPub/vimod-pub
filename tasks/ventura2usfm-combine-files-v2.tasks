@@ -1,0 +1,30 @@
+# ventura2usfm-combine-files.tasks
+get var                       ;projectvar
+var                           ;var all "%projectpath%\source\%iso%-all.txt"
+#                              ;command "echo on"
+#                              ;command "pause"
+# Part 1 combine files in order
+#run vpjoinfiles.cmd file      ;command "call resources\cmd\vpjoinfiles.cmd %filename%"
+#for %%b in (%books%) do call :copy %%b
+# The following sets the book names for 3 (default) or 2 leter codes
+#get book codes to use          ;tasklist books%if2let%.tasks
+#delete file                   ;ifexist "%allvptextfile%" emptyfile 
+#make new file                 ;command2file "echo @@@start = "  "%allvptextfile%"
+#create empty file             ;echo add2file "@dummy" "%allvptextfile%"
+#run book loop                 ;loopstring "tasklist join-vp-files.tasks" "%books%"
+#remove unwanted char          ;command2file "sfk xed '%outfile%' /\x1a//" "%allvptextfileprecleaned%"
+remove files                  ;command "if exist '%projectpath%\temp\*%fileext%' del '%projectpath%\temp\*%fileext%'"
+count characters              ;cct remove-illegal-for-xml.cct "%projectpath%\%sourcefolder%\*%fileext%" "%projectpath%\temp\*%fileext%"
+join files with xslt          ;xslt ventura-joinfiles "" blank.xml "%all%"
+
+# Part 2 runs some checks
+count characters              ;cct char-count.cct "%all%" "%projectpath%\proj-char-count.txt"
+count characters              ;cct vp-list-tags.cct "%all%" "%projectpath%\xml\tags.txt"
+sort                          ;command2file "sort '%projectpath%\xml\tags.txt'" "%projectpath%\xml\tags-sorted.txt"
+count uniq                    ;command2file "uniq -c '%projectpath%\xml\tags-sorted.txt'" "%projectpath%\tags-counted.txt"
+open file                     ;command "start notepad '%projectpath%\tags-counted.txt'"
+open file                     ;command "start notepad '%projectpath%\proj-char-count.txt'"
+
+
+
+
