@@ -1,0 +1,504 @@
+c count characters
+begin	> use(main) store(nul)
+
+group(main)
+d9                  >                   dup incr(char9) store(nul)
+d10	>	dup incr(char10) store(nul)
+d11	>	dup incr(char11) store(nul)
+d12	>	dup incr(char12)
+d13	>	dup incr(char13)
+d14	>	dup incr(char14)
+d15	>	dup incr(char15)
+d16	>	dup incr(char16)
+d17	>	dup incr(char17) store(nul)
+d18	>	dup incr(char18)
+d19	>	dup incr(char19)
+d20	>	dup incr(char20)
+d21	>	dup incr(char21)
+d22	>	dup incr(char22) store(nul)
+d23	>	dup incr(char23)
+d24	>	dup incr(char24)
+d25	>	dup incr(char25)
+d26	>	dup incr(char26)
+d27	>	dup incr(char27)
+d28	>	dup incr(char28) store(nul)
+d29	>	dup incr(char29)
+d30	>	dup incr(char30)
+d31	>	dup incr(char31)
+d32	>	dup incr(char32) store(nul)
+d33	>	dup incr(char33)
+d34	>	dup incr(char34)
+d35	>	dup incr(char35)
+d36	>	dup incr(char36) store(nul)
+d37	>	dup incr(char37)
+d38	>	dup incr(char38)
+d39	>	dup incr(char39)
+d40	>	dup incr(char40)
+d41	>	dup incr(char41)
+d42	>	dup incr(char42)
+d43	>	dup incr(char43)
+d44	>	dup incr(char44)
+d45	>	dup incr(char45)
+d46	>	dup incr(char46)
+d47	>	dup incr(char47)
+d48	>	dup incr(char48)
+d49	>	dup incr(char49)
+d50	>	dup incr(char50) store(nul)
+d51	>	dup incr(char51)
+d52	>	dup incr(char52)
+d53	>	dup incr(char53)
+d54	>	dup incr(char54)
+d55	>	dup incr(char55)
+d56	>	dup incr(char56)
+d57	>	dup incr(char57)
+d58	>	dup incr(char58)
+d59	>	dup incr(char59)
+d60	>	dup incr(char60)
+d61	>	dup incr(char61)
+d62	>	dup incr(char62)
+d63	>	dup incr(char63)
+d64	>	dup incr(char64)
+d65	>	dup incr(char65)
+d66	>	dup incr(char66)
+d67	>	dup incr(char67)
+d68	>	dup incr(char68)
+d69	>	dup incr(char69)
+d70	>	dup incr(char70) store(nul)
+d71	>	dup incr(char71)
+d72	>	dup incr(char72)
+d73	>	dup incr(char73)
+d74	>	dup incr(char74)
+d75	>	dup incr(char75)
+d76	>	dup incr(char76)
+d77	>	dup incr(char77)
+d78	>	dup incr(char78)
+d79	>	dup incr(char79)
+d80	>	dup incr(char80)
+d81	>	dup incr(char81)
+d82	>	dup incr(char82)
+d83	>	dup incr(char83)
+d84	>	dup incr(char84)
+d85	>	dup incr(char85)
+d86	>	dup incr(char86)
+d87	>	dup incr(char87)
+d88	>	dup incr(char88)
+d89	>	dup incr(char89)
+d90	>	dup incr(char90) store(nul)
+d91	>	dup incr(char91)
+d92	>	dup incr(char92)
+d93	>	dup incr(char93)
+d94	>	dup incr(char94)
+d95	>	dup incr(char95)
+d96	>	dup incr(char96)
+d97	>	dup incr(char97)
+d98	>	dup incr(char98)
+d99	>	dup incr(char99)
+d100	>	dup incr(char100)
+d101	>	dup incr(char101)
+d102	>	dup incr(char102)
+d103	>	dup incr(char103)
+d104	>	dup incr(char104)
+d105	>	dup incr(char105)
+d106	>	dup incr(char106)
+d107	>	dup incr(char107)
+d108	>	dup incr(char108)
+d109	>	dup incr(char109)
+d110	>	dup incr(char110)
+d111	>	dup incr(char111)
+d112	>	dup incr(char112)
+d113	>	dup incr(char113)
+d114	>	dup incr(char114)
+d115	>	dup incr(char115)
+d116	>	dup incr(char116)
+d117	>	dup incr(char117)
+d118	>	dup incr(char118)
+d119	>	dup incr(char119)
+d120	>	dup incr(char120)
+d121	>	dup incr(char121)
+d122	>	dup incr(char122)
+d123	>	dup incr(char123)
+d124	>	dup incr(char124)
+d125	>	dup incr(char125)
+d126	>	dup incr(char126)
+d127	>	dup incr(char127)
+d128	>	dup incr(char128)
+d129	>	dup incr(char129)
+d130	>	dup incr(char130)
+d131	>	dup incr(char131)
+d132	>	dup incr(char132)
+d133	>	dup incr(char133)
+d134	>	dup incr(char134)
+d135	>	dup incr(char135)
+d136	>	dup incr(char136)
+d137	>	dup incr(char137)
+d138	>	dup incr(char138)
+d139	>	dup incr(char139)
+d140	>	dup incr(char140)
+d141	>	dup incr(char141)
+d142	>	dup incr(char142)
+d143	>	dup incr(char143)
+d144	>	dup incr(char144)
+d145	>	dup incr(char145)
+d146	>	dup incr(char146)
+d147	>	dup incr(char147)
+d148	>	dup incr(char148)
+d149	>	dup incr(char149)
+d150	>	dup incr(char150)
+d151	>	dup incr(char151)
+d152	>	dup incr(char152)
+d153	>	dup incr(char153)
+d154	>	dup incr(char154)
+d155	>	dup incr(char155)
+d156	>	dup incr(char156)
+d157	>	dup incr(char157)
+d158	>	dup incr(char158)
+d159	>	dup incr(char159)
+d160	>	dup incr(char160)
+d161	>	dup incr(char161)
+d162	>	dup incr(char162)
+d163	>	dup incr(char163)
+d164	>	dup incr(char164)
+d165	>	dup incr(char165)
+d166	>	dup incr(char166)
+d167	>	dup incr(char167)
+d168	>	dup incr(char168)
+d169	>	dup incr(char169)
+d170	>	dup incr(char170)
+d171	>	dup incr(char171)
+d172	>	dup incr(char172)
+d173	>	dup incr(char173)
+d174	>	dup incr(char174)
+d175	>	dup incr(char175)
+d176	>	dup incr(char176)
+d177	>	dup incr(char177)
+d178	>	dup incr(char178)
+d179	>	dup incr(char179)
+d180	>	dup incr(char180)
+d181	>	dup incr(char181)
+d182	>	dup incr(char182)
+d183	>	dup incr(char183)
+d184	>	dup incr(char184)
+d185	>	dup incr(char185)
+d186	>	dup incr(char186)
+d187	>	dup incr(char187)
+d188	>	dup incr(char188)
+d189	>	dup incr(char189)
+d190	>	dup incr(char190)
+d191	>	dup incr(char191)
+d192	>	dup incr(char192)
+d193	>	dup incr(char193)
+d194	>	dup incr(char194)
+d195	>	dup incr(char195)
+d196	>	dup incr(char196)
+d197	>	dup incr(char197)
+d198	>	dup incr(char198)
+d199	>	dup incr(char199)
+d200	>	dup incr(char200)
+d201	>	dup incr(char201)
+d202	>	dup incr(char202)
+d203	>	dup incr(char203)
+d204	>	dup incr(char204)
+d205	>	dup incr(char205)
+d206	>	dup incr(char206)
+d207	>	dup incr(char207)
+d208	>	dup incr(char208)
+d209	>	dup incr(char209)
+d210	>	dup incr(char210)
+d211	>	dup incr(char211)
+d212	>	dup incr(char212)
+d213	>	dup incr(char213)
+d214	>	dup incr(char214)
+d215	>	dup incr(char215)
+d216	>	dup incr(char216)
+d217	>	dup incr(char217)
+d218	>	dup incr(char218)
+d219	>	dup incr(char219)
+d220	>	dup incr(char220)
+d221	>	dup incr(char221)
+d222	>	dup incr(char222)
+d223	>	dup incr(char223)
+d224	>	dup incr(char224)
+d225	>	dup incr(char225)
+d226	>	dup incr(char226)
+d227	>	dup incr(char227)
+d228	>	dup incr(char228)
+d229	>	dup incr(char229)
+d230	>	dup incr(char230)
+d231	>	dup incr(char231)
+d232	>	dup incr(char232)
+d233	>	dup incr(char233)
+d234	>	dup incr(char234)
+d235	>	dup incr(char235)
+d236	>	dup incr(char236)
+d237	>	dup incr(char237)
+d238	>	dup incr(char238)
+d239	>	dup incr(char239)
+d240	>	dup incr(char240)
+d241	>	dup incr(char241)
+d242	>	dup incr(char242)
+d243	>	dup incr(char243)
+d244	>	dup incr(char244)
+d245	>	dup incr(char245)
+d246	>	dup incr(char246)
+d247	>	dup incr(char247)
+d248	>	dup incr(char248)
+d249	>	dup incr(char249)
+d250	>	dup incr(char250)
+d251	>	dup incr(char251)
+d252	>	dup incr(char252)
+d253	>	dup incr(char253)
+d254	>	dup incr(char254)
+d255	>	dup incr(char255)
+endfile	>	endstore dup back Use(end)
+
+group(end)
+endfile	> dup
+                                        '____________________________' nl
+                                        'Count decimal characters 11 to 255' nl
+		'char 9 = ' out(char9) ifgt(char9) '0' begin  ' tab' end endif nl
+		'char 10 = ' out(char10) ifgt(char10) '0' begin  ' line feed' end endif nl
+		'char 11 = ' out(char11) ifgt(char11) '0' begin  ' verticle tab' end endif nl
+		'char 12 = ' out(char12) ifgt(char12) '0' begin  ' form feed' end endif nl
+		'char 13 = ' out(char13) ifgt(char13) '0' begin  ' carriage return' end endif nl
+		'char 14 = ' out(char14) ifgt(char14) '0' begin  ' SO' end endif nl
+		'char 15 = ' out(char14) ifgt(char14) '0' begin  ' SI' end endif nl
+		'char 16 = ' out(char16) ifgt(char16) '0' begin  ' DLE' end endif nl
+		'char 17 = ' out(char17) ifgt(char17) '0' begin  ' DC1' end endif nl
+		'char 18 = ' out(char18) ifgt(char18) '0' begin  ' DC2' end endif nl
+		'char 19 = ' out(char19) ifgt(char19) '0' begin  ' DC3' end endif nl
+		'char 20 = ' out(char20) ifgt(char20) '0' begin  ' DC4' end endif nl
+		'char 21 = ' out(char21) ' ' nl
+		'char 22 = ' out(char22) ' ' nl
+		'char 23 = ' out(char23) ' ' nl
+		'char 24 = ' out(char24) ' ' nl
+		'char 25 = ' out(char25) ' ' nl
+		'char 26 = ' out(char26) ' ' nl
+		'char 27 = ' out(char27) ' ' nl
+		'char 28 = ' out(char28) ' ' nl
+		'char 29 = ' out(char29) ' ' nl
+		'char 30 = ' out(char30) ' ' nl
+		'char 31 = ' out(char31) ' ' nl
+		'char 32 = ' d32 ' ' out(char32) ifgt(char33) '0' begin '  	SPACE' end endif nl
+		'char 33 = ' d33 ' ' out(char33) ifgt(char33) '0' begin '  	EXCLAMATION MARK' end endif nl
+		'char 34 = ' d34 ' ' out(char34) ifgt(char34) '0' begin '  	QUOTATION MARK' end endif  nl
+		'char 35 = ' d35 ' ' out(char35) ifgt(char35) '0' begin '  	NUMBER SIGN' end endif nl
+		'char 36 = ' d36 ' ' out(char36) ifgt(char36) '0' begin '  	DOLLAR SIGN' end endif nl
+		'char 37 = ' d37 ' ' out(char37) ifgt(char37) '0' begin '  	PERCENT SIGN' end endif nl
+		'char 38 = ' d38 ' ' out(char38) ifgt(char38) '0' begin '  	AMPERSAND' end endif nl
+		'char 39 = ' d39 ' ' out(char39) ifgt(char39) '0' begin '  	APOSTROPHE' end endif nl
+		'char 40 = ' d40 ' ' out(char40) ifgt(char40) '0' begin '  	LEFT PARENTHESIS' end endif nl
+		'char 41 = ' d41 ' ' out(char41) ifgt(char41) '0' begin '  	RIGHT PARENTHESIS' end endif nl
+		'char 42 = ' d42 ' ' out(char42) ifgt(char42) '0' begin '  	ASTERISK' end endif nl
+		'char 43 = ' d43 ' ' out(char43) ifgt(char43) '0' begin '  	PLUS SIGN' end endif nl
+		'char 44 = ' d44 ' ' out(char44) ifgt(char44) '0' begin '  	COMMA' end endif nl
+		'char 45 = ' d45 ' ' out(char45) ifgt(char45) '0' begin '  	HYPHEN-MINUS' end endif nl
+		'char 46 = ' d46 ' ' out(char46) ifgt(char46) '0' begin '  	FULL STOP' end endif nl
+		'char 47 = ' d47 ' ' out(char47) ifgt(char47) '0' begin '  	SOLIDUS' end endif nl
+		'char 48 = ' d48 ' ' out(char48) ifgt(char48) '0' begin '  	DIGIT ZERO' end endif nl
+		'char 49 = ' d49 ' ' out(char49) ifgt(char49) '0' begin '  	DIGIT ONE' end endif nl
+		'char 50 = ' d50 ' ' out(char50) ifgt(char50) '0' begin '  	DIGIT TWO' end endif nl
+		'char 51 = ' d51 ' ' out(char51) ifgt(char51) '0' begin '  	DIGIT THREE' end endif nl
+		'char 52 = ' d52 ' ' out(char52) ifgt(char52) '0' begin '  	DIGIT FOUR' end endif nl
+		'char 53 = ' d53 ' ' out(char53) ifgt(char53) '0' begin '  	DIGIT FIVE' end endif nl
+		'char 54 = ' d54 ' ' out(char54) ifgt(char54) '0' begin '  	DIGIT SIX' end endif nl
+		'char 55 = ' d55 ' ' out(char55) ifgt(char55) '0' begin '  	DIGIT SEVEN' end endif nl
+		'char 56 = ' d56 ' ' out(char56) ifgt(char56) '0' begin '  	DIGIT EIGHT' end endif nl
+		'char 57 = ' d57 ' ' out(char57) ifgt(char57) '0' begin '  	DIGIT NINE' end endif nl
+		'char 58 = ' d58 ' ' out(char58) ifgt(char58) '0' begin '  	COLON' end endif nl
+		'char 59 = ' d59 ' ' out(char59) ifgt(char59) '0' begin '  	SEMICOLON' end endif nl
+		'char 60 = ' d60 ' ' out(char60) ifgt(char60) '0' begin '  	LESS-THAN SIGN' end endif nl
+		'char 61 = ' d61 ' ' out(char61) ifgt(char61) '0' begin '  	EQUALS SIGN' end endif nl
+		'char 62 = ' d62 ' ' out(char62) ifgt(char62) '0' begin '  	GREATER-THAN SIGN' end endif nl
+		'char 63 = ' d63 ' ' out(char63) ifgt(char63) '0' begin '  	QUESTION MARK' end endif nl
+		'char 64 = ' d64 ' ' out(char64) ifgt(char64) '0' begin '  	COMMERCIAL AT' end endif nl
+		'char 65 = ' d65 ' ' out(char65) ifgt(char65) '0' begin '  	LATIN CAPITAL LETTER A' end endif nl
+		'char 66 = ' d66 ' ' out(char66) ifgt(char66) '0' begin '  	LATIN CAPITAL LETTER B' end endif nl
+		'char 67 = ' d67 ' ' out(char67) ifgt(char67) '0' begin '  	LATIN CAPITAL LETTER C' end endif nl
+		'char 68 = ' d68 ' ' out(char68) ifgt(char68) '0' begin '  	LATIN CAPITAL LETTER D' end endif nl
+		'char 69 = ' d69 ' ' out(char69) ifgt(char69) '0' begin '  	LATIN CAPITAL LETTER E' end endif nl
+		'char 70 = ' d70 ' ' out(char70) ifgt(char70) '0' begin '  	LATIN CAPITAL LETTER F' end endif nl
+		'char 71 = ' d71 ' ' out(char71) ifgt(char71) '0' begin '  	LATIN CAPITAL LETTER G' end endif nl
+		'char 72 = ' d72 ' ' out(char72) ifgt(char72) '0' begin '  	LATIN CAPITAL LETTER H' end endif nl
+		'char 73 = ' d73 ' ' out(char73) ifgt(char73) '0' begin '  	LATIN CAPITAL LETTER I' end endif nl
+		'char 74 = ' d74 ' ' out(char74) ifgt(char74) '0' begin '  	LATIN CAPITAL LETTER J' end endif nl
+		'char 75 = ' d75 ' ' out(char75) ifgt(char75) '0' begin '  	LATIN CAPITAL LETTER K' end endif nl
+		'char 76 = ' d76 ' ' out(char76) ifgt(char76) '0' begin '  	LATIN CAPITAL LETTER L' end endif nl
+		'char 77 = ' d77 ' ' out(char77) ifgt(char77) '0' begin '  	LATIN CAPITAL LETTER M' end endif nl
+		'char 78 = ' d78 ' ' out(char78) ifgt(char78) '0' begin '  	LATIN CAPITAL LETTER N' end endif nl
+		'char 79 = ' d79 ' ' out(char79) ifgt(char79) '0' begin '  	LATIN CAPITAL LETTER O' end endif nl
+		'char 80 = ' d80 ' ' out(char80) ifgt(char80) '0' begin '  	LATIN CAPITAL LETTER P' end endif nl
+		'char 81 = ' d81 ' ' out(char81) ifgt(char81) '0' begin '  	LATIN CAPITAL LETTER Q' end endif nl
+		'char 82 = ' d82 ' ' out(char82) ifgt(char82) '0' begin '  	LATIN CAPITAL LETTER R' end endif nl
+		'char 83 = ' d83 ' ' out(char83) ifgt(char83) '0' begin '  	LATIN CAPITAL LETTER S' end endif nl
+		'char 84 = ' d84 ' ' out(char84) ifgt(char84) '0' begin '  	LATIN CAPITAL LETTER T' end endif nl
+		'char 85 = ' d85 ' ' out(char85) ifgt(char85) '0' begin '  	LATIN CAPITAL LETTER U' end endif nl
+		'char 86 = ' d86 ' ' out(char86) ifgt(char86) '0' begin '  	LATIN CAPITAL LETTER V' end endif nl
+		'char 87 = ' d87 ' ' out(char87) ifgt(char87) '0' begin '  	LATIN CAPITAL LETTER W' end endif nl
+		'char 88 = ' d88 ' ' out(char88) ifgt(char88) '0' begin '  	LATIN CAPITAL LETTER X' end endif nl
+		'char 89 = ' d89 ' ' out(char89) ifgt(char89) '0' begin '  	LATIN CAPITAL LETTER Y' end endif nl
+		'char 90 = ' d90 ' ' out(char90) ifgt(char90) '0' begin '  	LATIN CAPITAL LETTER Z' end endif nl
+		'char 91 = ' d91 ' ' out(char91) ifgt(char91) '0' begin '  	LEFT SQUARE BRACKET' end endif nl
+		'char 92 = ' d92 ' ' out(char92) ifgt(char92) '0' begin '  	REVERSE SOLIDUS' end endif nl
+		'char 93 = ' d93 ' ' out(char93) ifgt(char93) '0' begin '  	RIGHT SQUARE BRACKET' end endif nl
+		'char 94 = ' d94 ' ' out(char94) ifgt(char94) '0' begin '  	CIRCUMFLEX ACCENT' end endif nl
+		'char 95 = ' d95 ' ' out(char95) ifgt(char95) '0' begin '  	LOW LINE' end endif nl
+		'char 96 = ' d96 ' ' out(char96) ifgt(char96) '0' begin '  	GRAVE ACCENT' end endif nl
+		'char 97 = ' d97 ' ' out(char97) ifgt(char97) '0' begin '  	LATIN SMALL LETTER A' end endif nl
+		'char 98 = ' d98 ' ' out(char98) ifgt(char98) '0' begin '  	LATIN SMALL LETTER B' end endif nl
+		'char 99 = ' d99 ' ' out(char99) ifgt(char99) '0' begin '  	LATIN SMALL LETTER C' end endif nl
+		'char 100 = ' d100 ' ' out(char100) ifgt(char100) '0' begin '  LATIN SMALL LETTER D' end endif nl
+		'char 101 = ' d101 ' ' out(char101) ifgt(char101) '0' begin '  LATIN SMALL LETTER E' end endif nl
+		'char 102 = ' d102 ' ' out(char102) ifgt(char102) '0' begin '  LATIN SMALL LETTER F' end endif nl
+		'char 103 = ' d103 ' ' out(char103) ifgt(char103) '0' begin '  LATIN SMALL LETTER G' end endif nl
+		'char 104 = ' d104 ' ' out(char104) ifgt(char104) '0' begin '  LATIN SMALL LETTER H' end endif nl
+		'char 105 = ' d105 ' ' out(char105) ifgt(char105) '0' begin '  LATIN SMALL LETTER I' end endif nl
+		'char 106 = ' d106 ' ' out(char106) ifgt(char106) '0' begin '  LATIN SMALL LETTER J' end endif nl
+		'char 107 = ' d107 ' ' out(char107) ifgt(char107) '0' begin '  LATIN SMALL LETTER K' end endif nl
+		'char 108 = ' d108 ' ' out(char108) ifgt(char108) '0' begin '  LATIN SMALL LETTER L' end endif nl
+		'char 109 = ' d109 ' ' out(char109) ifgt(char109) '0' begin '  LATIN SMALL LETTER M' end endif nl
+		'char 110 = ' d110 ' ' out(char110) ifgt(char110) '0' begin '  LATIN SMALL LETTER N' end endif nl
+		'char 111 = ' d111 ' ' out(char111) ifgt(char111) '0' begin '  LATIN SMALL LETTER O' end endif nl
+		'char 112 = ' d112 ' ' out(char112) ifgt(char112) '0' begin '  LATIN SMALL LETTER P' end endif nl
+		'char 113 = ' d113 ' ' out(char113) ifgt(char113) '0' begin '  LATIN SMALL LETTER Q' end endif nl
+		'char 114 = ' d114 ' ' out(char114) ifgt(char114) '0' begin '  LATIN SMALL LETTER R' end endif nl
+		'char 115 = ' d115 ' ' out(char115) ifgt(char115) '0' begin '  LATIN SMALL LETTER S' end endif nl
+		'char 116 = ' d116 ' ' out(char116) ifgt(char116) '0' begin '  LATIN SMALL LETTER T' end endif nl
+		'char 117 = ' d117 ' ' out(char117) ifgt(char117) '0' begin '  LATIN SMALL LETTER U' end endif nl
+		'char 118 = ' d118 ' ' out(char118) ifgt(char118) '0' begin '  LATIN SMALL LETTER V' end endif nl
+		'char 119 = ' d119 ' ' out(char119) ifgt(char119) '0' begin '  LATIN SMALL LETTER W' end endif nl
+		'char 120 = ' d120 ' ' out(char120) ifgt(char120) '0' begin '  LATIN SMALL LETTER X' end endif nl
+		'char 121 = ' d121 ' ' out(char121) ifgt(char121) '0' begin '  LATIN SMALL LETTER Y' end endif nl
+		'char 122 = ' d122 ' ' out(char122) ifgt(char122) '0' begin '  LATIN SMALL LETTER Z' end endif nl
+		'char 123 = ' d123 ' ' out(char123) ifgt(char123) '0' begin '  LEFT CURLY BRACKET' end endif nl
+		'char 124 = ' d124 ' ' out(char124) ifgt(char124) '0' begin '  VERTICAL LINE' end endif nl
+		'char 125 = ' d125 ' ' out(char125) ifgt(char125) '0' begin '  RIGHT CURLY BRACKET' end endif nl
+		'char 126 = ' d126 ' ' out(char126) ifgt(char126) '0' begin '  TILDE' end endif nl
+		'char 127 = '  '  ' out(char127)  ifgt(char127) '0' begin '  Not Unicode range ' end endif nl
+		'char 128 = '  '  ' out(char128)  ifgt(char128) '0' begin '  Not Unicode range ' end endif nl
+		'char 129 = '  '  ' out(char129)  ifgt(char129) '0' begin '  Not Unicode range ' end endif nl
+		'char 130 = '  '  ' out(char130)  ifgt(char130) '0' begin '  Not Unicode range ' end endif nl
+		'char 131 = '  '  ' out(char131)  ifgt(char131) '0' begin '  Not Unicode range ' end endif nl
+		'char 132 = '  '  ' out(char132)  ifgt(char132) '0' begin '  Not Unicode range ' end endif nl
+		'char 133 = '  '  ' out(char133)  ifgt(char133) '0' begin '  Not Unicode range ' end endif nl
+		'char 134 = '  '  ' out(char134)  ifgt(char134) '0' begin '  Not Unicode range ' end endif nl
+		'char 135 = '  '  ' out(char135)  ifgt(char135) '0' begin '  Not Unicode range ' end endif nl
+		'char 136 = '  '  ' out(char136)  ifgt(char136) '0' begin '  Not Unicode range ' end endif nl
+		'char 137 = '  '  ' out(char137)  ifgt(char137) '0' begin '  Not Unicode range ' end endif nl
+		'char 138 = '  '  ' out(char138)  ifgt(char138) '0' begin '  Not Unicode range ' end endif nl
+		'char 139 = '  '  ' out(char139)  ifgt(char139) '0' begin '  Not Unicode range ' end endif nl
+		'char 140 = '  '  ' out(char140)  ifgt(char140) '0' begin '  Not Unicode range ' end endif nl
+		'char 141 = '  '  ' out(char141)  ifgt(char141) '0' begin '  Not Unicode range ' end endif nl
+		'char 142 = '  '  ' out(char142)  ifgt(char142) '0' begin '  Not Unicode range ' end endif nl
+		'char 143 = '  '  ' out(char143)  ifgt(char143) '0' begin '  Not Unicode range ' end endif nl
+		'char 144 = '  '  ' out(char144)  ifgt(char144) '0' begin '  Not Unicode range ' end endif nl
+		'char 145 = '  '  ' out(char145) ifgt(char145) '0' begin '  ansi left single quote  Not Unicode range' end endif nl
+		'char 146 = '  '  ' out(char146) ifgt(char146) '0' begin '  ansi right single quote  Not Unicode range' end endif nl
+		'char 147 = '  '  ' out(char147) ifgt(char147) '0' begin '  ansi left double quote  Not Unicode range' end endif nl
+		'char 148 = '  '  ' out(char148) ifgt(char148) '0' begin '  ansi right double quote  Not Unicode range' end endif nl
+		'char 149 = '  '  ' out(char149)  ifgt(char149) '0' begin '  Not Unicode range ' end endif nl
+		'char 150 = '  '  ' out(char150)  ifgt(char150) '0' begin '  Not Unicode range ' end endif nl
+		'char 151 = '  '  ' out(char151)  ifgt(char151) '0' begin 'ansi m-dash  Not Unicode range ' end endif nl
+		'char 152 = '  '  ' out(char152)  ifgt(char152) '0' begin '  Not Unicode range ' end endif nl
+		'char 153 = '  '  ' out(char153)  ifgt(char153) '0' begin '  Not Unicode range ' end endif nl
+		'char 154 = '  '  ' out(char154)  ifgt(char154) '0' begin '  Not Unicode range ' end endif nl
+		'char 155 = '  '  ' out(char155)  ifgt(char155) '0' begin '  Not Unicode range ' end endif nl
+		'char 156 = '  '  ' out(char156)  ifgt(char156) '0' begin '  Not Unicode range ' end endif nl
+		'char 157 = '  '  ' out(char157)  ifgt(char157) '0' begin '  Not Unicode range ' end endif nl
+		'char 158 = '  '  ' out(char158)  ifgt(char158) '0' begin '  Not Unicode range ' end endif nl
+		'char 159 = '  '  ' out(char159)  ifgt(char159) '0' begin '  Not Unicode range ' end endif nl
+		'char 160 = '  '  ' out(char160) ifgt(char160) '0' begin '  	NO-BREAK SPACE' end endif nl
+		'char 161 = '  '  ' out(char161) ifgt(char161) '0' begin '  	INVERTED EXCLAMATION MARK' end endif nl
+		'char 162 = '  '  ' out(char162) ifgt(char162) '0' begin '  	CENT SIGN' end endif nl
+		'char 163 = '  '  ' out(char163) ifgt(char163) '0' begin '  	POUND SIGN' end endif nl
+		'char 164 = '  '  ' out(char164) ifgt(char164) '0' begin '  	CURRENCY SIGN' end endif nl
+		'char 165 = '  '  ' out(char165) ifgt(char165) '0' begin '  	YEN SIGN' end endif nl
+		'char 166 = '  '  ' out(char166) ifgt(char166) '0' begin '  	BROKEN BAR' end endif nl
+		'char 167 = '  '  ' out(char167) ifgt(char167) '0' begin '  	SECTION SIGN' end endif nl
+		'char 168 = '  '  ' out(char168) ifgt(char168) '0' begin '  	DIAERESIS' end endif nl
+		'char 169 = '  '  ' out(char169) ifgt(char169) '0' begin '  	COPYRIGHT SIGN' end endif nl
+		'char 170 = '  '  ' out(char170) ifgt(char170) '0' begin '  	FEMININE ORDINAL INDICATOR' end endif nl
+		'char 171 = '  '  ' out(char171) ifgt(char171) '0' begin '  	LEFT-POINTING DOUBLE ANGLE QUOTATION MARK' end endif nl
+		'char 172 = '  '  ' out(char172) ifgt(char172) '0' begin '  	NOT SIGN' end endif nl
+		'char 173 = '  '  ' out(char173) ifgt(char173) '0' begin '  	SOFT HYPHEN' end endif nl
+		'char 174 = '  '  ' out(char174) ifgt(char174) '0' begin '  	REGISTERED SIGN' end endif nl
+		'char 175 = '  '  ' out(char175) ifgt(char175) '0' begin '  	MACRON' end endif nl
+		'char 176 = '  '  ' out(char176) ifgt(char176) '0' begin '  	DEGREE SIGN' end endif nl
+		'char 177 = '  '  ' out(char177) ifgt(char177) '0' begin '  	PLUS-MINUS SIGN' end endif nl
+		'char 178 = '  '  ' out(char178) ifgt(char178) '0' begin '  	SUPERSCRIPT TWO' end endif nl
+		'char 179 = '  '  ' out(char179) ifgt(char179) '0' begin '  	SUPERSCRIPT THREE' end endif nl
+		'char 180 = '  '  ' out(char180) ifgt(char180) '0' begin '  	ACUTE ACCENT' end endif nl
+		'char 181 = '  '  ' out(char181) ifgt(char181) '0' begin '  	MICRO SIGN' end endif nl
+		'char 182 = '  '  ' out(char182) ifgt(char182) '0' begin '  	PILCROW SIGN' end endif nl
+		'char 183 = '  '  ' out(char183) ifgt(char183) '0' begin '  	MIDDLE DOT' end endif nl
+		'char 184 = '  '  ' out(char184) ifgt(char184) '0' begin '  	CEDILLA' end endif nl
+		'char 185 = '  '  ' out(char185) ifgt(char185) '0' begin '  	SUPERSCRIPT ONE' end endif nl
+		'char 186 = '  '  ' out(char186) ifgt(char186) '0' begin '  	MASCULINE ORDINAL INDICATOR' end endif nl
+		'char 187 = '  '  ' out(char187) ifgt(char187) '0' begin '  	RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK' end endif nl
+		'char 188 = '  '  ' out(char188) ifgt(char188) '0' begin '  	VULGAR FRACTION ONE QUARTER' end endif nl
+		'char 189 = '  '  ' out(char189) ifgt(char189) '0' begin '  	VULGAR FRACTION ONE HALF' end endif nl
+		'char 190 = '  '  ' out(char190) ifgt(char190) '0' begin '  	VULGAR FRACTION THREE QUARTERS' end endif nl
+		'char 191 = '  '  ' out(char191) ifgt(char191) '0' begin '  	INVERTED QUESTION MARK' end endif nl
+		'char 192 = '  '  ' out(char192) ifgt(char192) '0' begin '  	LATIN CAPITAL LETTER A WITH GRAVE' end endif nl
+		'char 193 = '  '  ' out(char193) ifgt(char193) '0' begin '  	LATIN CAPITAL LETTER A WITH ACUTE' end endif nl
+		'char 194 = '  '  ' out(char194) ifgt(char194) '0' begin '  	LATIN CAPITAL LETTER A WITH CIRCUMFLEX' end endif nl
+		'char 195 = '  '  ' out(char195) ifgt(char195) '0' begin '  	LATIN CAPITAL LETTER A WITH TILDE' end endif nl
+		'char 196 = '  '  ' out(char196) ifgt(char196) '0' begin '  	LATIN CAPITAL LETTER A WITH DIAERESIS' end endif nl
+		'char 197 = '  '  ' out(char197) ifgt(char197) '0' begin '  	LATIN CAPITAL LETTER A WITH RING ABOVE' end endif nl
+		'char 198 = '  '  ' out(char198) ifgt(char198) '0' begin '  	LATIN CAPITAL LETTER AE' end endif nl
+		'char 199 = '  '  ' out(char199) ifgt(char199) '0' begin '  	LATIN CAPITAL LETTER C WITH CEDILLA' end endif nl
+		'char 200 = '  '  ' out(char200) ifgt(char200) '0' begin '  	LATIN CAPITAL LETTER E WITH GRAVE' end endif nl
+		'char 201 = '  '  ' out(char201) ifgt(char201) '0' begin '  	LATIN CAPITAL LETTER E WITH ACUTE' end endif nl
+		'char 202 = '  '  ' out(char202) ifgt(char202) '0' begin '  	LATIN CAPITAL LETTER E WITH CIRCUMFLEX' end endif nl
+		'char 203 = '  '  ' out(char203) ifgt(char203) '0' begin '  	LATIN CAPITAL LETTER E WITH DIAERESIS' end endif nl
+		'char 204 = '  '  ' out(char204) ifgt(char204) '0' begin '  	LATIN CAPITAL LETTER I WITH GRAVE' end endif nl
+		'char 205 = '  '  ' out(char205) ifgt(char205) '0' begin '  	LATIN CAPITAL LETTER I WITH ACUTE' end endif nl
+		'char 206 = '  '  ' out(char206) ifgt(char206) '0' begin '  	LATIN CAPITAL LETTER I WITH CIRCUMFLEX' end endif nl
+		'char 207 = '  '  ' out(char207) ifgt(char207) '0' begin '  	LATIN CAPITAL LETTER I WITH DIAERESIS' end endif nl
+		'char 208 = '  '  ' out(char208) ifgt(char208) '0' begin '  	LATIN CAPITAL LETTER ETH' end endif nl
+		'char 209 = '  '  ' out(char209) ifgt(char209) '0' begin '  	LATIN CAPITAL LETTER N WITH TILDE' end endif nl
+		'char 210 = '  '  ' out(char210) ifgt(char210) '0' begin '  	LATIN CAPITAL LETTER O WITH GRAVE' end endif nl
+		'char 211 = '  '  ' out(char211) ifgt(char211) '0' begin '  	LATIN CAPITAL LETTER O WITH ACUTE' end endif nl
+		'char 212 = '  '  ' out(char212) ifgt(char212) '0' begin '  	LATIN CAPITAL LETTER O WITH CIRCUMFLEX' end endif nl
+		'char 213 = '  '  ' out(char213) ifgt(char213) '0' begin '  	LATIN CAPITAL LETTER O WITH TILDE' end endif nl
+		'char 214 = '  '  ' out(char214) ifgt(char214) '0' begin '  	LATIN CAPITAL LETTER O WITH DIAERESIS' end endif nl
+		'char 215 = '  '  ' out(char215) ifgt(char215) '0' begin '  	MULTIPLICATION SIGN' end endif nl
+		'char 216 = '  '  ' out(char216) ifgt(char216) '0' begin '  	LATIN CAPITAL LETTER O WITH STROKE' end endif nl
+		'char 217 = '  '  ' out(char217) ifgt(char217) '0' begin '  	LATIN CAPITAL LETTER U WITH GRAVE' end endif nl
+		'char 218 = '  '  ' out(char218) ifgt(char218) '0' begin '  	LATIN CAPITAL LETTER U WITH ACUTE' end endif nl
+		'char 219 = '  '  ' out(char219) ifgt(char219) '0' begin '  	LATIN CAPITAL LETTER U WITH CIRCUMFLEX' end endif nl
+		'char 220 = '  '  ' out(char220) ifgt(char220) '0' begin '  	LATIN CAPITAL LETTER U WITH DIAERESIS' end endif nl
+		'char 221 = '  '  ' out(char221) ifgt(char221) '0' begin '  	LATIN CAPITAL LETTER Y WITH ACUTE' end endif nl
+		'char 222 = '  '  ' out(char222) ifgt(char222) '0' begin '  	LATIN CAPITAL LETTER THORN' end endif nl
+		'char 223 = '  '  ' out(char223) ifgt(char223) '0' begin '  	LATIN SMALL LETTER SHARP S' end endif nl
+		'char 224 = '  '  ' out(char224) ifgt(char224) '0' begin '  	LATIN SMALL LETTER A WITH GRAVE' end endif nl
+		'char 225 = '  '  ' out(char225) ifgt(char225) '0' begin '  	LATIN SMALL LETTER A WITH ACUTE' end endif nl
+		'char 226 = '  '  ' out(char226) ifgt(char226) '0' begin '  	LATIN SMALL LETTER A WITH CIRCUMFLEX' end endif nl
+		'char 227 = '  '  ' out(char227) ifgt(char227) '0' begin '  	LATIN SMALL LETTER A WITH TILDE' end endif nl
+		'char 228 = '  '  ' out(char228) ifgt(char228) '0' begin '  	LATIN SMALL LETTER A WITH DIAERESIS' end endif nl
+		'char 229 = '  '  ' out(char229) ifgt(char229) '0' begin '  	LATIN SMALL LETTER A WITH RING ABOVE' end endif nl
+		'char 230 = '  '  ' out(char230) ifgt(char230) '0' begin '  	LATIN SMALL LETTER AE' end endif nl
+		'char 231 = '  '  ' out(char231) ifgt(char231) '0' begin '  	LATIN SMALL LETTER C WITH CEDILLA' end endif nl
+		'char 232 = '  '  ' out(char232) ifgt(char232) '0' begin '  	LATIN SMALL LETTER E WITH GRAVE' end endif nl
+		'char 233 = '  '  ' out(char233) ifgt(char233) '0' begin '  	LATIN SMALL LETTER E WITH ACUTE' end endif nl
+		'char 234 = '  '  ' out(char234) ifgt(char234) '0' begin '  	LATIN SMALL LETTER E WITH CIRCUMFLEX' end endif nl
+		'char 235 = '  '  ' out(char235) ifgt(char235) '0' begin '  	LATIN SMALL LETTER E WITH DIAERESIS' end endif nl
+		'char 236 = '  '  ' out(char236) ifgt(char236) '0' begin '  	LATIN SMALL LETTER I WITH GRAVE' end endif nl
+		'char 237 = '  '  ' out(char237) ifgt(char237) '0' begin '  	LATIN SMALL LETTER I WITH ACUTE' end endif nl
+		'char 238 = '  '  ' out(char238) ifgt(char238) '0' begin '  	LATIN SMALL LETTER I WITH CIRCUMFLEX' end endif nl
+		'char 239 = '  '  ' out(char239) ifgt(char239) '0' begin '  	LATIN SMALL LETTER I WITH DIAERESIS' end endif nl
+		'char 240 = '  '  ' out(char240) ifgt(char240) '0' begin '  	LATIN SMALL LETTER ETH' end endif nl
+		'char 241 = '  '  ' out(char241) ifgt(char241) '0' begin '  	LATIN SMALL LETTER N WITH TILDE' end endif nl
+		'char 242 = '  '  ' out(char242) ifgt(char242) '0' begin '  	LATIN SMALL LETTER O WITH GRAVE' end endif nl
+		'char 243 = '  '  ' out(char243) ifgt(char243) '0' begin '  	LATIN SMALL LETTER O WITH ACUTE' end endif nl
+		'char 244 = '  '  ' out(char244) ifgt(char244) '0' begin '  	LATIN SMALL LETTER O WITH CIRCUMFLEX' end endif nl
+		'char 245 = '  '  ' out(char245) ifgt(char245) '0' begin '  	LATIN SMALL LETTER O WITH TILDE' end endif nl
+		'char 246 = '  '  ' out(char246) ifgt(char246) '0' begin '  	LATIN SMALL LETTER O WITH DIAERESIS' end endif nl
+		'char 247 = '  '  ' out(char247) ifgt(char247) '0' begin '  	DIVISION SIGN' end endif nl
+		'char 248 = '  '  ' out(char248) ifgt(char248) '0' begin '  	LATIN SMALL LETTER O WITH STROKE' end endif nl
+		'char 249 = '  '  ' out(char249) ifgt(char249) '0' begin '  	LATIN SMALL LETTER U WITH GRAVE' end endif nl
+		'char 250 = '  '  ' out(char250) ifgt(char250) '0' begin '  	LATIN SMALL LETTER U WITH ACUTE' end endif nl
+		'char 251 = '  '  ' out(char251) ifgt(char251) '0' begin '  	LATIN SMALL LETTER U WITH CIRCUMFLEX' end endif nl
+		'char 252 = '  '  ' out(char252) ifgt(char252) '0' begin '  	LATIN SMALL LETTER U WITH DIAERESIS' end endif nl
+		'char 253 = '  '  ' out(char253) ifgt(char253) '0' begin '  	LATIN SMALL LETTER Y WITH ACUTE' end endif nl
+		'char 254 = '  '  ' out(char254) ifgt(char254) '0' begin '  	LATIN SMALL LETTER THORN' end endif nl
+		'char 255 = '  '  ' out(char255) ifgt(char255) '0' begin '  	LATIN SMALL LETTER Y WITH DIAERESIS' end endif nl
