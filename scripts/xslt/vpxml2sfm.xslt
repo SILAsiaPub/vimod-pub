@@ -16,7 +16,7 @@
       <xsl:output method="text" encoding="utf-8"/>
       <xsl:include href="inc-file2uri.xslt"/>
       <xsl:include href="project.xslt"/>
-      <xsl:include href="vpxml-cmap.xslt"/>
+      <xsl:include href="project-cmap.xslt"/>
       <xsl:strip-space elements="*"/>
       <xsl:preserve-space elements="tag"/>
       <!-- <xsl:param name="iso"/>
@@ -53,6 +53,11 @@
                         <xsl:value-of select="'\mt2 '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
+                  <xsl:when test="@class = $mt3">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\mt3 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
                   <xsl:otherwise/>
             </xsl:choose>
       </xsl:template>
@@ -63,6 +68,16 @@
                   <xsl:when test="@class = $h"/>
                   <xsl:when test="@class = $mt1"/>
                   <xsl:when test="@class = $mt2"/>
+                  <xsl:when test="@class = $mt3">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\mt3 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $toc1">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\toc1 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
                   <!--
                   <xsl:when test="@class = $mt3">
                         <xsl:value-of select="'&#10;'"/>
@@ -225,6 +240,11 @@
                         <xsl:value-of select="'\m '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
+                  <xsl:when test="@class = $mi">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\mi '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
                   <xsl:when test="@class = $pi">
                         <xsl:value-of select="'&#10;'"/>
                         <xsl:value-of select="'\pi '"/>
@@ -256,7 +276,20 @@
                         <xsl:value-of select="'\sig*'"/>
                   </xsl:when>
                   <xsl:when test="@class = $inline_para">
+                        <xsl:text> </xsl:text>
                         <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $table">
+                        <xsl:variable name="cell" select="tokenize(.,'\t')"/>
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\tr '"/>
+                        <xsl:for-each select="$cell">
+                              <xsl:text>\tc</xsl:text>
+                              <xsl:value-of select="position()"/>
+                              <xsl:text> </xsl:text>
+                              <xsl:value-of select="."/>
+                              <xsl:text> </xsl:text>
+                        </xsl:for-each>
                   </xsl:when>
                   <xsl:otherwise>
                         <xsl:value-of select="'&#10;'"/>
