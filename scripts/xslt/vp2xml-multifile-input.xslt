@@ -18,6 +18,10 @@
       <xsl:include href="inc-replace-array.xslt"/>
       <xsl:include href="vpxml-cmap.xslt"/>
       <xsl:include href="project.xslt"/>
+      <xsl:variable name="unwantedtag_list" select="'- | +'"/>
+      <xsl:variable name="unwantedtagreplace_list" select="'-=;|= ;+= '"/>
+      <xsl:variable name="unwantedtag" select="tokenize($unwantedtag_list,' ')"/>
+      <xsl:variable name="unwantedtagreplace" select="tokenize($unwantedtagreplace_list,';')"/>
       <xsl:variable name="vptext" select="f:file2text($allvptextutf8file)"/>
       <xsl:variable name="replacearray" select="f:file2lines($replacearrayfile)"/>
       <xsl:include href="inc-lookup.xslt"/>
@@ -34,9 +38,9 @@
             <xsl:for-each select="$line">
                   <!-- <xsl:comment select="."/> -->
                   <xsl:variable name="bk" select="tokenize(.,'=')"/>
-                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$intropart,$fileext))"/>
-                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$fileext))"/>
-                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\temp\',$langpre,$bk[number($if2let) - 1],$fnpart,$fileext))"/>
+                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$intropart,$fileext))"/>
+                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$fileext))"/>
+                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$fnpart,$fileext))"/>
                   <!-- <xsl:comment select="$bkbody"/> -->
                   <xsl:if test="unparsed-text-available($bkbody) or unparsed-text-available($bkintro)">
                         <xsl:value-of select="'@@@ scr '"/>
@@ -127,9 +131,15 @@
                                           <xsl:attribute name="class">
                                                 <xsl:value-of select="upper-case(translate($part[1],' ','_'))"/>
                                           </xsl:attribute>
-                                          <xsl:call-template name="parsepara">
-                                                <xsl:with-param name="paracontent" select="f:replaceencodedchars($part[2])"/>
-                                          </xsl:call-template>
+                                          <xsl:for-each select="$part[position() gt 1]">
+                                                <xsl:variable name="pos" select="position()"/>
+                                                <xsl:if test="$pos gt 1">
+                                                      <xsl:text> = </xsl:text>
+                                                </xsl:if>
+                                                <xsl:call-template name="parsepara">
+                                                      <xsl:with-param name="paracontent" select="f:replaceencodedchars(.)"/>
+                                                </xsl:call-template>
+                                          </xsl:for-each>
                                     </xsl:element>
                               </xsl:otherwise>
                         </xsl:choose>
@@ -140,7 +150,7 @@
             <!-- analyze-string template -->
             <xsl:param name="paracontent"/>
             <xsl:choose>
-                  <xsl:when test="matches($paracontent,'\}')">
+                  <xsl:when test="matches($paracontent,'\{')">
                         <!-- Handles regular markup  elements -->
                         <xsl:variable name="part" select="tokenize($paracontent,'\{')"/>
                         <xsl:for-each select="$part">
@@ -160,12 +170,20 @@
             <xsl:variable name="tag" select="tokenize($tagnstring,'\}')"/>
             <xsl:choose>
                   <xsl:when test="matches(.,'\}')">
-                        <xsl:element name="tag">
-                              <xsl:attribute name="value">
-                                    <xsl:value-of select="replace($tag[1],'&#34;','')"/>
-                              </xsl:attribute>
-                              <xsl:value-of select="replace($tag[2],'&#xA;','')"/>
-                        </xsl:element>
+                        <xsl:choose>
+                              <xsl:when test="$tag[1] = $tagmatch">
+                                    <xsl:value-of select="f:keyvalue($tagfindreplace,$tag[1])"/>
+                                    <xsl:value-of select="replace($tag[2],'&#xA;','')"/>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                    <xsl:element name="tag">
+                                          <xsl:attribute name="value">
+                                                <xsl:value-of select="replace($tag[1],'&#34;','')"/>
+                                          </xsl:attribute>
+                                          <xsl:value-of select="replace($tag[2],'&#xA;','')"/>
+                                    </xsl:element>
+                              </xsl:otherwise>
+                        </xsl:choose>
                   </xsl:when>
                   <xsl:otherwise>
                         <xsl:value-of select="replace(.,'&#xA;','')"/>
