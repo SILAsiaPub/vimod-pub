@@ -49,7 +49,7 @@ Created 2012-06-14
                   <xsl:when test="local-name() = $exclude-node"/>
                   <xsl:otherwise>
                         <xsl:copy>
-                              <xsl:apply-templates/>
+                              <xsl:apply-templates select="node()|@*"/>
                         </xsl:copy>
                   </xsl:otherwise>
             </xsl:choose>
@@ -58,7 +58,7 @@ Created 2012-06-14
             <xsl:choose>
                   <xsl:when test="local-name() = $exclude-node">
                         <xsl:copy>
-                              <xsl:apply-templates/>
+                              <xsl:apply-templates select="node()|@*"/>
                         </xsl:copy>
                   </xsl:when>
                   <xsl:otherwise/>
