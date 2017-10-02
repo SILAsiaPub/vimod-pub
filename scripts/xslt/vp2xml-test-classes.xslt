@@ -56,6 +56,18 @@
                               <xsl:text>sfm = h</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
+                       <xsl:if test="$class = $toc1">
+                              <xsl:text>sfm = toc1</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                       <xsl:if test="$class = $toc2">
+                              <xsl:text>sfm = toc2</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                       <xsl:if test="$class = $toc3">
+                              <xsl:text>sfm = toc3</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
                         <xsl:if test="$class = $mt1">
                               <xsl:text>sfm = mt1</xsl:text>
                               <xsl:text>&#9;</xsl:text>
@@ -64,12 +76,20 @@
                               <xsl:text>sfm = mt2</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
+                        <xsl:if test="$class = $mt3">
+                              <xsl:text>sfm = mt3</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
                         <xsl:if test="$class = $p">
                               <xsl:text>sfm = p</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $m">
                               <xsl:text>sfm = m</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$class = $mi">
+                              <xsl:text>sfm = mi</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $ms1">
