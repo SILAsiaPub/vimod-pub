@@ -1194,6 +1194,7 @@ if "%~2" neq "" set list=%~2
 if "%~3" neq "" set comment=%~3
 if not defined action echo missing action parameter & goto :eof
 if not defined list echo missing list parameter & goto :eof
+set action=%action:'="%
 echo "%comment%"
 ::echo on
 FOR /F %%s IN ('%list%') DO call :%action% "%%s"
@@ -1218,6 +1219,7 @@ set basedir=%~2
 set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined basedir echo Missing basedir parameter & goto :eof
+set action=%action:'="%
 if defined comment echo %comment%
 FOR /F " delims=" %%s IN ('dir /b /a:-d %basedir%') DO call :%action% "%%s"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
@@ -1238,6 +1240,7 @@ set filespec=%~2
 set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined filespec echo Missing filespec parameter & goto :eof
+set action=%action:'="%
 if defined comment echo %comment%
 FOR /F " delims=" %%s IN ('dir /b /a:-d /o:n %filespec%') DO call :%action% "%%s"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
@@ -1261,6 +1264,7 @@ set fileset=%~2
 set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined fileset echo Missing fileset parameter & goto :eof
+set action=%action:'="%
 if defined comment echo %comment%
 FOR /F %%s IN (%fileset%) DO call :%action% %%s
 if defined masterdebug call :funcdebug %0 end
@@ -1284,6 +1288,7 @@ set string=%~2
 set comment=%~3
 if not defined action echo Missing action parameter & goto :eof
 if not defined string echo Missing string parameter & goto :eof
+set action=%action:'="%
 echo %comment%
 ::echo on
 FOR /F "delims= " %%s IN ("%string%") DO call :%action% %%s& echo param %%s
@@ -1313,6 +1318,7 @@ if not defined list set list=%~2
 if not defined comment set comment=%~3
 if not defined tasklistfile echo Missing tasklistfile parameter & goto :eof
 if not defined list echo Missing list parameter & goto :eof
+set tasklistfile=%tasklistfile:'="%
 echo "%comment%"
 FOR /F %%s IN (%list%) DO call :tasklist "%tasklistfile%" %%s
 set list=
