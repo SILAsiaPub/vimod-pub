@@ -25,7 +25,7 @@
             <xsl:variable name="rep" select="substring-after($array[$seq],$separate)"/>
             <xsl:choose>
                   <xsl:when test="matches($array[$seq],'^#')">
-                        <xsl:value-of select="f:replace-array($string,$array,$seq +1,$separate)"/>
+                        <xsl:value-of select="f:replace-array($string,$array,number($seq) +1,$separate)"/>
                   </xsl:when>
                   <xsl:when test="$find = '' ">
                         <!-- tests for blank array, and returns the string -->
@@ -37,7 +37,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                         <!-- if there are more replacements to be made then this will trigger the next replacement -->
-                        <xsl:value-of select="f:replace-array(replace($string,$find,$rep),$array,$seq +1,$separate)"/>
+                        <xsl:value-of select="f:replace-array(replace($string,$find,$rep),$array,($seq) +1,$separate)"/>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
