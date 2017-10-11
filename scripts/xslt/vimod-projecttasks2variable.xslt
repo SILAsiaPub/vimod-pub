@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
     #############################################################
     # Name:         	vimod-projecttasks2variable.xslt
     # Purpose:		Generate a XSLT that takes the project.tasks file and make var in there into param. Also includes xvarset files and xarray files as param and adds xslt files as includes in project.xslt 
@@ -18,6 +19,7 @@
       <xsl:variable name="cd" select="substring-before($projectpath,'\data\')"/>
       <xsl:variable name="varparser" select="'^([^;]+);([^ ]+)[ \t]+([^ \t]+)[ \t]+(.+)'"/>
       <xsl:variable name="var" select="tokenize('var xvar',' ')"/>
+      <xsl:variable name="lists" select="'_semicolon-list|_list|_underscore-list|_equal-list|_file-list'"/>
       <xsl:variable name="sq">
             <xsl:text>'</xsl:text>
       </xsl:variable>
@@ -343,9 +345,6 @@
             <xsl:param name="name"/>
             <xsl:param name="value"/>
             <xsl:param name="iscommand"/>
-            <xsl:variable name="apos">
-                  <xsl:text>'</xsl:text>
-            </xsl:variable>
             <xsl:element name="xsl:param">
                   <xsl:attribute name="name">
                         <xsl:value-of select="$name"/>
@@ -362,27 +361,31 @@
             </xsl:element>
             <xsl:if test="matches($name,'_list$')">
                   <!-- space (\s+) delimited list -->
-                  <xsl:element name="xsl:variable">
-                        <xsl:attribute name="name">
-                              <xsl:value-of select="replace($name,'_list','')"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="select">
-                              <xsl:value-of select="concat('tokenize($',$name,',',$apos,'\s+',$apos,')')"/>
-                        </xsl:attribute>
-                  </xsl:element>
-                  <xsl:if test="matches($value,'=')">
-                        <xsl:element name="xsl:variable">
-                              <xsl:attribute name="name">
-                                    <xsl:value-of select="replace($name,'_list','-key')"/>
-                              </xsl:attribute>
-                              <xsl:attribute name="select">
-                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^\s]+\s?',$apos,')')"/>
-                              </xsl:attribute>
-                        </xsl:element>
-                  </xsl:if>
+                  <xsl:call-template name="write-tokenize-var">
+                        <xsl:with-param name="name" select="$name"/>
+                        <xsl:with-param name="value" select="$value"/>
+                        <xsl:with-param name="separator" select="' '"/>
+                  </xsl:call-template>
+            </xsl:if>
+            <xsl:if test="matches($name,'_semicolon-list$')">
+                  <!-- semicolon delimited list -->
+                  <xsl:call-template name="write-tokenize-var">
+                        <xsl:with-param name="name" select="$name"/>
+                        <xsl:with-param name="value" select="$value"/>
+                        <xsl:with-param name="separator" select="';'"/>
+                  </xsl:call-template>
+            </xsl:if>
+            <xsl:if test="matches($name,'_underscore-list$')">
+                  <!-- unerescore delimied list -->
+                  <xsl:call-template name="write-tokenize-var">
+                        <xsl:with-param name="name" select="$name"/>
+                        <xsl:with-param name="value" select="$value"/>
+                        <xsl:with-param name="separator" select="'_'"/>
+                  </xsl:call-template>
             </xsl:if>
             <xsl:if test="matches($name,'_file-list$')">
                   <!-- adds a tokenized list from a file. Good for when the list is too long for batch line -->
+                  <xsl:variable name="separator" select="'(\r?\n)'"/>
                   <xsl:element name="xsl:variable">
                         <xsl:attribute name="name">
                               <xsl:value-of select="replace($name,'_file-list','')"/>
@@ -393,61 +396,56 @@
                               <xsl:text>)</xsl:text>
                         </xsl:attribute>
                   </xsl:element>
-            </xsl:if>
-            <xsl:if test="matches($name,'_underscore-list$')">
-                  <!-- unerescore delimied list -->
                   <xsl:element name="xsl:variable">
                         <xsl:attribute name="name">
-                              <xsl:value-of select="replace($name,'_underscore-list','')"/>
+                              <xsl:value-of select="replace($name,concat('(',$lists,')$'),'-key')"/>
                         </xsl:attribute>
                         <xsl:attribute name="select">
-                              <xsl:value-of select="concat('tokenize($',$name,',',$apos,'_',$apos,')')"/>
+                              <xsl:value-of select="concat('tokenize(',$value,',',$sq,'=[^',$separator,']+[',$separator,'$]',$sq,')')"/>
                         </xsl:attribute>
                   </xsl:element>
-                  <xsl:if test="matches($value,'=')">
-                        <xsl:element name="xsl:variable">
-                              <xsl:attribute name="name">
-                                    <xsl:value-of select="replace($name,'_underscore-list','-key')"/>
-                              </xsl:attribute>
-                              <xsl:attribute name="select">
-                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^_]+_?',$apos,')')"/>
-                              </xsl:attribute>
-                        </xsl:element>
-                  </xsl:if>
             </xsl:if>
             <xsl:if test="matches($name,'_equal-list$')">
                   <!-- equals delimited list -->
-                  <xsl:element name="xsl:variable">
-                        <xsl:attribute name="name">
-                              <xsl:value-of select="replace($name,'_equal-list','')"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="select">
-                              <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=',$apos,')')"/>
-                        </xsl:attribute>
-                  </xsl:element>
+                  <xsl:call-template name="write-tokenize-var">
+                        <xsl:with-param name="name" select="$name"/>
+                        <xsl:with-param name="value" select="$value"/>
+                        <xsl:with-param name="separator" select="'='"/>
+                  </xsl:call-template>
             </xsl:if>
-            <xsl:if test="matches($name,'_semicolon-list$')">
-                  <!-- semicolon delimited list -->
-                  <xsl:element name="xsl:variable">
-                        <xsl:attribute name="name">
-                              <xsl:value-of select="replace($name,'_semicolon-list','')"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="select">
-                              <xsl:value-of select="concat('tokenize($',$name,',',$apos,';',$apos,')')"/>
-                        </xsl:attribute>
-                  </xsl:element>
-                  <!--  now test if there are = in the list and make a key list -->
-                  <xsl:if test="matches($value,'=')">
-                        <xsl:variable name="key" select="tokenize($value,'=.*_?')"/>
-                        <xsl:element name="xsl:variable">
-                              <xsl:attribute name="name">
-                                    <xsl:value-of select="replace($name,'_semicolon-list','-key')"/>
-                              </xsl:attribute>
-                              <xsl:attribute name="select">
-                                    <xsl:value-of select="concat('tokenize($',$name,',',$apos,'=[^;]+;?',$apos,')')"/>
-                              </xsl:attribute>
-                        </xsl:element>
-                  </xsl:if>
+      </xsl:template>
+      <xsl:template name="write-tokenize-var">
+            <xsl:param name="name"/>
+            <xsl:param name="value"/>
+            <xsl:param name="separator"/>
+            <xsl:element name="xsl:variable">
+                  <xsl:attribute name="name">
+                        <xsl:value-of select="replace($name,concat('(',$lists,')$'),'')"/>
+                  </xsl:attribute>
+                  <xsl:attribute name="select">
+                        <xsl:value-of select="concat('tokenize($',$name,',',$sq,$separator,$sq,')')"/>
+                  </xsl:attribute>
+            </xsl:element>
+            <!--  now send to test if there are = in the list and make a key var array -->
+            <xsl:if test="matches($value,'=') and matches($separator,'[^=]')">
+                  <xsl:call-template name="write-key-var">
+                        <xsl:with-param name="name" select="$name"/>
+                        <xsl:with-param name="value" select="$value"/>
+                        <xsl:with-param name="separator" select="$separator"/>
+                  </xsl:call-template>
             </xsl:if>
+      </xsl:template>
+      <xsl:template name="write-key-var">
+            <xsl:param name="name"/>
+            <xsl:param name="value"/>
+            <xsl:param name="separator"/>
+            <xsl:element name="xsl:variable">
+                  <xsl:attribute name="name">
+                        <xsl:value-of select="replace($name,concat('(',$lists,')$'),'-key')"/>
+                  </xsl:attribute>
+                  <xsl:attribute name="select">
+                        <xsl:value-of select="concat('tokenize($',$name,',',$sq,'=[^',$separator,']+[',$separator,']?',$sq,')')"/>
+                  </xsl:attribute>
+            </xsl:element>
       </xsl:template>
 </xsl:stylesheet>
