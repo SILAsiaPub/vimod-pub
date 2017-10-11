@@ -9,12 +9,13 @@
     # Copyright:   	(c) 2017 SIL International
     # Licence:		<MIT>
     ################################################################ -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:strip-space elements="*"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:include href="project.xslt"/>
       <xsl:include href="inc-copy-anything.xslt"/>
-      <xsl:template match="para[not(child::*)][not(text())]">
+      <xsl:template match="para[not(child::*)][not(text())]" priority="10">
             <xsl:if test="@class = $b or @class = $ib">
                   <!-- Need to preserve \b and \ib -->
                   <para class="{@class}"/>
@@ -28,7 +29,7 @@
       </xsl:template>
       <xsl:template match="text()[preceding-sibling::tag[1] and string-length(preceding-sibling::tag[1]) = 0]"/>
       <!-- the above remove text when included in preceding tag becuase of removed tags -->
-      <xsl:template match="para[@class = $unwanted]"/>
+      <xsl:template match="para[@class = $unwanted]" priority="1000"/>
       <!-- the above remove unwanted para -->
       <xsl:template match="tag[not(text())]">
             <!-- tags that are empty, maybe because following tags were deleted so text is not in a tag -->
