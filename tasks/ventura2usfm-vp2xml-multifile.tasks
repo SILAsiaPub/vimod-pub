@@ -1,15 +1,15 @@
 # one file tasks
 vars                                    ;projectvar
-pcode                                   ;var pcode "onefile-%iso%"
+pcode                                   ;var pcode "multi-%iso%"
 check                                   ;checkdir "%projectpath%\%iconvout%"
 #check                                   ;checkdir "%projectpath%\%binmay1%"
 #check                                   ;checkdir "%projectpath%\%binmay2%"
 #count characters                        ;cct "%cctprexml%" "%projectpath%\%iconvout%\*%fileext%" "%projectpath%\%prexmlcctout%\*%fileext%"
 remove files                            ;ifexist "%projectpath%\%iconvout%\*%fileext%" del
 #remove files                            ;ifexist "%projectpath%\temp\*%fileext%" del
- run iconv first                        ;loopfiles "tasklist iconv.tasks" "%projectpath%\%sourcefolder%\*%fileext%"
+ run iconv first                        ;loopfiles "tasklist iconv4loop.tasks '%projectpath%\%sourcefolder%' '%projectpath%\%iconvout%'" "%projectpath%\%sourcefolder%\*%fileext%"
 remove illegal for XML                  ;tasklist fnr-regex.tasks "[\u001A\u0008]" "" "%projectpath%\%iconvout%" "%fileext%"
-latin cap letter v with hook (U+01B2)   ;tasklist fnr-regex.tasks "}" "{01B2}" "%projectpath%\%iconvout%" "%fileext%"
+#latin cap letter v with hook (U+01B2)   ;tasklist fnr-regex.tasks "}" "{01B2}" "%projectpath%\%iconvout%" "%fileext%"
 import all available files into xml     ;xslt vp2xml-multifile-input "" blank.xml "%projectpath%\xml\%iso%-base.xml"
 # make base xml file                      ;outputfile 
                                         ;xslt vpxml-post-xml-tidy
