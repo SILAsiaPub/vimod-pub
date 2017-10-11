@@ -18,33 +18,45 @@
       <xsl:include href="inc-replace-array.xslt"/>
       <xsl:include href="vpxml-cmap.xslt"/>
       <xsl:include href="project.xslt"/>
-      <xsl:variable name="unwantedtag_list" select="'- | +'"/>
-      <xsl:variable name="unwantedtagreplace_list" select="'-=;|= ;+= '"/>
-      <xsl:variable name="unwantedtag" select="tokenize($unwantedtag_list,' ')"/>
-      <xsl:variable name="unwantedtagreplace" select="tokenize($unwantedtagreplace_list,';')"/>
-      <xsl:variable name="vptext" select="f:file2text($allvptextutf8file)"/>
-      <xsl:variable name="replacearray" select="f:file2lines($replacearrayfile)"/>
+       <!-- <xsl:variable name="unwantedtag_list" select="'- | +'"/> -->
+       <!-- <xsl:variable name="unwantedtagreplace_list" select="'-=;|= ;+= '"/> -->
+       <!-- <xsl:variable name="unwantedtag" select="tokenize($unwantedtag_list,' ')"/> -->
+       <!-- <xsl:variable name="unwantedtagreplace" select="tokenize($unwantedtagreplace_list,';')"/> -->
+       <!-- <xsl:variable name="vptext" select="f:file2text($allvptextutf8file)"/> -->
+      <!-- <xsl:variable name="replacearray" select="f:file2lines($replacearrayfile)"/> -->
       <xsl:include href="inc-lookup.xslt"/>
-      <xsl:param name="inputfile" select="'book2let-lookup.txt'"/>
+      <!--<xsl:param name="inputfile" select="'book2let-lookup.txt'"/>
       <xsl:variable name="line" select="f:file2lines(concat($projectpath,'\setup\',$inputfile))"/>
       <xsl:param name="inputfile2" select="'book3let-lookup-numb.txt'"/>
-      <xsl:variable name="bknumb" select="f:file2lines(concat($projectpath,'\setup\',$inputfile2))"/>
+      <xsl:variable name="bknumb" select="f:file2lines(concat($projectpath,'\setup\',$inputfile2))"/> -->
+     <!-- <xsl:variable name="bookcode">
+            <xsl:choose>
+                  <xsl:when test="$if2let = '2'">
+                        <xsl:sequence select="$kv-2let-3let-key"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:sequence select="$kv-3let-numb-key"/>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:variable> -->
       <xsl:variable name="alltext">
             <xsl:call-template name="jointext"/>
       </xsl:variable>
-      <xsl:variable name="alltext2" select="translate(f:replace-array($alltext,$replacearray,1,'&#9;'),'&lt;&gt;&#13;','{}')"/>
+      <!-- <xsl:variable name="alltext" select=""/> -->
+      <xsl:variable name="alltext2" select="translate(f:replace-array($alltext,$replace-array,1,'='),'&lt;&gt;&#13;','{}')"/>
       <xsl:variable name="bookraw" select="tokenize($alltext2,'@@@ scr ')"/>
       <xsl:template name="jointext">
-            <xsl:for-each select="$line">
-                  <!-- <xsl:comment select="."/> -->
-                  <xsl:variable name="bk" select="tokenize(.,'=')"/>
-                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$intropart,$fileext))"/>
-                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$fileext))"/>
-                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk[number($if2let) - 1],$fnpart,$fileext))"/>
+            <xsl:for-each select="$book-numb-key">
+                   <!-- <xsl:comment select="$book-code"/> -->
+                  <xsl:variable name="bk" select="f:keyvalue($adjust-book-code,.)"/>
+                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$intropart,$fileext))"/>
+                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fileext))"/>
+                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fnpart,$fileext))"/>
                   <!-- <xsl:comment select="$bkbody"/> -->
                   <xsl:if test="unparsed-text-available($bkbody) or unparsed-text-available($bkintro)">
                         <xsl:value-of select="'@@@ scr '"/>
-                        <xsl:value-of select="$bk[number($if2let)]"/>
+                        <xsl:value-of select="."/>
+                         <!-- <xsl:value-of select="$bk[number($if2let)]"/> -->
                         <xsl:text>&#10;</xsl:text>
                   </xsl:if>
                   <!-- <xsl:comment select="$bkbody"/> -->
@@ -63,9 +75,9 @@
             </xsl:for-each>
       </xsl:template>
       <xsl:template match="/">
-            <xsl:comment select="substring($vptext,0,100)"/>
             <!-- starting template -->
             <xsl:element name="data">
+                  <xsl:comment select="$book-numb-key"/>
                   <xsl:for-each select="$bookraw">
                         <xsl:variable name="bkseq" select="position()-1"/>
                         <xsl:choose>
@@ -82,7 +94,7 @@
                                                 <xsl:value-of select="$bookname"/>
                                           </xsl:attribute>
                                           <xsl:attribute name="ptbknumb">
-                                                <xsl:value-of select="f:keyvalue($bknumb,$bookname)"/>
+                                                <xsl:value-of select="f:keyvalue($book-numb,$bookname)"/>
                                           </xsl:attribute>
                                           <xsl:attribute name="bkseq">
                                                 <xsl:value-of select="$bkseq"/>
@@ -171,7 +183,7 @@
             <xsl:choose>
                   <xsl:when test="matches(.,'\}')">
                         <xsl:choose>
-                              <xsl:when test="$tag[1] = $tagmatch">
+                              <xsl:when test="$tag[1] = $tagfindreplace-key">
                                     <xsl:value-of select="f:keyvalue($tagfindreplace,$tag[1])"/>
                                     <xsl:value-of select="replace($tag[2],'&#xA;','')"/>
                               </xsl:when>
