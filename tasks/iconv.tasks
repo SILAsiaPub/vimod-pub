@@ -1,0 +1,6 @@
+# iconv.tasks
+# debug                        ;command "echo on"
+input                         ;infile "%~2"
+output                        ;outfile "%~3" "%projectpath%\xml\%pcode%-%count%-iconv.xml"
+new one liner                 ;command2file "iconv -t UTF-8 '%infile%'" "%outfile%" 
+

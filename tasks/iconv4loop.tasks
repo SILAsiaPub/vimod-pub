@@ -1,0 +1,11 @@
+# iconv.tasks
+# debug                                 ;command "echo on"
+input path                              ;var inpath "%~2"
+output path                             ;var outpath "%~3"
+input                                   ;infile "%inpath%\%~4"
+get name                                ;var name "%~nx4"
+output                                  ;outfile "%outpath%\%name%" "%projectpath%\xml\%pcode%-%count%-iconv.xml"
+new one liner                           ;command2file "iconv -f CP1252 -t UTF-8 '%infile%'" "%outfile%"
+
+
+
