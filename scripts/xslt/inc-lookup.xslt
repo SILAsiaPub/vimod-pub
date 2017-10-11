@@ -96,14 +96,16 @@
             <xsl:variable name="return-column" select="2"/>
             <!-- <xsl:param name="default"/> -->
             <xsl:variable name="searchvalues_list">
+                  <!--create and list of keys only  -->
                   <xsl:for-each select="$array">
                         <xsl:variable name="subarray" select="tokenize(.,$field-separator)"/>
                         <xsl:value-of select="concat($subarray[$find-column],$field-separator)"/>
                   </xsl:for-each>
             </xsl:variable>
+            <!--create an array of the key values  -->
             <xsl:variable name="searchvalues" select="tokenize($searchvalues_list,$field-separator)"/>
             <xsl:choose>
-                  <!-- make sure the item is in the set of data being searched, if not then return error message in output with string of un matched item -->
+                  <!-- make sure the item is in the set of data being searched, if not then return origina string -->
                   <xsl:when test="$searchvalues = string($string)">
                         <xsl:for-each select="$array">
                               <!-- loop through the known data to find a match -->
