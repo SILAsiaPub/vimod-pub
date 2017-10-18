@@ -14,6 +14,7 @@
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-copy-anything.xslt"/>
       <xsl:include href="project.xslt"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:template match="scr">
             <xsl:copy>
                   <xsl:apply-templates select="@*"/>
@@ -31,7 +32,7 @@
                   </xsl:apply-templates>
             </xsl:copy>
       </xsl:template>
-      <xsl:template match="tag[@value = $caller-feature][normalize-space(.) = $caller][not(matches(preceding-sibling::*[1],'^\d+$'))]">
+      <xsl:template match="tag[@value = $caller-feature][normalize-space(.) = $caller]">
             <!--<xsl:template match="tag[matches(@value,$f_match)]"> -->
             <xsl:param name="fnbefore"/>
             <xsl:choose>
@@ -39,10 +40,10 @@
                   <xsl:otherwise>
                         <xsl:element name="caller">
                               <xsl:attribute name="cseq">
-                                       <!-- <xsl:number count="//tag[@value = $caller-feature][normalize-space(.) = $caller]" format="01."/>  -->
+                                    <!-- <xsl:number count="//tag[@value = $caller-feature][normalize-space(.) = $caller]" format="01."/>  -->
                                     <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller]) + 1 - number($fnbefore)"/>
- <!-- <xsl:text>-</xsl:text> -->
-                                     <!-- <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller][ancestor::book/scr/para/tag]) + 1"/> -->
+                                    <!-- <xsl:text>-</xsl:text> -->
+                                    <!-- <xsl:value-of select="count(preceding::tag[@value = $caller-feature][normalize-space(.) = $caller][ancestor::book/scr/para/tag]) + 1"/> -->
                               </xsl:attribute>
                               <xsl:attribute name="value">
                                     <xsl:value-of select="@value"/>
