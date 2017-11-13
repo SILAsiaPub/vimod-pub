@@ -834,7 +834,7 @@ goto :eof
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 call :infile "%~1"
 if defined missinginput echo missing input file & goto :eof
-call :outfile "%~2"
+call :outfile "%~2" "%projectpath%\xml\%pcode%-%count%-html2xml.xml"
 set curcommand=call xml fo -H -D "%infile%"
 rem set curcommand=call "%tidy5%" -o "%outfile%" "%infile%"
 call :before
@@ -1209,7 +1209,7 @@ goto :eof
 :: Class: command - loop
 :: Required parameters:
 :: action - can be any Vimod-Pub command like i.e. tasklist dothis.tasks
-:: extension
+:: basedir
 :: comment
 :: Depends on:
 :: * - May be any function but probably tasklist
@@ -1298,6 +1298,8 @@ set string=
 set comment=
 if defined masterdebug call :funcdebug %0 end
 goto :eof
+
+
 
 :looptasks
 :: Description: loop through tasks acording to %list%
