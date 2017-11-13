@@ -120,6 +120,43 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
+      <xsl:function name="f:keyvalue2">
+            <!-- generic lookup function with 6 parameters
+				uses existing array as input not a string-->
+            <xsl:param name="array"/>
+            <xsl:param name="string"/>
+            <!-- <xsl:param name="field-separator" /> -->
+            <xsl:variable name="field-separator" select="'='"/>
+            <!-- <xsl:param name="find-column"/> -->
+            <xsl:variable name="find-column" select="1"/>
+            <!-- <xsl:param name="return-column"/> -->
+            <xsl:variable name="return-column" select="2"/>
+            <!-- <xsl:param name="default"/> -->
+            <xsl:variable name="searchvalues-key">
+                  <!--create and list of keys only  -->
+                  <xsl:for-each select="$array">
+<xsl:sequence select="tokenize(.,$field-separator)[1]"/>
+                  </xsl:for-each>
+            </xsl:variable>
+            <!--create an array of the key values  -->
+             <!-- <xsl:variable name="searchvalues" select="tokenize($searchvalues_list,$field-separator)"/> -->
+            <xsl:choose>
+                  <!-- make sure the item is in the set of data being searched, if not then return origina string -->
+                  <xsl:when test="$searchvalues-key = string($string)">
+                        <xsl:for-each select="$array">
+                              <!-- loop through the known data to find a match -->
+                              <xsl:variable name="subarray" select="tokenize(.,$field-separator)"/>
+                              <xsl:if test="$subarray[1] = $string">
+                                    <xsl:value-of select="$subarray[2]"/>
+                              </xsl:if>
+                        </xsl:for-each>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:value-of select="$string"/>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:function>
+
       <xsl:function name="f:lookupalt">
             <!-- generic lookup function 7 parameters
 				uses existing array as input not a string-->

@@ -14,30 +14,32 @@
             <!-- This function takes a string that needs to have changes made, an array of change pairs, a sequence position 
 		of where in the array the replace is to be taken from and a separator that should be used to separate the pair of 
 		find and replace items.
-		An array could be 'Na=na', 'si=SI', 'David=david' with a separate of '='.
+		An array could be 'Na=na= comment area', 'si=SI', 'David=david' with a separate of '='.
 		So the 'Na=na' string is converted into: find = 'Na' and rep = 'na'.
 		The array needs to be created first. -->
             <xsl:param name="string"/>
             <xsl:param name="array"/>
             <xsl:param name="seq"/>
             <xsl:param name="separate"/>
-            <xsl:variable name="find" select="substring-before($array[$seq],$separate)"/>
-            <xsl:variable name="rep" select="substring-after($array[$seq],$separate)"/>
+            <xsl:variable name="part" select="tokenize($array[$seq],$separate)"/>
+            <xsl:variable name="find" select="$part[1]"/>
+            <xsl:variable name="rep" select="$part[2]"/>
             <xsl:choose>
                   <xsl:when test="matches($array[$seq],'^#')">
+                        <!-- If the line starts with a # and is a comment line then do the next replace -->
                         <xsl:value-of select="f:replace-array($string,$array,number($seq) +1,$separate)"/>
                   </xsl:when>
-                  <xsl:when test="$find = '' ">
-                        <!-- tests for blank array, and returns the string -->
-                        <xsl:value-of select="$string"/>
+                  <xsl:when test="$seq = count($array) -1 and string-length($array[count($array)]) = 0">
+                        <!-- tests for blank array in last line, and returns the string -->
+                        <xsl:value-of select="replace($string,$find,$rep)"/>
                   </xsl:when>
-                  <xsl:when test="$seq =count($array)">
+                  <xsl:when test="$seq = count($array)">
                         <!-- if this is the last array item then does the replace and does no more iterations -->
                         <xsl:value-of select="replace($string,$find,$rep)"/>
                   </xsl:when>
                   <xsl:otherwise>
                         <!-- if there are more replacements to be made then this will trigger the next replacement -->
-                        <xsl:value-of select="f:replace-array(replace($string,$find,$rep),$array,($seq) +1,$separate)"/>
+                        <xsl:value-of select="f:replace-array(replace($string,$find,$rep),$array,number($seq) +1,$separate)"/>
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>

@@ -13,6 +13,7 @@
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
       <xsl:character-map name="cmap">
+            <xsl:output-character character="&amp;" string="&amp;"/>
             <xsl:output-character character="&#x007F;" string="-"/>
             <xsl:output-character character="&#96;" string="&#x2018;"/>
             <xsl:output-character character="&#39;" string="&#x2019;"/>
@@ -32,6 +33,22 @@
             <xsl:variable name="rep3" select="replace($rep2,'\{166\}','&#x0101;')"/>
             <!-- 166 becomes a with macron -->
             <xsl:value-of select="$rep3"/>
+      </xsl:function>
+      <xsl:function name="f:replacekerning">
+            <!-- Replace encoded characters  -->
+            <xsl:param name="string"/>
+            <xsl:variable name="rep0" select="replace($string,'\{%-?\d+\}','')"/>
+            <!-- replace kerning markup -->
+            <xsl:variable name="rep1" select="replace($rep0,'\{R\}',' ')"/>
+            <!-- remove new line breaks with space -->
+            <xsl:value-of select="$rep1"/>
+      </xsl:function>
+      <xsl:function name="f:removetags">
+            <!-- Replace all tags  -->
+            <xsl:param name="string"/>
+            <xsl:variable name="rep0" select="replace($string,'\{[^\}]+\}','')"/>
+            <!-- replace kerning markup -->
+            <xsl:value-of select="normalize-space($rep0)"/>
       </xsl:function>
 </xsl:stylesheet>
     

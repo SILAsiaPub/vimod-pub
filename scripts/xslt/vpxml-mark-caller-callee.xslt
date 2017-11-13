@@ -55,15 +55,27 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:template>
-      <xsl:template match="*[@value = $callee-feature][ancestor::note]">
+      <xsl:template match="*[@value = $callee-feature]" mode="footnote-field">
             <!-- matches callee features -->
             <callee value="{.}"/>
       </xsl:template>
-      <xsl:template match="*[@value = $callee-ref-tag][ancestor::note][1]">
+      <xsl:template match="*[@value = $callee-ref-tag]" mode="footnote-field">
             <!-- matches back ref in footnote -->
             <fr>
                   <xsl:value-of select="."/>
             </fr>
+      </xsl:template>
+      <xsl:template match="*" mode="footnote-field">
+            <!-- matches back ref in footnote -->
+            <ft>
+                  <xsl:value-of select="."/>
+            </ft>
+      </xsl:template>
+      <xsl:template match="*[@value = $fq]" mode="footnote-field">
+            <!-- matches back ref in footnote -->
+            <fq>
+                  <xsl:value-of select="."/>
+            </fq>
       </xsl:template>
       <xsl:template match="para[@class = $fnote][parent::note]">
             <!-- this is when footnotes are in individual paragraphs -->
@@ -71,7 +83,7 @@
                   <xsl:attribute name="nseq">
                         <xsl:value-of select="count(preceding-sibling::*[@class = $fnote]) + 1"/>
                   </xsl:attribute>
-                  <xsl:apply-templates/>
+                  <xsl:apply-templates mode="footnote-field"/>
             </xsl:element>
       </xsl:template>
       <xsl:template match="calleeGroup">

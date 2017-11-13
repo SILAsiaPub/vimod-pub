@@ -14,6 +14,7 @@
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-copy-anything.xslt"/>
       <xsl:include href="project.xslt"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:template match="caller">
             <xsl:variable name="callerno" select="@cseq"/>
             <xsl:variable name="callerletter" select="@callertext"/>

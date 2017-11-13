@@ -12,8 +12,7 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes" use-character-maps="cmap"/>
       <xsl:include href="inc-file2uri.xslt"/>
-      <xsl:param name="inputfile"/>
-      <xsl:variable name="line" select="f:file2lines($inputfile)"/>
+      <xsl:include href="project.xslt"/>
       <xsl:template match="/*">
             <xsl:element name="xsl:stylesheet">
                   <xsl:attribute name="version">
@@ -27,19 +26,31 @@
                         <xsl:attribute name="name">
                               <xsl:text>cmap</xsl:text>
                         </xsl:attribute>
-                        <xsl:for-each select="$line">
+                        <xsl:for-each select="$charchange">
                               <xsl:variable name="part" select="tokenize(.,'=')"/>
-                              <xsl:comment select="$part[3]"/>
-                              <xsl:if test=".">
-                                    <xsl:element name="xsl:output-character">
-                                          <xsl:attribute name="character">
-                                                <xsl:value-of select="f:makeentity($part[1])"/>
-                                          </xsl:attribute>
-                                          <xsl:attribute name="string">
-                                                <xsl:value-of select="f:makeentity($part[2])"/>
-                                          </xsl:attribute>
-                                    </xsl:element>
-                              </xsl:if>
+                              <xsl:choose>
+                                    <xsl:when test="matches(.,'text not imported, file not available')">
+                                          <xsl:element name="xsl:output-character">
+                                                <xsl:attribute name="character">
+                                                      <xsl:value-of select="'x'"/>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="string">
+                                                      <xsl:value-of select="'x'"/>
+                                                </xsl:attribute>
+                                          </xsl:element>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                          <xsl:comment select="$part[3]"/>
+                                          <xsl:element name="xsl:output-character">
+                                                <xsl:attribute name="character">
+                                                      <xsl:value-of select="f:makeentity($part[1])"/>
+                                                </xsl:attribute>
+                                                <xsl:attribute name="string">
+                                                      <xsl:value-of select="f:makeentity($part[2])"/>
+                                                </xsl:attribute>
+                                          </xsl:element>
+                                    </xsl:otherwise>
+                              </xsl:choose>
                         </xsl:for-each>
                   </xsl:element>
             </xsl:element>

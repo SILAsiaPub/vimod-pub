@@ -10,9 +10,10 @@
     # Licence:      <LGPL>
     ################################################################
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="text" encoding="utf-8"/>
       <xsl:include href="project.xslt"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:template match="/*">
             <xsl:text disable-output-escaping="yes">Report on Paragraph Matching for </xsl:text>
             <xsl:value-of select="concat($iso,' ','&#13;&#10;')"/>
@@ -56,15 +57,15 @@
                               <xsl:text>sfm = h</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
-                       <xsl:if test="$class = $toc1">
+                        <xsl:if test="$class = $toc1">
                               <xsl:text>sfm = toc1</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
-                       <xsl:if test="$class = $toc2">
+                        <xsl:if test="$class = $toc2">
                               <xsl:text>sfm = toc2</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
-                       <xsl:if test="$class = $toc3">
+                        <xsl:if test="$class = $toc3">
                               <xsl:text>sfm = toc3</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
@@ -93,7 +94,7 @@
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $ms1">
-                              <xsl:text>sfm = s</xsl:text>
+                              <xsl:text>sfm = ms1</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $s">
