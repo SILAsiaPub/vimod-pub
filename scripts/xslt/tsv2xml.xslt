@@ -20,14 +20,9 @@
                                                 <xsl:for-each select="$elemNames">
                                                       <xsl:variable name="pos" select="position()"/>
                                                       <xsl:variable name="elemname">
-                                                            <xsl:choose>
-                                                                  <xsl:when test="matches(.,'^\d+$')">
-                                                                        <xsl:value-of select="concat('d',.)"/>
-                                                                  </xsl:when>
-                                                                  <xsl:otherwise>
-                                                                        <xsl:value-of select="translate(.,' &amp;','_')"/>
-                                                                  </xsl:otherwise>
-                                                            </xsl:choose>
+                                                            <xsl:variable name="step1" select="replace(.,'^(\d)','d$1')"/>
+                                                            <xsl:value-of select="lower-case(translate($step1,' &amp;','_'))"/>
+
                                                       </xsl:variable>
                                                       <xsl:choose>
                                                             <xsl:when test="string-length($elemname) gt 0">
