@@ -28,29 +28,31 @@
                         </xsl:attribute>
                         <xsl:for-each select="$charchange">
                               <xsl:variable name="part" select="tokenize(.,'=')"/>
-                              <xsl:choose>
-                                    <xsl:when test="matches(.,'text not imported, file not available')">
-                                          <xsl:element name="xsl:output-character">
-                                                <xsl:attribute name="character">
-                                                      <xsl:value-of select="'x'"/>
-                                                </xsl:attribute>
-                                                <xsl:attribute name="string">
-                                                      <xsl:value-of select="'x'"/>
-                                                </xsl:attribute>
-                                          </xsl:element>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                          <xsl:comment select="$part[3]"/>
-                                          <xsl:element name="xsl:output-character">
-                                                <xsl:attribute name="character">
-                                                      <xsl:value-of select="f:makeentity($part[1])"/>
-                                                </xsl:attribute>
-                                                <xsl:attribute name="string">
-                                                      <xsl:value-of select="f:makeentity($part[2])"/>
-                                                </xsl:attribute>
-                                          </xsl:element>
-                                    </xsl:otherwise>
-                              </xsl:choose>
+                              <xsl:if test="string-length($part[1]) gt 0">
+                                    <xsl:choose>
+                                          <xsl:when test="matches(.,'text not imported, file not available')">
+                                                <xsl:element name="xsl:output-character">
+                                                      <xsl:attribute name="character">
+                                                            <xsl:value-of select="'x'"/>
+                                                      </xsl:attribute>
+                                                      <xsl:attribute name="string">
+                                                            <xsl:value-of select="'x'"/>
+                                                      </xsl:attribute>
+                                                </xsl:element>
+                                          </xsl:when>
+                                          <xsl:otherwise>
+                                                <xsl:comment select="$part[3]"/>
+                                                <xsl:element name="xsl:output-character">
+                                                      <xsl:attribute name="character">
+                                                            <xsl:value-of select="f:makeentity($part[1])"/>
+                                                      </xsl:attribute>
+                                                      <xsl:attribute name="string">
+                                                            <xsl:value-of select="f:makeentity($part[2])"/>
+                                                      </xsl:attribute>
+                                                </xsl:element>
+                                          </xsl:otherwise>
+                                    </xsl:choose>
+                              </xsl:if>
                         </xsl:for-each>
                   </xsl:element>
             </xsl:element>
