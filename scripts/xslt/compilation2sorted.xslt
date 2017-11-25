@@ -13,21 +13,36 @@
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="inc-copy-anything.xslt"/>
       <xsl:include href="inc-lookup.xslt"/>
+      <xsl:include href="inc-file2uri.xslt"/>
       <xsl:include href="project.xslt"/>
       <xsl:template match="/*">
             <xsl:copy>
                   <xsl:for-each-group select="bkGroup" group-by="f:keyvalue($bookname,bk)">
                         <xsl:sort select="bk"/>
-                        <xsl:sort select="c[1]"/>
-                        <xsl:sort select="p[1]/v[1]/@verse"/>
+                         <!-- <xsl:sort select="c[1]"/> -->
+                         <!-- <xsl:sort select="p[1]/v[1]/@verse"/> -->
                         <xsl:element name="book">
                               <xsl:attribute name="name">
                                     <xsl:value-of select="bk[1]"/>
                               </xsl:attribute>
-                              <xsl:apply-templates select="current-group()"/>
+                              <xsl:call-template name="chapter">
+                                    <xsl:with-param name="chap" select="current-group()"/>
+                              </xsl:call-template>
+                              <!-- <xsl:apply-templates select="current-group()"/> -->
                         </xsl:element>
                   </xsl:for-each-group>
             </xsl:copy>
+      </xsl:template>
+      <xsl:template name="chapter">
+            <xsl:param name="chap"/>
+            <xsl:for-each-group select="$chap" group-by="c">
+                  <xsl:sort select="number(c[1])"/>
+                  <xsl:sort select="number(p[1]/v[1]/@verse)"/>
+                  <xsl:element name="chap">
+                        <xsl:value-of select="c[1]"/>
+                  </xsl:element>
+                  <xsl:apply-templates select="current-group()"/>
+            </xsl:for-each-group>
       </xsl:template>
       <xsl:template match="bkGroup">
             <xsl:apply-templates select="*"/>
