@@ -1,13 +1,13 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions">
       <!--
     #############################################################
-    # Name:         sfm2xml-general-pv.xslt
-    # Purpose:	Convert generic sfm to xml making use of project variables in project.xslt
-    # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
-    # Author:       Ian McQuay <ian_mcquay@sil.org>
-    # Created:      2016- -
-    # Copyright:    (c) 2016 SIL International
-    # Licence:      <LGPL>
+    # Name:  		sfm2xml-general-pv.xslt
+    # Purpose:		Convert generic sfm to xml making use of project variables in project.xslt
+    # Part of:      		Vimod Pub - http://projects.palaso.org/projects/vimod-pub
+    # Author:       	Ian McQuay <ian_mcquay@sil.org>
+    # Created:      	2016- -
+    # Copyright:    	(c) 2016 SIL International
+    # Licence:      	<LGPL>
     ################################################################ -->
       <!-- 
 Simple SFM to XML importer

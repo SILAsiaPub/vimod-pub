@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     #############################################################
-    # Name:     RAB-phrasebook-make-contents.xslt
+    # Name:     	RAB-phrasebook-make-contents.xslt
     # Purpose:	Take a Song file in SFM and generate a menu contents xml
-    # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
-    # Author:       Ian McQuay <ian_mcquay@sil.org>
-    # Created:      2016-10-31
-    # Copyright:    (c) 2016 SIL International
-    # Licence:      <LGPL>
+    # Part of:    	Vimod Pub - http://projects.palaso.org/projects/vimod-pub
+    # Author:    	Ian McQuay <ian_mcquay@sil.org>
+    # Created:  	2016-10-31
+    # Copyright: 	(c) 2016 SIL International
+    # Licence:    	<LGPL>
     ################################################################ -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
