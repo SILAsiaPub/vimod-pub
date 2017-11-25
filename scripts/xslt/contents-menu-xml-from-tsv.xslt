@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
+<!-- probably not working
     #############################################################
-    # Name:   		.xslt
-    # Purpose:		.
-    # Part of:		Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
-    # Author:		Ian McQuay <ian_mcquay@sil.org>
+    # Name:   		contents-menu-xml-from-tsv.xslt
+    # Purpose:		Input is a TSV file.
+    # Part of:			Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:			Ian McQuay <ian_mcquay@sil.org>
     # Created:		2017- -
     # Copyright:   	(c) 2017 SIL International
     # Licence:		<MIT>
@@ -91,9 +91,9 @@
                   </title>
                   <items>
                         <xsl:choose>
-                              <xsl:when test="number($seq) = 1">
+                              <xsl:when test="number($seq) = 1"/>
 
-</xsl:when>
+
                               <xsl:otherwise>
                                     <xsl:for-each select="$line">
                                           <xsl:variable name="line-numb" select="position()"/>
