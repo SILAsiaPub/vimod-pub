@@ -1792,7 +1792,7 @@ goto :eof
 :: Required preset variables:
 :: outfile
 :: Required parameters:
-:: newfilename
+:: filename
 :: Func calls:
 :: inccount
 :: drivepath
@@ -1803,6 +1803,7 @@ call :inccount
 set infile=%outfile%
 set filename=%~1
 call :drivepath "%filename%"
+call :checkdir "%drivepath%"
 call :nameext "%filename%"
 set outfile=%drivepath%%nameext%
 set curcommand=copy /Y "%infile%" "%outfile%"
