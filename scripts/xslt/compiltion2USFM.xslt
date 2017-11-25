@@ -41,7 +41,7 @@
             <xsl:text> </xsl:text>
             <xsl:apply-templates/>
       </xsl:template>
-      <xsl:template match="p|s|s1|s2|c|pi|r|q1|m">
+      <xsl:template match="p|s|s1|s2|pi|r|q1|m">
             <xsl:text>&#10;\</xsl:text>
             <xsl:value-of select="name()"/>
             <xsl:text> </xsl:text>
@@ -49,6 +49,11 @@
       </xsl:template>
       <xsl:template match="*">
             <xsl:text>===Unhandled ===</xsl:text>
+            <xsl:apply-templates/>
+      </xsl:template>
+      <xsl:template match="c"/>
+      <xsl:template match="chap">
+            <xsl:text>&#10;\c </xsl:text>
             <xsl:apply-templates/>
       </xsl:template>
 </xsl:stylesheet>
