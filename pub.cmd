@@ -1549,8 +1549,15 @@ if defined echomenufile echo menu=%~1
 if defined echomenufile echo menu=%~1
 echo.
 rem process the menu types to generate the menu items.
-if "%menutype%" == "projectmenu" FOR /F "eol=# tokens=1,2 delims=;" %%i in (%menulist%) do set action=%%j&call :menuwriteoption "%%i" %%j
-if "%menutype%" == "commonmenutype" FOR /F "eol=# tokens=1,2 delims=;" %%i in (%menulist%) do set action=%%j&call :menuwriteoption "%%i" %%j
+SETLOCAL EnableDelayedExpansion
+if "%menutype%" == "projectmenu" FOR /F "eol=# tokens=1,2 delims=;" %%i in (%menulist%) do (
+  set action=%%j
+  call :menuwriteoption "%%i" %%j
+)
+if "%menutype%" == "commonmenutype" FOR /F "eol=# tokens=1,2 delims=;" %%i in (%menulist%) do (
+  set action=%%j
+  call :menuwriteoption "%%i" %%j
+)
 if "%menutype%" == "settings" call :writeuifeedback "%menulist%" %skiplines%
 if "%menutype%" == "createdynamicmenu" for /F "eol=# delims=" %%i in ('dir "%projectpath%" /b/ad') do (
     set action=menu "%projectpath%\%%i\%projectsetupfolder%\project.menu" "%%i project"
@@ -1619,9 +1626,9 @@ goto :eof
 if defined masterdebug call :funcdebug %0
 if defined varvalue goto :eof
 set let=%~1
-set option=option%let%
+set option=!option%let%!
 :: /I makes the IF comparison case-insensitive
-IF /I '%Choice%'=='%let%' call :%%%option%%%
+IF /I '%Choice%'=='%let%' call :%option%
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -2478,18 +2485,6 @@ goto :eof
 :: Note: not used by this batch command. The xvarset is a text file that is line separated and = separated. Only a pair can occur on any line.
 goto :eof
 
-@echo off
-:: Title: pub.cmd
-:: Title Description: Vimod-Pub batch file with menus and tasklist processing
-:: Author: Ian McQuay
-:: Created: 2012-03
-:: Last Modified: 2016-010-12
-:: Source: https://github.com/silasiapub/vimod-pub
-:: Commandline startup options:
-:: pub  - normal usage for menu starting at the data root.
-:: pub tasklist tasklistname.tasks -  process a particular tasklist, no menus used. Used with Electron Vimod-Pub GUI
-:: pub menu menupath - Start projet.menu at a particular path
-:: pub debug function_name - Just run a particular function to debug
-goto :main
+
 
 
