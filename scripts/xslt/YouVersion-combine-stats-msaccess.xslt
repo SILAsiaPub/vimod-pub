@@ -10,10 +10,10 @@
     # Licence:      <LGPL>
     ################################################################ -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs f">
-      <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes" />
+      <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="project.xslt"/>
       <xsl:include href="inc-file2uri.xslt"/>
-      <xsl:include href="inc-csv-tokenize.xslt"/>
+      <!-- <xsl:include href="inc-csv-tokenize.xslt"/> -->
       <xsl:include href="inc-lookup.xslt"/>
       <xsl:param name="months"/>
       <xsl:variable name="month_list">
@@ -32,8 +32,8 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:variable>
-        <xsl:variable name="filename_list" select="'chapter-requests-by-country.csv chapter-requests-by-version.csv offline-by-country.csv offline-by-version.csv offline-downloads-by-user-by-version.csv shared-verses-by-version.csv switches-by-version.csv unique-chapter-requests.csv unique-switches-by-version.csv'"/> 
-       <!-- <xsl:variable name="filename_list" select="'offline-downloads-by-user-by-version.csv'"/> -->
+      <xsl:variable name="filename_list" select="'chapter-requests-by-country.csv chapter-requests-by-version.csv offline-by-country.csv offline-by-version.csv offline-downloads-by-user-by-version.csv shared-verses-by-version.csv switches-by-version.csv unique-chapter-requests.csv unique-switches-by-version.csv'"/>
+      <!-- <xsl:variable name="filename_list" select="'offline-downloads-by-user-by-version.csv'"/> -->
       <xsl:variable name="asialang" select="concat($basepath,'/Languages.txt')"/>
       <xsl:variable name="asiaversion" select="concat($basepath,'/versions.txt')"/>
       <xsl:variable name="langtext" select="unparsed-text($asialang)"/>

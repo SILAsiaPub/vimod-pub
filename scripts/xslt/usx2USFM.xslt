@@ -36,9 +36,14 @@
             <xsl:value-of select="@style"/>
             <xsl:text> </xsl:text>
             <xsl:apply-templates/>
+            <xsl:if test="@closed = 'true'">
+                  <xsl:text>\</xsl:text>
+                  <xsl:value-of select="@style"/>
+                  <xsl:text> </xsl:text>
+            </xsl:if>
       </xsl:template>
       <xsl:template match="book">
-            <xsl:text>&#10;\</xsl:text>
+            <xsl:text>\</xsl:text>
             <xsl:value-of select="@style"/>
             <xsl:text> </xsl:text>
             <xsl:value-of select="@code"/>
