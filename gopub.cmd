@@ -1,0 +1,1 @@
+start gobuild %1
