@@ -2,7 +2,7 @@
 // Initial build
 // 2018-01-23
 
-package main
+package vimodpub
 
 import (
 	"fmt"
@@ -126,7 +126,7 @@ func debug(d string) string {
 	// debug a function
 	// fmt.Println("debug", d)
 	s := "d:\\testing\\file.ext"
-	f := testType{TestFile: "test-files/output.txt", SourceFile: "tools/readme.txt"}
+	
 	var t string
 	//var b bool
 	switch d {
@@ -139,8 +139,18 @@ func debug(d string) string {
 	case "drivepath":
 		t = drivepath(s)
 	case "CopyFile":
-		CopyFile(f.SourceFile,f.TestFile)
+        fmt.Println(d,"testing a file that exists.")
+        f := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/readme.txt"}
+		err := CopyFile(f.SourceFile,f.TestFile)
+        //fmt.Println(d,"error:", err)
+        fmt.Println(d,"isError:", isError(err))
+        fmt.Println(d,"testing a file that DOES NOT exist.")
+        f2 := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/no-readme.txt"}
+		err2 := CopyFile(f2.SourceFile,f2.TestFile)
+        //fmt.Println(d,"error:", err2)
+        fmt.Println(d,"isError:", isError(err2))
 	case "copyFileContents":
+        f := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/readme.txt"}
 		copyFileContents(f.SourceFile,f.TestFile)
 	default:
 		fmt.Println("test not defined:", d)
@@ -173,8 +183,8 @@ func check(e error) {
 func isError(err error) bool {
 	if err != nil {
 		fmt.Println(err.Error())
-	}
-	return (err != nil)
+	} 
+        return (err != nil)
 }
 
 type testType struct {
@@ -192,14 +202,10 @@ func copyFileContents(src, dst string) (err error) {
 // of the source file.
 // source: https://stackoverflow.com/questions/21060945/simple-way-to-copy-a-file-in-golang
     in, err := os.Open(src)
-    if err != nil {
-        return
-    }
+    if isError(err) { return }
     defer in.Close()
     out, err := os.Create(dst)
-    if err != nil {
-        return
-    }
+    if isError(err) { return }
     defer func() {
         cerr := out.Close()
         if err == nil {
@@ -219,9 +225,7 @@ func CopyFile(src, dst string) (err error) {
 // between the two files. If that fail, copy the file contents from src to dst.
 // source https://stackoverflow.com/questions/21060945/simple-way-to-copy-a-file-in-golang
     sfi, err := os.Stat(src)
-    if err != nil {
-        return
-    }
+    if isError(err) { return }
     if !sfi.Mode().IsRegular() {
         // cannot copy non-regular files (e.g., directories,
         // symlinks, devices, etc.)
