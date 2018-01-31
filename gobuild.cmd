@@ -3,6 +3,7 @@
 :: 2018-01-25
 @echo off
 set espeak=C:\Program Files (x86)\eSpeak\command_line\espeak.exe
+if exist %~n1.exe del %~n1.exe
 go build %1
 rem the next line causes the command window to stay open if there is an error
 
