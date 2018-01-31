@@ -1,1 +1,2 @@
-start gobuild %1
+start gobuild.cmd pub.go
+exit
