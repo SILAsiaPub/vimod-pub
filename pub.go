@@ -2,7 +2,7 @@
 // Initial build
 // 2018-01-23
 
-package vimodpub
+package main
 
 import (
 	"fmt"
@@ -26,6 +26,8 @@ var prt = fmt.Println
 var defaultDataPath = "data"
 var var1 string = "default"
 var var2 string = "none"
+var dbi debugInfo
+var tf, text string
 
 func main() {
 	//flag.StringVar(&ptype, "type", "default", "If used can be: tasklist, menu, debug")
@@ -47,19 +49,23 @@ func main() {
 	//fmt.Println(startpath)
 	//fmt.Println(drive)
 	setup()
+    var o debugInfo
 	//fmt.Println(os.Args[0])
 	//fmt.Println("type:",var1)
 	//fmt.Println("value:",var2)
 	switch var1 {
 	case "tasklist":
 		// run the supplied tasklist
+		fmt.Println(var1 + " stuff:", var2)
 		tasklist(var2)
 	case "debug":
 		// run the debug
-		debug(var2)
 		fmt.Println(var1 + ":", var2)
+		o = debug(var2)
+        fmt.Println( o.Rpt )
 	case "menu":
 		// open a menu
+		fmt.Println(var1 + ":", var2)
 		menu(var2)
 	case "default":
 		// run normally
@@ -75,7 +81,7 @@ func setup() {
 
 }
 
-func tasklist(tl string) {
+func tasklist(tl string) (err error) {
 
 	// run a tasklist
 	//var taskdrive string = drive(tl)
@@ -113,53 +119,101 @@ func tasklist(tl string) {
           // ignore line
       }
     }*/
+    return err
 }
 
-func menu(m string) {
+func menu(m string) (err error) {
 	// run a menu
 	count := 0
 	fmt.Println(count)
 	fmt.Println("menu", m)
+    mfile, err := os.Open(m)
+    if err != nil{
+     fmt.Println("Tasklist not found:", m)
+     log.Fatal(err)
+    }
+    defer mfile.Close()
+    return err
 }
 
-func debug(d string) string {
+func debug(d string) (dbi debugInfo) {
 	// debug a function
 	// fmt.Println("debug", d)
-	s := "d:\\testing\\file.ext"
-	
+	s := "d:/testing/file.ext"
+	m := "data/demo/books/setup/project.menu"
+    tl := "data/demo/books/setup/sfm2html.tasks"  
+    dbi.Func = d    
 	var t string
+    //    var e error
 	//var b bool
 	switch d {
 	case "drive":
 		t = drive(s)
+        dbi.TestValue = s
+        dbi.ReturnText = t
+        dbi.Rpt = d + " input: " + s + "  output: " + t
+        //fmt.Println(d,"input:", s, " output:", t)
 	case "ext":
 		t = ext(s)
+        dbi.TestValue = s
+        dbi.ReturnText = t
+        dbi.Rpt = d + " input: " + s + "  output: " + t
 	case "name":
 		t = name(s)
+        dbi.TestValue = s
+        dbi.ReturnText = t
+        dbi.Rpt = d + " input: " + s + "  output: " + t
+	case "nameExt":
+		t = nameExt(s)
+        dbi.TestValue = s
+        dbi.ReturnText = t
+        dbi.Rpt = d + " input: " + s + "  output: " + t
 	case "drivepath":
 		t = drivepath(s)
+        dbi.TestValue = s
+        dbi.ReturnText = t
+        dbi.Rpt = d + " input: " + s + "  output: " + t
+        // Next error return
+	case "tasklist":
+		e := tasklist(tl)
+        dbi.TestValue = tl
+        dbi.Er1 = e
+        tf = error2string(e)
+        dbi.Rpt = d + " input: " + tl + "  isError: " + tf 
+    case "menu":
+		e := menu(m)
+        tf = error2string(e)
+        dbi.Rpt = d + " input: " + m + "  isError: " + tf 
 	case "CopyFile":
         fmt.Println(d,"testing a file that exists.")
         f := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/readme.txt"}
 		err := CopyFile(f.SourceFile,f.TestFile)
         //fmt.Println(d,"error:", err)
-        fmt.Println(d,"isError:", isError(err))
+        fmt.Println(d,"isError:", isError(err), err)
         fmt.Println(d,"testing a file that DOES NOT exist.")
         f2 := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/no-readme.txt"}
 		err2 := CopyFile(f2.SourceFile,f2.TestFile)
         //fmt.Println(d,"error:", err2)
-        fmt.Println(d,"isError:", isError(err2))
+        fmt.Println(d,"isError:", isError(err2), err)
 	case "copyFileContents":
         f := testType{TestFile: "test-files/" + d + "output.txt", SourceFile: "tools/readme.txt"}
 		copyFileContents(f.SourceFile,f.TestFile)
 	default:
 		fmt.Println("test not defined:", d)
 	}
-	return t
+	return dbi
+}
+
+func error2string(e error) string {
+    if isError(e) { 
+        return "true"
+    } else { 
+        return "false"
+    }
 }
 
 func drive(dp string) string {
-	return strings.Split(dp, "\\")[0]
+	return strings.SplitAfter(dp, ":")[0]
 }
 
 func ext(f string) string {
@@ -173,6 +227,11 @@ func name(f string) string {
 func drivepath(f string) string {
 	return filepath.Dir(f)
 }
+
+func nameExt(f string) string {
+	return name(f) + ext(f)    
+}
+
 
 func check(e error) {
     if e != nil {
@@ -193,6 +252,16 @@ type testType struct {
 		TestFile string
 		SourceFile string
 		Comment string
+}
+
+type debugInfo struct {
+	// for testing
+		Func string
+        TestValue string
+        ReturnText string
+		Er1 error
+		Er2 error
+        Rpt string
 }
 
 func copyFileContents(src, dst string) (err error) {
