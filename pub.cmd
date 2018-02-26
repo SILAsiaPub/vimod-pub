@@ -55,7 +55,7 @@ if not exist "%outfile%" (
     call :echolog %writecount% Created:   %nameext%
 
     if defined echoafterspacepost echo.
-    echo ---------------------------------------------------------------- >>%projectlog%
+    echo ::---------------------------------------------------------------- >>%projectlog%
     rem echo. >>%projectlog%
     if exist "%outfile%.pre.txt" del "%outfile%.pre.txt"
 )
@@ -152,8 +152,8 @@ set echooff=%~1
 if defined masterdebug call :funcdebug %0
 if defined echocommandtodo echo Command to be attempted:
 if defined echocommandtodo echo %curcommand%
-if not defined echooff echo "Command to be attempted:" >>%projectlog%
-echo "%curcommand%" >>%projectlog%
+if not defined echooff echo :: Command to be attempted: >>%projectlog%
+echo %curcommand% >>%projectlog%
 if defined writebat echo %curcommand%>>%projectbat%
 echo. >>%projectlog%
 if exist "%outfile%" call :nameext "%outfile%"
@@ -194,9 +194,9 @@ set basepath=%cd%
 rem if not defined ccw32 set ccw32=ccw32
 set curcommand="%ccw32%" %cctparam% -t "%script%" -o "%outfile%" "%infile%"
 call :before
-cd %cctpath%
-%curcommand%
-cd %basepath%
+cd /d %cctpath%
+call %curcommand%
+cd /d %basepath%
 call :after "Consistent Changes"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -219,11 +219,11 @@ set dir=%~1
 if not defined dir echo missing required directory parameter & goto :eof
 set report=Checking dir %dir%
 if exist "%dir%" (
-      echo . . . Found! %dir% >>%projectlog%
+      echo ::. . . Found! %dir% >>%projectlog%
 ) else (
     rem call :removecommonatstart dirout "%dir%"
     if defined echodirnotfound echo Creating . . . %dirout%
-    echo . . . not found. %dir% >>%projectlog%
+    echo ::. . . not found. %dir% >>%projectlog%
     echo mkdir %dir% >>%projectlog%
     mkdir "%dir%"
 )
@@ -265,7 +265,7 @@ goto :eof
 :: curcommand
 :: Optional parameters:
 :: commandpath
-:: testoutfile
+:: outfile
 :: Depends on:
 :: funcdebugstart
 :: funcdebugend
@@ -275,26 +275,18 @@ if defined errorsuspendprocessing goto :eof
 if defined masterdebug call :funcdebug %0
 call :inccount
 set curcommand=%~1
-if not defined curcommand echo missing curcommand & goto :eof
 set commandpath=%~2
-set testoutfile=%~3
-if defined testoutfile set outfile=%testoutfile%
-set curcommand=%curcommand:'="%
-echo %curcommand%>>%projectlog%
-set drive=%~d2
-if not defined drive set drive=c:
-if defined testoutfile (
-  rem the next line 'if "%commandpath%" neq "" %drive%'' must be set with a value even if it is not used or cmd fails. Hence the two lines before this if statement
-  if "%commandpath%" neq "" %drive%
-  if defined commandpath cd "%commandpath%"
-  call :before
-  %curcommand%
-  call :after
-  if defined commandpath cd "%basepath%"
-) else (
-  if defined echousercommand echo %curcommand%
-  %curcommand%
+set outfile=%~3
+if not defined curcommand (
+  echo missing curcommand 
+  goto :eof
 )
+set curcommand=%curcommand:'="%
+if defined commandpath cd /D "%commandpath%"
+if defined outfile call :before
+call %curcommand%
+if defined outfile call :after
+if defined commandpath cd /D "%basepath%"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -416,10 +408,10 @@ goto :eof
 :: after
 if defined masterdebug call :funcdebug %0
 call :infile "%~1"
+call :outfile "%~2" "%~dpn1-copy%~x1"
 set appendfile=%~3
 if defined missinginput echo missing input file & goto :eof
 call :inccount
-call :outfile "%~2"
 if defined appendfile (
   set curcommand=copy /y "%outfile%"+"%infile%" "%outfile%" 
 ) else (
@@ -427,7 +419,7 @@ if defined appendfile (
 )
 call :before
 %curcommand%
-call :after Copy Changes"
+call :after
 if defined masterdebug call :funcdebug %0 end
 goto :eof
 
@@ -566,11 +558,11 @@ if '%echotask%' == 'on' (
 ) else if '%echotask%' == 'off' (
   @echo off
 ) else if '%echotask%' == 'add2file' (
-  @echo %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9 >> "%add2file%"
+  @echo :: s%~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9 >> "%add2file%"
 ) else if '%echotask%' == 'log' (
   if defined echoecholog echo %message%
-  echo %curdate%T%time% >>%projectlog%
-  echo %message% >>%projectlog%
+  echo :: %curdate%T%time% >>%projectlog%
+  echo :: %message% >>%projectlog%
   set message=                
 ) else if '%echotask%' == '.' (
   echo.
@@ -592,8 +584,8 @@ goto :eof
 if defined masterdebug call :funcdebug %0
 set message=%~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9
 if defined echoecholog echo %message%
-echo %curdate%T%time% >>%projectlog%
-echo %message% >>%projectlog%
+echo :: %curdate%T%time% >>%projectlog%
+echo :: %message% >>%projectlog%
 set message=
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -674,7 +666,7 @@ call :infile "%~4"
 call :outfile "%~5" "%outputdefault%"
 set curcommand=call %extcmd% %function% "%params%" "%infile%" "%outfile%"
 call :before
-%curcommand%
+call %curcommand%
 call :after "externalfunctions %function% complete"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
@@ -835,10 +827,10 @@ if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstri
 call :infile "%~1"
 if defined missinginput echo missing input file & goto :eof
 call :outfile "%~2" "%projectpath%\xml\%pcode%-%count%-html2xml.xml"
-set curcommand=call xml fo -H -D "%infile%"
+set curcommand=xml fo -H -D "%infile%"
 rem set curcommand=call "%tidy5%" -o "%outfile%" "%infile%"
 call :before
-%curcommand% > "%outfile%"
+call %curcommand% > "%outfile%"
 call :after
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
@@ -1091,16 +1083,18 @@ goto :eof
 :: Description: If infile is specifically set then uses that else uses previous outfile.
 :: Class: command - internal - pipeline - parameter
 :: Required parameters:
-:: testinfile
+:: infile
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
-set testinfile=%~1
-if "%testinfile%" == "" (
-set infile=%outfile%
-) else (
-set infile=%testinfile%
+rem echo on
+set infile=%~1
+if not defined infile (
+  set infile=%outfile%
 )
-if not exist "%infile%" set missinginput=on
-if exist "%infile%" set missinginput=
+if exist "%infile%" (
+  set missinginput=
+) else (
+  set missinginput=on
+)
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
@@ -1210,6 +1204,7 @@ goto :eof
 :: Required parameters:
 :: action - can be any Vimod-Pub command like i.e. tasklist dothis.tasks
 :: basedir
+:: Optional parameters:
 :: comment
 :: Depends on:
 :: * - May be any function but probably tasklist
@@ -1853,9 +1848,9 @@ rem if (%params%) neq (%params:'=%) set params=%params:'="%
 if defined params set params=%params:'="%
 call :infile "%~4"
 call :outfile "%~5" "%outputdefault%"
-set curcommand=call plugins\%plugin%
+set curcommand=plugins\%plugin%
 call :before
-%curcommand%
+call %curcommand%
 call :after "%plugin% plugin complete"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
@@ -2186,26 +2181,26 @@ set projectlog="%projectpath%\logs\%curdate%-build.log"
 if exist "%setuppath%\%tasklistname%" (
     set tasklist=%setuppath%\%tasklistname%
     if defined echotasklist call :echolog "[---- tasklist%tasklistnumb% project %tasklistname% ---- %time% ---- "
+    set tasklist%tasklistnumb%=project  %tasklistname%
+    if defined echotasklist echo.
+) else if exist "%commontaskspath%\%tasklistname%" (
+    set tasklist=%commontaskspath%\%tasklistname%
+    if defined echotasklist call :echolog "[---- tasklist%tasklistnumb% common  %tasklistname% ---- %time% ----"
+    set tasklist%tasklistnumb%=common  %tasklistname%
     if defined echotasklist echo.
 ) else (
-    if exist "%commontaskspath%\%tasklistname%" (
-        set tasklist=%commontaskspath%\%tasklistname%
-        if defined echotasklist call :echolog "[---- tasklist%tasklistnumb% common  %tasklistname% ---- %time% ----"
-        if defined echotasklist echo.
-    ) else (
-        echo tasklist "%tasklistname%" not found
-        pause
-        goto :eof
-    )
+    echo tasklist "%tasklistname%" not found
+    pause
+    goto :eof
 )
-if exist "%setuppath%\project.variables" (
-      call :variableslist "%setuppath%\project.variables"
+if exist "%setuppath%\project.tasks" (
+  call :variableslist "%setuppath%\project.tasks"
 )
 if defined breaktasklist2 pause
 FOR /F "eol=# tokens=2 delims=;" %%i in (%tasklist%) do call :%%i  %errorsuspendprocessing%
 
 if defined breaktasklist3 pause
-if defined echotasklistend call :echolog "  -------------------  tasklist%tasklistnumb% ended.  %time%]"
+if defined echotasklistend call :echolog "  -------------------  !tasklist%tasklistnumb%! No. %tasklistnumb% ended.  %time%]"
 @if defined masterdebug call :funcdebug %0 end
 set /A tasklistnumb=%tasklistnumb%-1
 goto :eof
@@ -2427,7 +2422,7 @@ set script=scripts\xquery\%scriptname%.xql
 call :quoteinquote param "%allparam%"
 set curcommand="%java%" net.sf.saxon.Query -o:"%outfile%" -s:"%infile%" "%script%" %param%
 call :before
-%curcommand%
+call %curcommand%
 call :after "XQuery transformation"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -2469,7 +2464,7 @@ if not defined resolvexhtml (
       set curcommand="%java%" %loadcat%=%cat% net.sf.saxon.Transform %trace% %usecatalog1% %usecatalog2% -o:"%outfile%" "%infile%" "%script%" %param%
 )
 call :before
-%curcommand%
+call %curcommand%
 call :after "XSLT transformation"
 if defined masterdebug call :funcdebug %0 end
 goto :eof
