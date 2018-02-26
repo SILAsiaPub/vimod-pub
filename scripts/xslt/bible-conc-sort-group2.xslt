@@ -12,7 +12,7 @@
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes"/>
       <xsl:include href="project.xslt"/>
-      <xsl:include href="inc-file2uri.xslt"/>d
+      <xsl:include href="inc-file2uri.xslt"/>
       <!-- <xsl:param name="max-word-occurance-count" select="1600"/> -->
       <!-- <xsl:param name="min-word-length" select="3"/> -->
       <xsl:template match="/*">

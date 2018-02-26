@@ -21,7 +21,9 @@
             <xsl:call-template name="html5cordovalanding">
                   <xsl:with-param name="outputfile" select="concat($projectpath,'\cordova\www\index.html')"/>
             </xsl:call-template>
-            <xsl:apply-templates select="alphaGroup"/>
+            <xsl:element name="report">
+                  <xsl:apply-templates select="alphaGroup"/>
+            </xsl:element>
       </xsl:template>
       <xsl:template match="alphaGroup">
             <xsl:variable name="words-before" select="count(preceding::w)"/>
@@ -42,6 +44,7 @@
       </xsl:template>
       <xsl:template match="w" mode="index">
             <xsl:param name="words-before"/>
+            <xsl:comment select="@word"/>
             <li class="table-view-cell" id="wi{format-number(number($words-before) + count(preceding-sibling::w) + 1, '00000')}">
                   <a data-transition="slide-in" class="push-right" href="../words/w{format-number(number($words-before) + count(preceding-sibling::w) + 1, '00000')}.html">
                         <xsl:value-of select="@word"/>
@@ -317,7 +320,8 @@
       </xsl:template>
       <xsl:template name="html5appindex">
             <xsl:param name="outputfile"/>
-            <xsl:param name="cur-alpha"/><xsl:param name="cur-pos"/>
+            <xsl:param name="cur-alpha"/>
+            <xsl:param name="cur-pos"/>
             <xsl:param name="pre-alpha"/>
             <xsl:param name="post-alpha"/>
             <xsl:variable name="file" select="f:file2uri($outputfile)"/>
@@ -358,7 +362,7 @@
                               </xsl:call-template>
                               <!--<script type="text/javascript" src="../js/cordova.js"/>
                               <script type="text/javascript" src="../js/index.js"/>
-                              <script type="text/javascript">app.initialize();</script> --> 
+                              <script type="text/javascript">app.initialize();</script> -->
                         </body>
                   </html>
             </xsl:result-document>

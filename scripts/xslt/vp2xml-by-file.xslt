@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <!--
     #############################################################
-    # Name:         vp2xml-by-file.xslt
-    # Purpose:	 Import Ventura text that has been converted to UTF-8 by a list.
-    # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
-    # Author:       Ian McQuay <ian_mcquay.org>
+    # Name:       	vp2xml-by-file.xslt
+    # Purpose:	 	Import Ventura text that has been converted to UTF-8 by a list.
+    # Part of:		Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
+    # Author:			Ian McQuay <ian_mcquay@sil.org>
+    # Modified:		2018-02-24
     # Created:      2014- -
     # Copyright:    (c) 2013 SIL International
     # Licence:      <LGPL>
@@ -17,9 +18,9 @@
       <xsl:param name="filepre"/>
       <xsl:param name="filepost"/>
       <xsl:param name="sourcelistfile"/>
-      <xsl:variable name="sourcetexturi" select="f:file2uri($sourcelistfile)"/>
-      <xsl:variable name="list" select="translate(unparsed-text($sourcetexturi),'&#xD;','')"/>
-      <xsl:variable name="line" select="tokenize($list,'\n')"/>
+      <xsl:variable name="line" select="f:file2lines($sourcelistfile)"/>
+       <!-- <xsl:variable name="list" select="translate(unparsed-text($sourcetexturi),'&#xD;','')"/> -->
+       <!-- <xsl:variable name="line" select="tokenize($list,'\n')"/> -->
       <xsl:template match="/">
             <xsl:element name="data">
                   <xsl:for-each select="$line">

@@ -49,4 +49,19 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:function>
+      <xsl:function name="f:file2tokens">
+            <xsl:param name="pathfile"/>
+            <xsl:param name="splitby"/>
+            <xsl:variable name="pathfileuri" select="f:file2uri($pathfile)"/>
+            <xsl:choose>
+                  <xsl:when test="unparsed-text-available($pathfileuri)">
+                        <xsl:variable name="text" select="unparsed-text($pathfileuri)"/>
+                        <xsl:variable name="part" select="tokenize($text,$splitby)"/>
+                        <xsl:sequence select="$part"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:text>'text not imported, file not available'</xsl:text>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:function>
 </xsl:stylesheet>
