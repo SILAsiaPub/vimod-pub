@@ -30,9 +30,6 @@ var dbi debugInfo
 var tf, text string
 
 func main() {
-	//flag.StringVar(&ptype, "type", "default", "If used can be: tasklist, menu, debug")
-	//flag.StringVar(&typevalue, "value", "none", "If type defined value must be either: \n\t\tfull path to the tasklist \n\t\tor full path to the menu, \n\t\tor the func name to debug")
-	//flag.Parse()
 	if len(os.Args) > 1 { var1 = os.Args[1] }
 	if len(os.Args) > 2 { var2 = os.Args[2] }
 
@@ -44,10 +41,6 @@ func main() {
 	//if err != nil {
 	//        log.Fatal(err)
 	//}
-
-	//var drive string = drive(startpath)
-	//fmt.Println(startpath)
-	//fmt.Println(drive)
 	setup()
     var o debugInfo
 	//fmt.Println(os.Args[0])
@@ -118,7 +111,7 @@ func tasklist(tl string) (err error) {
       default:
           // ignore line
       }
-    }*/
+    } */
     return err
 }
 
