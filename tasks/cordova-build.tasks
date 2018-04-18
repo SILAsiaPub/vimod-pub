@@ -1,16 +1,18 @@
 # cordova-build.tasks
-# debug                        ;command "echo on"
-get project var               ;projectvar
-get type                      ;var platformtype "%~2"
-release                       ;var release "%~3"
-#                              ;echo on
-check dir                     ;checkdir "%projectpath%\apk"
-check release                 ;ifnotdefined release var "debug -debug"
-do fixes                      ;tasklist android-post-pg-fixes.tasks
-new one liner                 ;command "cordova build %release% %platformtype%" "%projectpath%\%buildsystem%" "%projectpath%\%buildsystem%\platforms\%platformtype%\build\outputs\apk\android%debug%.apk" 
-#sign apk                      ;command "%jarsigner% -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore release_key_name.keystore '%outfile%' pd"
+# debug                                 ;command "echo on"
+get project var                         ;projectvar
+#check tools                             ;tasklist cordova-validate-tools-var.tasks
+get type                                ;var platformtype "%~2"
+get type                                ;var platformtype "%~2"
+release                                 ;var release "%~3"
+#                                       ;echo on
+check dir                               ;checkdir "%projectpath%\apk"
+check release                           ;ifnotdefined release var "debug -debug"
+#do fixes                                ;tasklist android-post-pg-fixes.tasks
+new one liner                           ;command "cordova build %release% %platformtype%" "%projectpath%\%buildfolder%" "%projectpath%\%buildfolder%\platforms\%platformtype%\build\outputs\apk\android%debug%.apk" 
+#sign apk                               ;command "%jarsigner% -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore release_key_name.keystore '%outfile%' pd"
 
 
-                              ;outputfile "%projectpath%\apk\%appname%%debug%.apk"
+                                        ;outputfile "%projectpath%\apk\%appname%%debug%.apk"
 
 

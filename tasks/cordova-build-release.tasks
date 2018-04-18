@@ -1,17 +1,26 @@
 # cordova-build.tasks
-# debug                        ;command "echo on"
-get project var               ;projectvar
-get passwords                 ;tasklist passwords.tasks
-jar signer file               ;var jarsigner "%JAVA_HOME%\bin\jarsigner.exe"
-check dir                     ;checkdir "%projectpath%\apk"
-do fixes                      ;tasklist android-post-pg-fixes.tasks
-get type                      ;var platformtype %~2
-set new file                  ;var newfile on
-                              ;file2uri "%defaultkeystorepath%\%keystore%"
-add line to gradle.properties ;appendtofile "%projectpath%\cordova\platforms\android\gradle.properties" "RELEASE_STORE_FILE=%uri%"
-add line to gradle.properties ;appendtofile "%projectpath%\cordova\platforms\android\gradle.properties" "RELEASE_STORE_PASSWORD=%keystorepw%"
-add line to gradle.properties ;appendtofile "%projectpath%\cordova\platforms\android\gradle.properties" "RELEASE_KEY_ALIAS=%keystorealias%"
-add line to gradle.properties ;appendtofile "%projectpath%\cordova\platforms\android\gradle.properties" "RELEASE_KEY_PASSWORD=%keystorepw%"
-new one liner                 ;command "call cordova build %platformtype% --release -- --keystore="%defaultkeystorepath%\%keystore%" --storePassword=%keystorepw% --alias=%keystorealias% --aliasPassword=%keystorepw%" "%projectpath%\%buildsystem%" "%projectpath%\%buildsystem%\platforms\%platformtype%\build\outputs\apk\android-release.apk"
-                              ;outputfile "%projectpath%\apk\%appname%.apk"
+# debug                                ;command "echo on"
+get project var                        ;projectvar
+#check tools                           ;tasklist cordova-validate-tools-var.tasks
+get passwords                         ;tasklist passwords.tasks
+#jar signer file                       ;var jarsigner "%JAVA_HOME%\bin\jarsigner.exe"
+check dir                              ;checkdir "%projectpath%\apk"
+#do fixes                              ;tasklist android-post-pg-fixes.tasks
+get type                               ;var platformtype %~2
+get type                               ;var build %~3
+set the var build                       ;ifnotdefined build var "build build"
+copy keystore                           ;ifnotexist "%projectpath%\%buildfolder%\platforms\android\%keystore%" copy "%defaultkeystorepath%\%keystore%"
+#                                        ;echo on
+#set new file                           ;var newfile on
+set new file                           ;var gradleproperties "%projectpath%\%buildfolder%\platforms\android\release-signing.properties"
+                                       ;file2uri "%defaultkeystorepath%\%keystore%"
+add line to release-signing.properties ;appendtofile "%gradleproperties%" "storeFile=%keystore%" "" "newfile"
+add line to release-signing.properties ;appendtofile "%gradleproperties%" "storePassword=%keystorepw%"
+add line to release-signing.properties ;appendtofile "%gradleproperties%" "keyAlias=%keystorealias%"
+add line to release-signing.properties ;appendtofile "%gradleproperties%" "keyPassword=%keystorepw%"
+add line to release-signing.properties ;appendtofile "%gradleproperties%" "storePassword=%keystorepw%"
+#                                       ;echo off
+new one liner                          ;command "cordova %build" %platformtype% --release" "%projectpath%\%buildfolder%" "%projectpath%\%buildfolder%\platforms\%platformtype%\app\build\outputs\apk\release\app-release.apk"
+                                       ;outputfile "%projectpath%\apk\%appname%.apk"
+                                       ;ifexist "%projectpath%\%buildfolder%\platforms\android\%keystore%" del
 

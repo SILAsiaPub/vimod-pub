@@ -1,6 +1,7 @@
 # cordova-run.tasks
 # debug                        ;command "echo on"
-get project var               ;tasklist project.tasks
+get project var                         ;projectvar
+#check tools                   ;tasklist cordova-validate-tools-var.tasks
 get type                      ;var platformtype %~2
 set desired output            ;var outfile "%projectpath%\%buildsystem%\platforms\%platformtype%\ant-build\%appname%-debug.apk"
 set output comment            ;var message "Cordova platform %~2"

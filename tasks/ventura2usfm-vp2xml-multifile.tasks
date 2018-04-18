@@ -7,6 +7,7 @@ check                                   ;checkdir "%projectpath%\%iconvout%"
 #count characters                        ;cct "%cctprexml%" "%projectpath%\%iconvout%\*%fileext%" "%projectpath%\%prexmlcctout%\*%fileext%"
 remove files                            ;ifexist "%projectpath%\%iconvout%\*%fileext%" del
 #remove files                            ;ifexist "%projectpath%\temp\*%fileext%" del
+# loop files info                       ;loopfiles "function param1 'inputpath' 'output path'" "filespecs to loop"
  run iconv first                        ;loopfiles "tasklist iconv4loop.tasks '%projectpath%\%sourcefolder%' '%projectpath%\%iconvout%'" "%projectpath%\%sourcefolder%\*%fileext%"
 remove illegal for XML                  ;tasklist fnr-regex.tasks "[\u001A\u0008]" "" "%projectpath%\%iconvout%" "%fileext%"
 #latin cap letter v with hook (U+01B2)   ;tasklist fnr-regex.tasks "}" "{01B2}" "%projectpath%\%iconvout%" "%fileext%"

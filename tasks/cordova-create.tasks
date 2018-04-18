@@ -1,11 +1,14 @@
 # cordova-create.tasks
-#                              ;command "echo on"
-get project var               ;projectvar
-#set desired output            ;var outputdefault "%projectpath%\%buildsystem%\config.xml"
-#                              ;var outfile "%outputdefault%"
-#set output comment            ;var message "Cordova create"
-#command to run                ;var maincommand "call cordova create %buildsystem% %revurl% '%voltitle%'"
-#                              ;command "echo["
-#pre setup                     ;command "%maincommand%" "%projectpath%"
-#                              ;after "%message%"
-                              ;command "call cordova create %buildsystem% %revurl% '%voltitle%'" "%projectpath%" "%projectpath%\%buildsystem%\config.xml"
+#                                       ;command "echo on"
+get project var                         ;projectvar
+#check tools                             ;tasklist cordova-validate-tools-var.tasks
+#set desired output                     ;var outputdefault "%projectpath%\%buildsystem%\config.xml"
+#                                       ;var outfile "%outputdefault%"
+#set output comment                     ;var message "Cordova create"
+#command to run                         ;var maincommand "call cordova create %buildsystem% %revurl% '%voltitle%'"
+#                                       ;command "echo["
+#pre setup                              ;command "%maincommand%" "%projectpath%"
+#                                       ;after "%message%"
+                      #                  ;echo on
+                                        ;command "cordova create %buildfolder% %revurl% '%voltitle%'" "%projectpath%" "%projectpath%\%buildfolder%\config.xml"
+                      #                  ;echo off
