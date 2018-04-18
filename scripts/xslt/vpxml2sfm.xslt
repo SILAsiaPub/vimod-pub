@@ -34,7 +34,7 @@
                   <xsl:value-of select="'&#10;'"/>
                   <xsl:value-of select="'\h '"/>
                   <xsl:value-of select="scr/para[@class = $h][1]"/>
-                  <xsl:apply-templates select="scr/para[@class = $mt1 or @class = $mt2]" mode="titletop"/>
+                  <!-- <xsl:apply-templates select="scr/para[@class = $mt1 or @class = $mt2]" mode="titletop"/> -->
                   <xsl:apply-templates/>
             </xsl:result-document>
       </xsl:template>
@@ -66,8 +66,26 @@
                   <xsl:when test="@class = $unwanted"/>
                   <xsl:when test="@class = $id"/>
                   <xsl:when test="@class = $h"/>
-                  <xsl:when test="@class = $mt1"/>
-                  <xsl:when test="@class = $mt2"/>
+                  <xsl:when test="@class = $mt1">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\mt1 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $imte2">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\imte2 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $imte2">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\imte2 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
+                  <xsl:when test="@class = $mt2">
+                        <xsl:value-of select="'&#10;'"/>
+                        <xsl:value-of select="'\mt2 '"/>
+                        <xsl:apply-templates/>
+                  </xsl:when>
                   <xsl:when test="@class = $mt3">
                         <xsl:value-of select="'&#10;'"/>
                         <xsl:value-of select="'\mt3 '"/>
@@ -78,12 +96,6 @@
                         <xsl:value-of select="'\toc1 '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
-                  <!--
-                  <xsl:when test="@class = $mt3">
-                        <xsl:value-of select="'&#10;'"/>
-                        <xsl:value-of select="'\mt3 '"/>
-                        <xsl:apply-templates/>
-                  </xsl:when>-->
                   <xsl:when test="@class = $is">
                         <xsl:value-of select="'&#10;'"/>
                         <xsl:value-of select="'\is '"/>
@@ -109,10 +121,10 @@
                               <xsl:if test="preceding-sibling::para[1]/@* = $c">
                                     <xsl:value-of select="'&#10;\v 1 '"/>
                               </xsl:if>
-                              <xsl:if test="preceding-sibling::para[2]/@* = $c and preceding-sibling::para[1]/@* = $s">
+                              <xsl:if test="preceding-sibling::para[2]/@* = $c and preceding-sibling::para[1]/@* = $s1">
                                     <xsl:value-of select="'&#10;\v 1 '"/>
                               </xsl:if>
-                              <xsl:if test="preceding-sibling::para[3]/@* = $c and preceding-sibling::para[2]/@* = $s and preceding-sibling::para[1]/@* = $r ">
+                              <xsl:if test="preceding-sibling::para[3]/@* = $c and preceding-sibling::para[2]/@* = $s1 and preceding-sibling::para[1]/@* = $r ">
                                     <xsl:value-of select="'&#10;\v 1 '"/>
                               </xsl:if>
                         </xsl:if>
@@ -215,9 +227,9 @@
                         <xsl:value-of select="'\q3 '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
-                  <xsl:when test="@class = $s">
+                  <xsl:when test="@class = $s1">
                         <xsl:value-of select="'&#10;'"/>
-                        <xsl:value-of select="'\s '"/>
+                        <xsl:value-of select="'\s1 '"/>
                         <xsl:apply-templates/>
                   </xsl:when>
                   <xsl:when test="@class = $s2">
@@ -303,7 +315,8 @@
                   <xsl:when test="@value = $unwanted-tag"/>
                   <xsl:when test="@value = $v and matches(text(),'[0-9\-,]+')">
                         <xsl:value-of select="'&#10;\v '"/>
-                        <xsl:apply-templates/>
+                        <xsl:value-of select="text()"/>
+                        <!-- <xsl:apply-templates/> -->
                         <xsl:value-of select="$spaceafterverse"/>
                   </xsl:when>
                   <!-- <xsl:when test="@value = $ldquote">

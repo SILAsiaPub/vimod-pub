@@ -48,7 +48,7 @@
             <xsl:choose>
                   <!-- remove chapt when preceding para is \r or \s -->
                   <xsl:when test="preceding-sibling::para[1]/@class = $r"/>
-                  <xsl:when test="preceding-sibling::para[1]/@class = $s"/>
+                  <xsl:when test="preceding-sibling::para[1]/@class = $s1"/>
                   <xsl:otherwise>
                         <!-- conditions not met then copy -->
                         <xsl:copy>
@@ -60,7 +60,7 @@
                   </xsl:otherwise>
             </xsl:choose>
       </xsl:template>
-      <xsl:template match="para[@class = $s]">
+      <xsl:template match="para[@class = $s1]">
             <!-- match para \s -->
             <xsl:choose>
                   <xsl:when test="following-sibling::para[1][@class = $c]">

@@ -25,10 +25,35 @@ funcion for vpimport = done
       <xsl:include href="vpxml-cmap.xslt"/>
       <xsl:include href="project.xslt"/>
       <xsl:include href="inc-lookup.xslt"/>
+      <xsl:variable name="bknamecase">
+            <xsl:choose>
+                  <xsl:when test="$booknamecase = 'LC'">
+                        <xsl:text>LC</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:text>UC</xsl:text>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:variable>
       <xsl:variable name="note">
             <xsl:for-each select="$book-numb-key">
                   <xsl:variable name="bk" select="f:keyvalue($adjust-book-code,.)"/>
-                  <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fnpart,$fileext))"/>
+                  <!-- <xsl:variable name="bkfn" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fnpart,$fileext))"/> -->
+                  <xsl:variable name="bkfn">
+                        <!--  this handles upper and lower case based on $booknamecase -->
+                        <xsl:choose>
+                              <xsl:when test="$bookname = '41MAT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:keyvalue($book-numb,.),f:case($bknamecase,.),$fnpart,$fileext))"/>
+                              </xsl:when>
+                              <xsl:when test="$bookname = 'MT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,$bk),$fnpart,$fileext))"/>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                    <!-- three letter book name -->
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,.),$fnpart,$fileext))"/>
+                              </xsl:otherwise>
+                        </xsl:choose>
+                  </xsl:variable>
                   <xsl:if test="unparsed-text-available($bkfn)">
                         <xsl:element name="notes">
                               <xsl:attribute name="bk">
@@ -46,8 +71,36 @@ funcion for vpimport = done
       <xsl:variable name="body">
             <xsl:for-each select="$book-numb-key">
                   <xsl:variable name="bk" select="f:keyvalue($adjust-book-code,.)"/>
-                  <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$intropart,$fileext))"/>
-                  <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fileext))"/>
+                  <!-- <xsl:variable name="bkintro" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$intropart,$fileext))"/> -->
+                  <!-- <xsl:variable name="bkbody" select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,$bk,$fileext))"/> -->
+                  <xsl:variable name="bkintro">
+                        <xsl:choose>
+                              <xsl:when test="$bookname = '41MAT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:keyvalue($book-numb,.),f:case($bknamecase,.),$intropart,$fileext))"/>
+                              </xsl:when>
+                              <xsl:when test="$bookname = 'MT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,$bk),$intropart,$fileext))"/>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                    <!--  -->
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,.),$intropart,$fileext))"/>
+                              </xsl:otherwise>
+                        </xsl:choose>
+                  </xsl:variable>
+                  <xsl:variable name="bkbody">
+                        <xsl:choose>
+                              <xsl:when test="$bookname = '41MAT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:keyvalue($book-numb,.),f:case($bknamecase,.),$fileext))"/>
+                              </xsl:when>
+                              <xsl:when test="$bookname = 'MT'">
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,$bk),$fileext))"/>
+                              </xsl:when>
+                              <xsl:otherwise>
+                                    <!--  -->
+                                    <xsl:value-of select="f:file2uri(concat($projectpath,'\',$xmlimportpath,'\',$langpre,f:case($bknamecase,.),$fileext))"/>
+                              </xsl:otherwise>
+                        </xsl:choose>
+                  </xsl:variable>
                   <xsl:if test="unparsed-text-available($bkbody)">
                         <xsl:element name="usx">
                               <xsl:attribute name="version">
@@ -330,5 +383,17 @@ funcion for vpimport = done
             <xsl:param name="bk"/>
             <!-- change < char to { and > to } and remove carriage return characters -->
             <xsl:value-of select="translate(f:replace-array(unparsed-text($bk),$replace-array,1,'='),'&lt;&gt;&#13;','{}')"/>
+      </xsl:function>
+      <xsl:function name="f:case">
+            <xsl:param name="case"/>
+            <xsl:param name="text"/>
+            <xsl:choose>
+                  <xsl:when test="$case = 'LC'">
+                        <xsl:value-of select="lower-case($text)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:value-of select="upper-case($text)"/>
+                  </xsl:otherwise>
+            </xsl:choose>
       </xsl:function>
 </xsl:stylesheet>

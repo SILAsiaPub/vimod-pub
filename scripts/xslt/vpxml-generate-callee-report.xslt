@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     #############################################################
-    # Name:         vpxml-generate-callee-report.xslt
-    # Purpose:	Generate a callee report to compare to caller report.
+    # Name:    	  vpxml-generate-callee-report.xslt
+    # Purpose:	 	  Generate a callee report to compare to caller report.
     # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
     # Author:       Ian McQuay <ian_mcquay.org>
     # Created:      2015- -
@@ -25,10 +25,16 @@
             <xsl:apply-templates select="para"/>
       </xsl:template>
       <xsl:template match="para[@class = $fnote]">
-            <xsl:apply-templates select="tag[@value = $callee-feature]"/>
-            <xsl:text>&#9;</xsl:text>
-            <xsl:apply-templates select="tag[@value = $callee-ref-tag]"/>
-            <xsl:text>&#13;&#10;</xsl:text>
+            <xsl:choose>
+                  <xsl:when test="$include-fnote = $true">
+                        <xsl:apply-templates select="tag[@value = $callee-feature]"/>
+                        <xsl:text>&#9;</xsl:text>
+                        <xsl:apply-templates select="tag[@value = $callee-ref-tag]"/>
+                        <xsl:text>&#13;&#10;</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise>
+</xsl:otherwise>
+            </xsl:choose>
       </xsl:template>
       <xsl:template match="tag[@value = $callee-feature][. = $caller]">
             <xsl:value-of select="."/>
@@ -40,6 +46,11 @@
                   </xsl:when>
                   <xsl:otherwise/>
             </xsl:choose>
+      </xsl:template>
+      <xsl:template match="para[@class = $callee-ref-tag]">
+            <xsl:text>*&#9;</xsl:text>
+            <xsl:value-of select="normalize-space(.)"/>
+            <xsl:text>&#13;&#10;</xsl:text>
       </xsl:template>
       <xsl:template match="text()"/>
 </xsl:stylesheet>

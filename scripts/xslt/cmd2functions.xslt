@@ -13,13 +13,13 @@
       <xsl:output method="text" encoding="utf-8" name="text"/>
       <xsl:output method="text" encoding="utf-8"/>
       <!-- <xsl:include href="project.xslt"/> -->
-      <xsl:param name="outputpath" select="'D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub-combo\trunk\ref\classic'"/>
+      <xsl:param name="outputpath" select="'D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk\func'"/>
       <xsl:param name="cmdfilepath" select="'D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk\pub.cmd'"/>
       <xsl:include href="inc-file2uri.xslt"/>
       <xsl:variable name="cmdfile" select="f:file2text($cmdfilepath)"/>
       <xsl:variable name="inserted-token" select=" replace($cmdfile,'\r\n(:[^:])','XXXX$1')"/>
       <xsl:variable name="func" select="tokenize($inserted-token,'XXXX')"/>
-      <xsl:variable name="parsefilepath" select="tokenize($cmdfilepath,\\')"/>
+      <xsl:variable name="parsefilepath" select="tokenize($cmdfilepath,'\\')"/>
       <xsl:variable name="parsefilename" select="tokenize($parsefilepath[last()],'\.')"/>
       <xsl:template match="/">
             <xsl:value-of select="$func[1]"/>

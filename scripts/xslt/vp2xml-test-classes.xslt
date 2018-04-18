@@ -73,6 +73,14 @@
                               <xsl:text>sfm = mt1</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
+                        <xsl:if test="$class = $imte1">
+                              <xsl:text>sfm = imte1</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
+                        <xsl:if test="$class = $imte2">
+                              <xsl:text>sfm = imte2</xsl:text>
+                              <xsl:text>&#9;</xsl:text>
+                        </xsl:if>
                         <xsl:if test="$class = $mt2">
                               <xsl:text>sfm = mt2</xsl:text>
                               <xsl:text>&#9;</xsl:text>
@@ -95,10 +103,6 @@
                         </xsl:if>
                         <xsl:if test="$class = $ms1">
                               <xsl:text>sfm = ms1</xsl:text>
-                              <xsl:text>&#9;</xsl:text>
-                        </xsl:if>
-                        <xsl:if test="$class = $s">
-                              <xsl:text>sfm = s</xsl:text>
                               <xsl:text>&#9;</xsl:text>
                         </xsl:if>
                         <xsl:if test="$class = $s1">

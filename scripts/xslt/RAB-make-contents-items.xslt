@@ -19,6 +19,7 @@
                   <feature name="show-subtitles" value="false"/>
                   <feature name="show-references" value="false"/>
                   <contents-items>
+                        <!-- $home-menu is the menu items starting with the home menu -->
                         <xsl:for-each select="$home-menu">
                               <xsl:call-template name="submenu-item">
                                     <xsl:with-param name="title" select="."/>
@@ -43,6 +44,7 @@
             </contents>
       </xsl:template>
       <xsl:template match="*[local-name() = $page-group]" mode="items">
+            <!-- What is the page-group defining -->
             <xsl:param name="seq"/>
             <xsl:variable name="thisfield" select="$field[number($seq)]"/>
             <xsl:if test="string-length(*[name() = $thisfield][1]) gt 0">
