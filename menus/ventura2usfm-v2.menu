@@ -1,0 +1,8 @@
+Ventura text UTF-8 to vpXML                       ;tasklist ventura2usfm-vp2xml-multifile.tasks
+Create checking files (repeat as needed)          ;tasklist ventura2usfm-postxml-inventories.tasks
+Process Footnotes                                 ;tasklist ventura2usfm-footnotes.tasks
+
+Transform to sfm                                  ;tasklist ventura2usfm-vpxml2sfm.tasks       
+  Count unicode char  (optional)                  ;tasklist ventura2usfm-count-unicode-char.tasks
+test lookup                                       ;lookup gn "D:\All-SIL-Publishing\github-SILAsiaPub\vimod-pub\trunk\data\Ventura\ventura2usfm\tbw-Tagbanwa\setup\book2let-lookup.txt"
+
