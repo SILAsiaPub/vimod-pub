@@ -102,14 +102,15 @@ goto :eof
 :: file
 :: text
 :: quotes
+:: newfile
 :: filetotype
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set file=%~1
 if not defined file echo file parameter not supplied &goto :eof
 set text=%~2
 set quotes=%~3
-set filetotype=%~5
 if not defined newfile set newfile=%~4
+set filetotype=%~5
 if defined quotes set text=%text:'="%
 if not defined filetotype (
   if defined newfile (
@@ -125,6 +126,39 @@ if not defined filetotype (
   )
 )
 set newfile=
+if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
+goto :eof
+
+:append2file
+:: Description: Func to append text to a file or append text from another file
+:: Class: command
+:: Optional predefined variables:
+:: Required parameters:
+:: fileortext
+:: writeto
+:: Optional parameters:
+:: quotes
+if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
+if defined feedback4 echo Input param: %0 "%~1" "%~2" "%~3" "%~4"
+set fileortext=%~1
+set writeto=%~2
+set quotes=%~3
+if not exist "%fileortext%" (
+  set type=text
+  echo Input is text: %fileortext%
+  if defined quotes set text=%fileortext:'="%
+  if not defined quotes set text=%fileortext%
+)
+if not defined fileortext echo missing text or file as first parameter & goto :eof
+if not defined writeto echo Missing output file & goto :eof
+if not defined type (
+  echo "%fileortext%" ^>^> "%writeto%" 
+  type "%fileortext%" >> "%writeto%"
+) else (
+    echo echo %text% ^>^> "%writeto%"
+    echo %text% >> "%writeto%"
+    set type=
+)
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
@@ -282,8 +316,12 @@ if not defined curcommand (
   goto :eof
 )
 set curcommand=%curcommand:'="%
-if defined commandpath cd /D "%commandpath%"
 if defined outfile call :before
+if defined commandpath (
+  if not exist "%commandpath%" mkdir "%commandpath%"
+)
+if defined commandpath cd /D "%commandpath%"
+if defined commandpath echo current path: %cd%
 call %curcommand%
 if defined outfile call :after
 if defined commandpath cd /D "%basepath%"
@@ -298,6 +336,7 @@ goto :eof
 :: outfile
 :: Optional parameters:
 :: commandpath
+:: append
 :: Depends on:
 :: inccount
 :: before
@@ -320,26 +359,21 @@ if not defined append (
 ) else (
   set curcommand=%command:'="% ^^^>^^^> "%outfile%"
 )
-
 call :before
 set curcommand=%command:'="%
-if "%commandpath%" neq "" (
+if defined commandpath (
   set startdir=%cd%
-  set drive=%commandpath:~0,2%
-  %drive%
-  cd "%commandpath%"
+  cd /D "%commandpath%"
 )
 if not defined append (
   call %curcommand% > "%outfile%"
 ) else (
+  echo on
   call %curcommand% >> "%outfile%"
+  @echo off
 )
-
-if "%commandpath%" neq "" (
-  set drive=%startdir:~0,2%
-  %drive%
-  cd "%startdir%"
-  set dive=
+if defined commandpath (
+  cd /D "%startdir%"
 )
 call :after "command with stdout %curcommand% complete"
 if defined masterdebug call :funcdebug %0 end
@@ -865,19 +899,23 @@ goto :eof
 :: equal1
 :: equal2
 :: func
-:: params
+:: param4
+:: param5
+:: param6
 :: Depends on:
 :: * - Maybe any function but likely tasklist
 if defined debugdefinefunc echo %beginfuncstring% %0 %debugstack% %beginfuncstringtail%
 set equal1=%~1
 set equal2=%~2
 set func=%~3
-set funcparams=%~4
+set param4=%~4
+set param5=%~5
+set param6=%~6
 if not defined equal1 echo missing equal1 parameter & goto :eof
 if not defined equal2 echo missing equal2 parameter & goto :eof
 if not defined func echo missing func parameter & goto :eof
-if defined funcparams set funcparams=%funcparams:'="%
-if "%equal1%" == "%equal2%" call :%func% %funcparams%
+rem if defined funcparams set funcparams=%funcparams:'="%
+if "%equal1%" == "%equal2%" call :%func% "%param4%" "%param5%" "%param5%"
 if defined debugdefinefunc echo %endfuncstring% %0 %debugstack%
 goto :eof
 
@@ -897,6 +935,7 @@ goto :eof
 :: tasklist
 :: * - maybe any function
 if defined masterdebug call :funcdebug %0
+if defined feedback4 echo Input param: echo %0 "%~1" "%~2"  "%~3" "%~4"  "%~5" "%~6"
 set testfile=%~1
 set action=%~2
 set param3=%~3
@@ -906,15 +945,14 @@ set param6=%~6
 if not defined testfile echo missing testfile parameter & goto :eof
 if not defined action echo missing action parameter & goto :eof
 rem if defined param4 set param4=%param4:'="%
-
 call :nameext "%~1"
-
 if exist "%testfile%" (
   if "%param3%" == "%param3: =%" (
      rem prevent param3 with space trying to match these actions
-     if "%action%" == "func" echo call :%param3% "%param4%"
+     if "%action%" == "func" echo call :%param3% "%param4%" "%param5%" "%param6%"
      if "%action%" == "addtext" echo  echo %param3% ^>^> "%param4%"
-     if "%action%" == "func" call :%param3% "%param4%"
+       rem now do what was said for this subset
+     if "%action%" == "func" call :%param3% "%param4%" "%param5%" "%param6%"
      if "%action%" == "addtext" echo %param3% >> "%param4%"
   )
   rem say what will happen
@@ -958,7 +996,7 @@ if exist "%testfile%" (
     goto :eof
   )
 ) else (
-  echo "%testfile%" was not found to %action%
+  echo "%testfile%" was not found to do: %action%
 )
 if defined masterdebug call :funcdebug %0 end
 goto :eof
@@ -1286,7 +1324,10 @@ if not defined string echo Missing string parameter & goto :eof
 set action=%action:'="%
 echo %comment%
 ::echo on
-FOR /F "delims= " %%s IN ("%string%") DO call :%action% %%s& echo param %%s
+FOR %%s IN (%string%) DO (
+  echo param %%s
+  call :%action% %%s
+)
 rem clear variables
 set action=
 set string=
