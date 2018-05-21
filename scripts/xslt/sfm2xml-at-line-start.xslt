@@ -2,7 +2,7 @@
       <!--
     #############################################################
     # Name:         sfm2xml-at-line-start.xslt
-    # Purpose:	A transformation to ingest SFM. SFM that starts a line is made into an element but inline codes are left as text.
+    # Purpose:		A transformation to ingest SFM. SFM that starts a line is made into an element but inline codes are left as text.
     # Part of:      Vimod Pub - http://projects.palaso.org/projects/vimod-pub
     # Author:       Ian McQuay <ian_mcquay.org>
     # Created:      2013-01-30
