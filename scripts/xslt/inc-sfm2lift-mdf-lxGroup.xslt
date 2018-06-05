@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     #############################################################
-    # Name:   		.xslt
+    # Name:   		inc-sfm2lift-mdf-lxGroup.xslt
     # Purpose:		.
     # Part of:		Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
     # Author:		Ian McQuay <ian_mcquay@sil.org>
