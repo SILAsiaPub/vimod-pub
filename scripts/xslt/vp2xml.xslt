@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!--
     #############################################################
-    # Name: 	vp2xml.xslt
-    # Purpose:	Convert any Ventura Publisher text file converted to utf-8 into xml
+    # Name: 		vp2xml.xslt
+    # Purpose:		Convert any Ventura Publisher text file converted to utf-8 into xml
     # Part of: 	Vimod Pub - http://projects.palaso.org/projects/vimod-pub
-    # Author: 	Ian McQuay <ian_mcquay.org>
+    # Author: 		Ian McQuay <ian_mcquay.org>
     # Created: 	2014-12-10
-    # Copyright:    (c) 2014 SIL International
+    # Copyright:	(c) 2014 SIL International
     # Licence: 	<LGPL>
     ################################################################
 -->
