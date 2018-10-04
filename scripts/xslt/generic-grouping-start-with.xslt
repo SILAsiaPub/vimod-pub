@@ -1,7 +1,7 @@
 <!--
     #############################################################
     # Name:         generic-grouping-serial-nodes.xslt
-    # Purpose:	Groups nodes that occur together. The first node must be first. The other nodes may or may not occur.
+    # Purpose:		Groups nodes that occur together. The first node must be first. The other nodes may or may not occur.
     # Part of:      Vimod Pub - https://github.com/SILAsiaPub/vimod-pub
     # Author:       Ian McQuay <ian_mcquay@sil.org>
     # Created:      2017-02-21
