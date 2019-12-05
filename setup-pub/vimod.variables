@@ -33,7 +33,7 @@ loadcat=-Dxml.catalog.files
 cat=tools\saxon\cat\catalog.xml
 usecatalog1=-r:org.apache.xml.resolver.tools.CatalogResolver 
 usecatalog2=-x:org.apache.xml.resolver.tools.ResolvingXMLReader
-altjre=tools\jre7\bin\java.exe
+
 # android build variables
 defaultkeystorepath=D:\All-SIL-Publishing\vimod-pub\Android-keystore
 #spinoff default path
