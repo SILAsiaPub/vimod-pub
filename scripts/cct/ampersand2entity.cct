@@ -1,0 +1,6 @@
+begin               >                   use(main)
+
+group(main)
+'&'                 >                   '&amp;'
+'&amp;'             >                   dup
+'&nbsp;'            >                   '&#160;'

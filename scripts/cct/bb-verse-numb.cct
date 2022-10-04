@@ -1,0 +1,9 @@
+begin >     store(numb) '0123456789' endstore use(main)
+
+group(main)
+'<v>'                >                   dup use(versenumb)
+
+group(versenumb)
+any(numb) any(numb)  >                   '<vr>' dup '</vr>'
+any(numb)            >                   '<vr>' dup '</vr>'
+' '                 >                   use(main)

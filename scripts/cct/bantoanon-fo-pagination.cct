@@ -1,0 +1,8 @@
+begin               >                   use(main)
+
+group(main)
+'>xxxx<'           >                   dup use(addkeepwithprev)
+
+
+group(addkeepwithprev)
+'<fo:block '        >                   dup 'keep-with-previous="always" ' use(main)
