@@ -1,4 +1,16 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" xmlns:cite="http://fake.org.au/ns/" version="2.0" exclude-result-prefixes="cite">
+<?xml version="1.0" encoding="utf-8"?> <!--
+    #############################################################
+    # Name:     	.xslt
+    # Purpose:  	.
+    # Part of:  	Xrunner - https://github.com/SILAsiaPub/xrunner
+    # Author:   	Ian McQuay <ian_mcquay@sil.org>
+    # Created:  	2022- -
+    # Copyright:	(c) 2022 SIL International
+    # Licence:  	<MIT>
+    ################################################################ -->
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:f="myfunctions" exclude-result-prefixes="f">
+<xsl:output method="xml" version="1.0" encoding="utf-8" omit-xml-declaration="no" indent="yes" />
+
       <!-- Part of the SILP Dictionary Creator
 Used to sort a xml dictionary source form SIL Philippines SFM code. But could work with MDF sfm also.
 See Inculde below for essential other files.
@@ -16,6 +28,19 @@ Modified: 21/08/2012
 collationname 
 secondarysort
  -->
+      <xsl:variable name="ac" select="'àáâãāçèéêëēìíîïɨīùúûüūòóôõöōŏőɴ'"/>
+      <xsl:variable name="un" select="'aaaaaceeeeeiiiiiiuuuuuoooooooon'"/>
+      <xsl:variable name="numbers" select="'0123456789'"/>
+      <xsl:variable name="or-digraph">
+            <xsl:choose>
+                  <xsl:when test="string-length($digraphlist) gt 0">
+                        <xsl:value-of select="replace($digraphlist,' ','|')"/>
+                        <xsl:text>|</xsl:text>
+                  </xsl:when>
+                  <xsl:otherwise/>
+            </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="removefromstart">&#34;\-(“~\[,‘;&#39;#&#42;&#47;<xsl:value-of select="$removechar" /></xsl:variable>
       <xsl:variable name="default-collation" select="'http://saxon.sf.net/collation?lang=en-US;strength=primary'"/>
       <xsl:character-map name="xul">
             <xsl:output-character character="&#38;" string='&#38;'/>
@@ -48,4 +73,31 @@ secondarysort
                   </xsl:choose>
             </data>
       </xsl:template>
+      <xsl:function name="f:lower-remove-accents">
+            <xsl:param name="input"/>
+            <xsl:variable name="findnremoveatstart" select="concat('^[\d\* ',$removefromstart,']*(',$or-digraph,'\w)(\w*)') "/>
+            <xsl:variable name="lcinput" select="lower-case($input)"/>
+            <xsl:variable name="trimmedinput" select="replace($lcinput,$findnremoveatstart,'$1$2')"/>
+            <xsl:choose>
+                  <xsl:when test="$translateaccents = 'yes'">
+                        <xsl:sequence select="translate($trimmedinput,$ac,$un)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                        <xsl:sequence select="$trimmedinput"/>
+                  </xsl:otherwise>
+            </xsl:choose>
+      </xsl:function>
+      <xsl:function name="f:word-no-number">
+            <xsl:param name="input"/>
+            <xsl:sequence select="translate($input,$numbers,'')"/>
+      </xsl:function>
+      <xsl:function name="f:no-space">
+            <xsl:param name="input"/>
+            <xsl:sequence select="translate($input,' ','')"/>
+      </xsl:function>
+      <xsl:function name="f:hom-number">
+            <!-- used in dict-sort-with-custom-collation.xslt and index-group-n-sort.xslt -->
+            <xsl:param name="input"/>
+            <xsl:sequence select="substring-after($input,translate($input,$numbers,''))"/>
+      </xsl:function>
 </xsl:stylesheet>

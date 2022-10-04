@@ -6,12 +6,12 @@
 		3. Finished the work to parametise the fied selection. It works now.
 -->
       <xsl:param name="headwordfields"/>
-      <xsl:variable name="getfields">
+      <!-- <xsl:variable name="getfields">
             <xsl:call-template name="list2xml">
                   <xsl:with-param name="text" select="$headwordfields"/>
             </xsl:call-template>
-      </xsl:variable>
-      <xsl:include href='inc-list2xml.xslt'/>
+      </xsl:variable> -->
+      <xsl:include href='project.xslt'/>
       <xsl:include href='inc-char-map-silp.xslt'/>
       <xsl:template match="/*">
             <xsl:text>var lx = new Array();
@@ -21,7 +21,7 @@ lx[0] = new Array(</xsl:text>
       </xsl:template>
       <xsl:template match="lxGroup">
             <xsl:text>"</xsl:text>
-            <xsl:apply-templates select="*[local-name() = $getfields/element/text()]"/>
+            <xsl:apply-templates select="*[local-name() = $getfields]"/>
             <xsl:choose>
                   <xsl:when test="position() eq last()">
                         <xsl:text>"</xsl:text>
